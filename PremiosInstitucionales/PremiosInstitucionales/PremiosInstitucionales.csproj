@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -178,6 +179,7 @@
     <Content Include="Global.asax" />
     <Content Include="Resources\css\archivoFormas.css" />
     <Content Include="Resources\css\Error.css" />
+    <Content Include="Resources\css\jquery.dataTables.min.css" />
     <Content Include="Resources\css\normalize.css" />
     <Content Include="Resources\css\images\ui-bg_diagonal-maze_20_6e4f1c_10x10.png" />
     <Content Include="Resources\css\images\ui-bg_diagonal-maze_40_000000_10x10.png" />
@@ -209,6 +211,7 @@
     <Content Include="Resources\css\images\ui-icons_ffd27a_256x240.png" />
     <Content Include="Resources\css\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Resources\css\jquery-ui.css" />
+    <Content Include="Resources\css\rowReorder.dataTables.min.css" />
     <Content Include="Resources\css\sb-admin-2.css" />
     <Content Include="Resources\img\default-award.png" />
     <Content Include="Resources\css\style.css" />
@@ -237,6 +240,7 @@
     <Content Include="Resources\js\bootstrap.min.js" />
     <Content Include="Resources\js\crearConvocatoria.js" />
     <Content Include="Resources\js\custom-file-input.js" />
+    <Content Include="Resources\js\dataTables.rowReorder.min.js" />
     <Content Include="Resources\js\editarConvocatoria.js" />
     <Content Include="Resources\js\global.js" />
     <Content Include="Resources\js\InformacionPersonalCandidato.js" />
@@ -247,12 +251,14 @@
     <Content Include="Resources\js\listaPremiosCandidato.js" />
     <Content Include="Resources\js\listaUsuariosCandidato.js" />
     <Content Include="Resources\js\listaParticipantes.js" />
+    <Content Include="Resources\js\llenarFormulario.js" />
     <Content Include="Resources\svg\add.svg" />
     <Content Include="Resources\svg\back.svg" />
     <Content Include="Resources\svg\badgebg.svg" />
     <Content Include="Resources\svg\clipboard.svg" />
     <Content Include="Resources\svg\close.svg" />
     <Content Include="Resources\svg\done.svg" />
+    <Content Include="Resources\svg\minus.svg" />
     <Content Include="Resources\svg\juez.svg" />
     <Content Include="Resources\svg\learning.svg" />
     <Content Include="Resources\svg\plus.svg" />
@@ -337,6 +343,9 @@
     </Compile>
     <Compile Include="DBServices\Recuperar\RecuperarService.cs" />
     <Compile Include="DBServices\Registro\RegistroService.cs" />
+    <Compile Include="Entities\Models\ejemplo_Result.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Models\GetAdministrador_Result.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
@@ -376,6 +385,18 @@
     <Compile Include="Entities\Models\GetPremio_Result.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Models\GetSubcategorias_Result.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Models\GetSubcategorias_Result1.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Models\GetSubcategorias_Result2.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Models\GetSubcategoria_Result.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Models\PI_BA_Aplicacion.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
@@ -410,6 +431,9 @@
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Models\PI_BA_Respuesta.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Models\PI_BA_Subcategoria.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Models\PI_SE_Administrador.cs">

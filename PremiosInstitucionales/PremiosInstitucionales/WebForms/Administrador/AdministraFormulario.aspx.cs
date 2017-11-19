@@ -80,6 +80,8 @@ namespace PremiosInstitucionales.WebForms
 
             LoadJudgeTable();
 
+            LoadSubcategorias();
+
             if (!IsPostBack)
             {
                 if (idCategoria != null)
@@ -105,11 +107,64 @@ namespace PremiosInstitucionales.WebForms
             }
         }
 
+
+        protected void LoadInfo2(string formaID, PI_BA_Premio premio, PI_BA_Convocatoria convocatoria, PI_BA_Categoria categoria, PI_BA_Forma forma)
+        {
+            var listaSubcategorias = AplicacionService.GetSubcategoriasByCategoria(categoria.cveCategoria);
+
+            if (listaSubcategorias != null)
+            {
+
+                foreach (var subcategoria in listaSubcategorias)
+                {
+
+                    /*Prueba.Controls.Add(new LiteralControl(
+                        "<div class='container'>"
+                        + "<h4 class='section-heading'>"+ subcategoria.nombre +"</h4>"
+                        + "<table id='listaPreguntas' class='highlight' width=100%>"
+                        + "<thead>"
+                        + "<tr>"
+                        + "<th>"
+                        + "<a data-toggle='modal' data-target='#modalCrearConvocatoria' style='cursor: pointer;' >"
+                        + "<img src = '/Resources/svg/plus.svg' class='avatar img-circle' alt='avatar' style='width: 28px; margin-left:-7px; '/>"
+                        + "</a>"
+                        + "</th>"
+                        + "<th> Pregunta </th>"
+                        + "<th> Orden </th>"
+                        + "<th> Ciclo? </th>"
+                        + "</tr>"
+                        + "</thead>"
+                        + "</table>"
+                        + "</div>"
+                        + "<br><br><br>"
+                        ));
+                        */
+                        
+                    /*Prueba.Controls.Add(new LiteralControl(
+                        "<div class='container'>"
+                        + "<h5>" + subcategoria.nombre + "</h5>"
+                        + "<hr class='shorthr'></hr>"
+                        + "<a data-toggle='modal' data-target='#modalCrearPregunta' data-subcategoria='"+subcategoria.cveSubcategoria+"' style='cursor: pointer;' >"
+                        + "<img src = '/Resources/svg/plus.svg' class='avatar img-circle' alt='avatar' style='width: 28px; margin-left:-7px; '/>"
+                        + "</a>"
+                        + "<div id='simpleList-"+subcategoria.cveCategoria+"' class='list-group' runat='server' ClientIDMode='Static'></div>"
+                        + "</div>"
+                        + "<br><br><br>"
+                        ));*/
+
+                    
+                }
+            }
+
+        }
+
         protected void LoadInfo(string formaID, PI_BA_Premio premio, PI_BA_Convocatoria convocatoria, PI_BA_Categoria categoria, PI_BA_Forma forma) {
             var listaPreguntas = AplicacionService.GetFormularioByCategoria(categoria.cveCategoria);
             if (listaPreguntas != null)
             {
-                
+                string select = "";
+                var subcategorias = ConvocatoriaService.GetSubcategoria(categoria.cveCategoria);
+
                 foreach (var pregunta in listaPreguntas)
                 {
                     Panel panel = new Panel();
@@ -121,12 +176,49 @@ namespace PremiosInstitucionales.WebForms
                     input.Attributes.Add("name", "mytext");
                     input.Attributes.Add("placeholder", "Pregunta");
                     input.Attributes.Add("id", pregunta.cvePregunta);
-                    LiteralControl lit = new LiteralControl("<input class='pregunta form-control' type='text' name='mytext' placeholder='Pregunta' value='"+pregunta.Texto+"'/>");
+
+                    select = "<div style='display:flex;'><select name='options' id='options"+pregunta.cvePregunta+"'>";
+                    select += "<option value='0'>-- Subcategoria --</option>";
+
+                    foreach (var sub in subcategorias)
+                    {
+                        if(pregunta.cveSubcategoria == sub.cveSubcategoria)
+                        {
+                            select += "<option value='" + sub.cveSubcategoria + "' selected>" + sub.Nombre + "</option>";
+                        }
+                        else
+                        {
+                            select += "<option value='" + sub.cveSubcategoria + "'>" + sub.Nombre + "</option>";
+                        }
+                    }
+                      
+                    select += "</select>";
+                    LiteralControl sel = new LiteralControl(select);
+                    LiteralControl lit = new LiteralControl("<input class='pregunta form-control' type='text' name='mytext' placeholder='Pregunta' value='"+pregunta.Texto+"' style='margin-left:20px;'/></div>");
                     LiteralControl remove = new LiteralControl("<a href='#' class='remove'>Eliminar</a>");
+                    panel.Controls.Add(sel);
                     panel.Controls.Add(lit);
                     panel.Controls.Add(remove);
                     simpleList.Controls.Add(panel);
                 }
+
+                select = "";
+                select = "<select name='options' id='options'>";
+                select += "<option value='0'>-- Subcategoria --</option>";
+
+                foreach (var sub in subcategorias)
+                {
+                    
+                     select += "<option value='" + sub.cveSubcategoria + "'>" + sub.Nombre + "</option>";
+                    
+                }
+
+                select += "</select>";
+
+               subcategoriasList.Controls.Add(new LiteralControl(
+                       select
+                        ));
+
             }
             else {
                 Panel panel = new Panel();
@@ -144,6 +236,45 @@ namespace PremiosInstitucionales.WebForms
 
             }
             numPregunta++;
+        }
+
+        private void LoadSubcategorias()
+        {
+            formaID = Request.QueryString["p"];
+            var forma = ConvocatoriaService.GetFormaByID(formaID);
+
+            string categoriaID = forma.cveCategoria;
+            var subcategorias = ConvocatoriaService.GetSubcategoria(categoriaID);
+           // var subcategorias = AplicacionService.GetSubcategoriasByCategoria(categoriaID);
+
+            if (subcategorias != null)
+            {
+
+                foreach (var sub in subcategorias)
+                {
+                    TableRow tr = new TableRow();
+
+                    // name column
+                    TableCell tdName = new TableCell();
+                    tdName.Text = sub.Nombre;
+
+                    // last name column
+                    TableCell tdOrden = new TableCell();
+                    int temp = (int)sub.Orden;
+                    tdOrden.Text = temp + "";
+
+                    TableCell tdAction = new TableCell();
+                    tdAction.Controls.Add(new LiteralControl(
+                       "<button>edit</button>"
+                        ));
+
+                    tr.Controls.Add(tdOrden);
+                    tr.Controls.Add(tdName);
+                    tr.Controls.Add(tdAction);
+                    listaSubcategoriasTableBody.Controls.Add(tr);
+                }
+
+            }
         }
 
         private void LoadJudgeTable()
@@ -224,6 +355,8 @@ namespace PremiosInstitucionales.WebForms
                         if (premio != null)
                         {
                             string[] values = Request.Form.GetValues("mytext");
+                            string[] valuesSubcategoria = Request.Form.GetValues("options");
+
                             if (values != null)
                             {
                                 var listaPreguntas = AplicacionService.GetFormularioByCategoria(categoria.cveCategoria);
@@ -236,7 +369,7 @@ namespace PremiosInstitucionales.WebForms
                                         for (var i = 0; i < nuevasPreguntasCount; i++)
                                         {
                                             if (values[i] != "")
-                                                AplicacionService.GuardaPregunta(listaPreguntas[i].cvePregunta, values[i], i);
+                                                AplicacionService.GuardaPregunta(listaPreguntas[i].cvePregunta, values[i], i, valuesSubcategoria[i]);
                                         }
                                     }
                                     else if (nuevasPreguntasCount < preguntasCount)
@@ -245,7 +378,7 @@ namespace PremiosInstitucionales.WebForms
                                         for (var i = 0; i < (preguntasCount - dif); i++)
                                         {
                                             if (values[i] != "")
-                                                AplicacionService.GuardaPregunta(listaPreguntas[i].cvePregunta, values[i], i);
+                                                AplicacionService.GuardaPregunta(listaPreguntas[i].cvePregunta, values[i], i, valuesSubcategoria[i]);
                                         }
                                         for (var i = nuevasPreguntasCount; i < preguntasCount; i++)
                                         {
@@ -258,12 +391,12 @@ namespace PremiosInstitucionales.WebForms
                                         for (var i = 0; i < preguntasCount; i++)
                                         {
                                             if (values[i] != "")
-                                                AplicacionService.GuardaPregunta(listaPreguntas[i].cvePregunta, values[i], i);
+                                                AplicacionService.GuardaPregunta(listaPreguntas[i].cvePregunta, values[i], i, valuesSubcategoria[i]);
                                         }
                                         for (var i = preguntasCount; i < nuevasPreguntasCount; i++)
                                         {
                                             if (values[i] != "")
-                                                AplicacionService.InsertaPregunta(formaID, values[i], i);
+                                                AplicacionService.InsertaPregunta(formaID, values[i], i, valuesSubcategoria[i]);
                                         }
                                     }
                                 }
@@ -300,6 +433,48 @@ namespace PremiosInstitucionales.WebForms
                 Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
                 Response.Redirect("AdministraFormulario.aspx?p=" + formaID + "&s=" + "failed", false);
             }
+        }
+
+
+        protected void GuardarPreguntaBttn_Click(object sender, EventArgs e)
+        {
+
+            formaID = Request.QueryString["p"];
+            var forma = ConvocatoriaService.GetFormaByID(formaID);
+
+            string categoriaID = forma.cveCategoria;
+
+            if (TituloNuevaPreguntaTB.Text.Length > 0)
+            {
+                // Crear pregunta
+                string id = Guid.NewGuid().ToString();
+               // AplicacionService.GuardaPregunta(id, TituloNuevaPreguntaTB.Text,11, );
+
+                Response.Redirect("AdministraFormulario.aspx?p=" + formaID + "&s=" + "success", false);
+            }
+        }
+
+        protected void GuardarSubcategoriaBttn_Click(object sender, EventArgs e)
+        {
+
+            formaID = Request.QueryString["p"];
+            var forma = ConvocatoriaService.GetFormaByID(formaID);
+
+            string categoriaID = forma.cveCategoria;
+
+            if (TituloNuevaSubcategoriaTB.Text.Length > 0)
+            {
+                // Crear subcategoria
+                PI_BA_Subcategoria subcategoria = new PI_BA_Subcategoria();
+                subcategoria.cveSubcategoria = Guid.NewGuid().ToString();
+                subcategoria.Nombre = TituloNuevaSubcategoriaTB.Text;
+                subcategoria.Orden = 1;
+                subcategoria.cveCategoria = categoriaID;
+                ConvocatoriaService.CreateSubcategoria(subcategoria);
+
+                Response.Redirect("AdministraFormulario.aspx?p=" + formaID + "&s=" + "success", false);
+            }
+
         }
 
         protected void BackBtn_Click(object sender, EventArgs e)

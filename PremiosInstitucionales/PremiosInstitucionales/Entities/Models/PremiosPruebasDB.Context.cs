@@ -38,9 +38,10 @@ namespace PremiosInstitucionales.Entities.Models
         public virtual DbSet<PI_BA_Pregunta> PI_BA_Pregunta { get; set; }
         public virtual DbSet<PI_BA_PreguntasPorForma> PI_BA_PreguntasPorForma { get; set; }
         public virtual DbSet<PI_BA_Premio> PI_BA_Premio { get; set; }
-        public virtual DbSet<PI_BA_Respuesta> PI_BA_Respuesta { get; set; }
         public virtual DbSet<PI_SE_Administrador> PI_SE_Administrador { get; set; }
         public virtual DbSet<PI_SE_Configuracion> PI_SE_Configuracion { get; set; }
+        public virtual DbSet<PI_BA_Subcategoria> PI_BA_Subcategoria { get; set; }
+        public virtual DbSet<PI_BA_Respuesta> PI_BA_Respuesta { get; set; }
     
         public virtual int AddCandidato(string cveCandidato, string password, string nombre, string apellido, Nullable<bool> confirmado, string correo, string codigoConfirmacion, string telefono, string nacionalidad, string rFC, string direccion, string nombreImagen, Nullable<System.DateTime> fechaPrivacidadDatos)
         {
@@ -784,6 +785,41 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveConfiguracion", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_SE_Configuracion>("GetConfiguracion", mergeOption, cveConfiguracionParameter);
+        }
+    
+        public virtual int AddSubcategoria(string cveSubcategoria, string nombre, Nullable<int> orden, string cveCategoria)
+        {
+            var cveSubcategoriaParameter = cveSubcategoria != null ?
+                new ObjectParameter("cveSubcategoria", cveSubcategoria) :
+                new ObjectParameter("cveSubcategoria", typeof(string));
+    
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("nombre", nombre) :
+                new ObjectParameter("nombre", typeof(string));
+    
+            var ordenParameter = orden.HasValue ?
+                new ObjectParameter("orden", orden) :
+                new ObjectParameter("orden", typeof(int));
+    
+            var cveCategoriaParameter = cveCategoria != null ?
+                new ObjectParameter("cveCategoria", cveCategoria) :
+                new ObjectParameter("cveCategoria", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddSubcategoria", cveSubcategoriaParameter, nombreParameter, ordenParameter, cveCategoriaParameter);
+        }
+    
+        public virtual ObjectResult<ejemplo_Result> ejemplo()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ejemplo_Result>("ejemplo");
+        }
+    
+        public virtual ObjectResult<GetSubcategorias_Result2> GetSubcategorias(string cveCategoria)
+        {
+            var cveCategoriaParameter = cveCategoria != null ?
+                new ObjectParameter("cveCategoria", cveCategoria) :
+                new ObjectParameter("cveCategoria", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSubcategorias_Result2>("GetSubcategorias", cveCategoriaParameter);
         }
     }
 }

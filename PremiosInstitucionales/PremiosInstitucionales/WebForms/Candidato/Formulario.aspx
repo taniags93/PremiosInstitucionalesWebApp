@@ -12,6 +12,8 @@
 		(function (e, t, n) { var r = e.querySelectorAll("html")[0]; r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2") })(document, window, 0);
 	</script>
     <script src='<%= ResolveUrl("~/Resources/js/custom-file-input.js") %>' defer="defer"></script>
+    <script src='<%= ResolveUrl("~/Resources/js/llenarFormulario.js")%>' type="text/javascript" defer="defer"></script>
+
 
     <div class="container fadeView">
 
@@ -36,6 +38,7 @@
         </div>
 
         <asp:Panel runat="server" ID="PanelFormulario" class="row question-form"></asp:Panel>
+
 
         <div runat="server" id="uploadFile" visible="false" class="row question-box">
             <h5>Selecciona un archivo:</h5>

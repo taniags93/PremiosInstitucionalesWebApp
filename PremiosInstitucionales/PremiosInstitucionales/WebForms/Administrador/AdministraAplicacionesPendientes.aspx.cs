@@ -1,5 +1,6 @@
 ﻿using PremiosInstitucionales.DBServices.Aplicacion;
 using PremiosInstitucionales.DBServices.InformacionPersonalCandidato;
+using PremiosInstitucionales.DBServices.Convocatoria;
 using PremiosInstitucionales.Values;
 using System;
 using System.Linq;
@@ -116,37 +117,113 @@ namespace PremiosInstitucionales.WebForms
                     panelCollapseBodyQuestions.Style.Add("margin-left", "10px");
                     panelCollapseBodyQuestions.Style.Add("margin-right", "10px");
 
+
                     // Desplegar preguntas y respuestas
-                    var preguntas = AplicacionService.GetFormularioByCategoria(app.cveCategoria);
 
-                    if (preguntas.Count > 0)
+                    
+                    var subcategorias = ConvocatoriaService.GetSubcategoria(categoria.cveCategoria);
+                    var preguntas = AplicacionService.GetFormularioByCategoria(categoria.cveCategoria);
+
+
+                    if (subcategorias != null && subcategorias.Count > 0)
                     {
-                        short iNumber = 0;
-                        foreach (var pregunta in preguntas)
+                        foreach (var sub in subcategorias)
                         {
-                            Panel panelQuestion = new Panel();
-                            panelQuestion.CssClass = "question-box";
+                            Panel panel = new Panel();
+                            panel.CssClass = "question-box";
+                            panel.Attributes.Add("runat", "server");
 
-                            LiteralControl lcPregunta = new LiteralControl("<h5> <strong>" + (iNumber + 1) + ". " + pregunta.Texto + "</strong> </h5>");
-                            panelQuestion.Controls.Add(lcPregunta);
-
-                            var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacion(pregunta.cvePregunta, app.cveAplicacion);
-                            if (respuesta == null)
-                                break;
-
-                            string[] lines = respuesta.Valor.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                            for (int i = 0; i < lines.Length; i++)
+                            LiteralControl h5 = new LiteralControl("<h4>" + sub.Nombre + "</h4>");
+                            panel.Controls.Add(h5);
+                            if (sub.Ciclo == "No")
                             {
-                                LiteralControl lcRespuesta = new LiteralControl("<h5>" + lines[i] + "</h5>");
-                                panelQuestion.Controls.Add(lcRespuesta);
-                            }
+                                foreach (var p in preguntas)
+                                {
+                                    if (p.cveSubcategoria == sub.cveSubcategoria)
+                                    {
+                                        var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, app.cveAplicacion, 1);
 
-                            panelCollapseBodyQuestions.Controls.Add(panelQuestion);
-                            iNumber++;
+                                        LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='" + sub.cveSubcategoria + "' id=" + p.cvePregunta + " value='"+respuesta.Valor+"' class='form-control' style='width:100%;'><br>");
+                                        panel.Controls.Add(pregunta);
+                                    }
+                                    panelCollapseBodyQuestions.Controls.Add(panel);
+                                }
+                            }
+                            else
+                            {
+                                string table = "<table id='table-" + sub.cveSubcategoria + "' style='width:100%;' class='table table-striped'><thead><tr>";
+                                string ansRows = "<tr>";
+                                string questionIDs = "";
+                                int i = 0;
+                                int k = 0;
+                                var respuestas = AplicacionService.GetRespuestasBySubcategoriaAndAplicacion(sub.cveSubcategoria, app.cveAplicacion);
+                                while( k < respuestas.Count)
+                                {
+                                    foreach (var p in preguntas)
+                                    {
+                                        if (p.cveSubcategoria == sub.cveSubcategoria)
+                                        {
+                                            var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, app.cveAplicacion, i+1);
+                                            if (i == 0)
+                                            {
+                                                table += "<th>" + p.Texto + "</th>";
+                                            }
+                                            ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='8' value=''>" + respuesta.Valor + "</textarea></td>";
+                                            questionIDs += p.cvePregunta + ",";
+                                            k++;
+                                        }
+                                    }
+                                    i++;
+                                    ansRows += "</tr>";
+                                }
+
+                                table += "</tr></thead>";
+                                table += "<tbody>" + ansRows + "</tbody></table>";
+
+                                LiteralControl tabla = new LiteralControl(table);
+                                LiteralControl saveRowControl = new LiteralControl("<div id='saveRow-" + sub.cveSubcategoria + "' style='display:none;' data-rows='" + questionIDs + "'></div>");
+
+                                panel.Controls.Add(tabla);
+                                panel.Controls.Add(saveRowControl);
+
+                                panelCollapseBodyQuestions.Controls.Add(panel);
+
+                            }
                         }
                     }
-
                     panelCollapseBody.Controls.Add(panelCollapseBodyQuestions);
+
+
+                    //
+                    /*  var preguntas = AplicacionService.GetFormularioByCategoria(app.cveCategoria);
+
+                      if (preguntas.Count > 0)
+                      {
+                          short iNumber = 0;
+                          foreach (var pregunta in preguntas)
+                          {
+                              Panel panelQuestion = new Panel();
+                              panelQuestion.CssClass = "question-box";
+
+                              LiteralControl lcPregunta = new LiteralControl("<h5> <strong>" + (iNumber + 1) + ". " + pregunta.Texto + "</strong> </h5>");
+                              panelQuestion.Controls.Add(lcPregunta);
+
+                              var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacion(pregunta.cvePregunta, app.cveAplicacion);
+                              if (respuesta == null)
+                                  break;
+
+                              string[] lines = respuesta.Valor.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                              for (int i = 0; i < lines.Length; i++)
+                              {
+                                  LiteralControl lcRespuesta = new LiteralControl("<h5>" + lines[i] + "</h5>");
+                                  panelQuestion.Controls.Add(lcRespuesta);
+                              }
+
+                              panelCollapseBodyQuestions.Controls.Add(panelQuestion);
+                              iNumber++;
+                          }
+                      }*/
+
 
                     // Desplegar opciones de aceptar o rechazar aplicacion
                     LiteralControl btnGroupAcceptReject = new LiteralControl("" +

@@ -73,6 +73,26 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
             }
         }
 
+         public static List<PI_BA_Subcategoria> GetSubcategoriasByCategoria(String idCategoria)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    var subcategorias = (from sc in dbContext.PI_BA_Subcategoria
+                                         where sc.cveCategoria.Equals(idCategoria)
+                                         orderby sc.Orden
+                                            select sc).ToList();
+                    return subcategorias;
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
+                }
+            }
+        }
+
         public static List<String> GetJuecesIdsCategoria(String idCategoria)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
@@ -118,7 +138,7 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
             }
         }
 
-        public static void InsertaPregunta(String idForma, String valor, int orden)
+        public static void InsertaPregunta(String idForma, String valor, int orden, String subcategoria)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
             {
@@ -128,6 +148,7 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
                     pregunta.cvePregunta = Guid.NewGuid().ToString();
                     pregunta.Orden = orden;
                     pregunta.Texto = valor;
+                    pregunta.cveSubcategoria = subcategoria;
                     dbContext.PI_BA_Pregunta.Add(pregunta);
                     dbContext.SaveChanges();
                     PI_BA_PreguntasPorForma pregForma = new PI_BA_PreguntasPorForma();
@@ -532,6 +553,41 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
             }
         }
 
+        public static PI_BA_Respuesta GetRespuestaByPreguntaAndAplicacionAndNumero(String idPregunta, String idAplicacion, int numero)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    var result = dbContext.PI_BA_Respuesta.Where(r => r.cveAplicacion.Equals(idAplicacion)
+                                 && r.cvePregunta.Equals(idPregunta) && r.Numero == numero).FirstOrDefault();
+                    return result;
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
+                }
+            }
+        }
+
+        public static List<PI_BA_Respuesta> GetRespuestasBySubcategoriaAndAplicacion(String idSubcategoria, String idAplicacion)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    var respuestas = dbContext.PI_BA_Respuesta.Where(r => r.cveAplicacion.Equals(idAplicacion) && r.cveSubcategoria.Equals(idSubcategoria)).ToList();
+                    return respuestas;
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
+                }
+            }
+        }
+
         public static void SetAplicacionModificada(String idAplicacion)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
@@ -549,7 +605,7 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
             }
         }
 
-        public static void GuardaPregunta(String idPregunta, String valor, int orden)
+        public static void GuardaPregunta(String idPregunta, String valor, int orden, String subcategoria)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
             {
@@ -558,6 +614,7 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
                     var resp = dbContext.PI_BA_Pregunta.Where(r => r.cvePregunta.Equals(idPregunta)).FirstOrDefault();
                     resp.Texto = valor;
                     resp.Orden = orden;
+                    resp.cveSubcategoria = subcategoria;
                     dbContext.SaveChanges();
                 }
                 catch (Exception Ex)

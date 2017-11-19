@@ -87,52 +87,104 @@ namespace PremiosInstitucionales.WebForms
                 PanelFormulario.Controls.Clear();
 
                 // obtener lista de preguntas para la categoria y desplegar el formulario
+                var subcategorias = ConvocatoriaService.GetSubcategoria(categoria.cveCategoria);
                 var preguntas = AplicacionService.GetFormularioByCategoria(categoria.cveCategoria);
 
-                if (preguntas != null && preguntas.Count > 0)
+
+                if (subcategorias != null && subcategorias.Count > 0)
                 {
                     uploadFile.Visible = true;
-                    short iNumber = 0;
-                    foreach (var pregunta in preguntas)
+                    foreach (var sub in subcategorias)
                     {
                         Panel panel = new Panel();
                         panel.CssClass = "question-box";
                         panel.Attributes.Add("runat", "server");
 
-                        LiteralControl h5 = new LiteralControl("<h5>" + (iNumber + 1) + ". " + pregunta.Texto + "</h5>");
+                        LiteralControl h5 = new LiteralControl("<h4>" + sub.Nombre + "</h4>");
                         panel.Controls.Add(h5);
-                        LiteralControl p = new LiteralControl("<p>" + iMaxCharacters + " " + sCharactersRemainingMessage + "</p>");
-                        panel.Controls.Add(p);
+                        if(sub.Ciclo == "No")
+                        {
+                            foreach (var p in preguntas)
+                            {
+                                if (p.cveSubcategoria == sub.cveSubcategoria)
+                                {
+                                    LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='"+sub.cveSubcategoria+"' id=" + p.cvePregunta + " value='' class='form-control' style='width:100%;'><br>");
+                                    panel.Controls.Add(pregunta);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            string table = "<table id='table-"+sub.cveSubcategoria+"' style='width:100%;' class='table table-striped'><thead><tr>";
+                            string ansRows = "<tr>";
+                            string questionIDs = "";
+                            foreach (var p in preguntas)
+                            {
+                                if (p.cveSubcategoria == sub.cveSubcategoria)
+                                {
+                                    table += "<th>"+p.Texto+"</th>";
+                                    ansRows += "<td><textarea name='"+sub.cveSubcategoria+"' id='row1-"+p.cvePregunta+"' cols='20' rows='8' ></textarea></td>";
+                                    questionIDs += p.cvePregunta + ",";
+                                }
+                            }
 
-                        TextBox tb = new TextBox();
-                        tb.ID = "textbox_" + pregunta.cvePregunta;
-                        tb.TextMode = TextBoxMode.MultiLine;
-                        tb.Rows = 4;
-                        tb.MaxLength = iMaxCharacters;
-                        tb.CssClass = "form-control form-text-area scrollbar-custom";
-                        tb.Attributes.Add("onKeyUp", "updateCharactersLeft(this); validateAnswerCharacters(event);");
-                        tb.Attributes.Add("maxlength", iMaxCharacters.ToString());
-                        tb.Attributes.Remove("cols");
-                        tb.Attributes.Add("runat", "server");
-                        tb.Attributes.Add("onvalid", "this.setCustomValidity('Por favor, responde la pregunta')");
+                            table += "</tr></thead>";
+                            ansRows += "</tr>";
+                            table += "<tbody>"+ansRows+"</tbody></table>";
 
-                        RequiredFieldValidator validator = new RequiredFieldValidator();
-                        validator.ControlToValidate = tb.ID;
+                            string add = "<a data-toggle='modal' id='addRow-"+sub.cveSubcategoria+"' data-sub='"+sub.cveSubcategoria+"' class='addRow' style='cursor: pointer;'><img src = '/Resources/svg/plus.svg' class='avatar img-circle' alt='avatar' style='width: 50px;'/></a><a data-toggle='modal' id='remove-"+sub.cveSubcategoria+ "' data-sub='" + sub.cveSubcategoria + "' class='removeRow' style='cursor: pointer;'><img src = '/Resources/svg/minus.svg' class='avatar img-circle' alt='avatar' style='width: 55px; margin-left:15px;'/></a><br><br>";
+                            LiteralControl tabla = new LiteralControl(table);
+                            LiteralControl addControl = new LiteralControl(add);
+                            LiteralControl saveRowControl = new LiteralControl("<div id='saveRow-"+sub.cveSubcategoria+"' style='display:none;' data-rows='"+questionIDs+"'></div>");
 
-                        Panel pAlert = new Panel();
-                        pAlert.CssClass = "alert alert-danger alert-no-answer";
-                        
-                        LiteralControl lcText = new LiteralControl("<strong>Error:</strong> Por favor rellene este campo.");
-                        pAlert.Controls.Add(lcText);
+                            panel.Controls.Add(tabla);
+                            panel.Controls.Add(addControl);
+                            panel.Controls.Add(saveRowControl);
 
-                        validator.Controls.Add(pAlert);
 
-                        panel.Controls.Add(tb);
-                        panel.Controls.Add(validator);
+                        }
+
 
                         PanelFormulario.Controls.Add(panel);
 
-                        iNumber++;
+                        /* Panel panel = new Panel();
+                         panel.CssClass = "question-box";
+                         panel.Attributes.Add("runat", "server");
+
+                         LiteralControl h5 = new LiteralControl("<h5>" + (iNumber + 1) + ". " + pregunta.Texto + "</h5>");
+                         panel.Controls.Add(h5);
+                         LiteralControl p = new LiteralControl("<p>" + iMaxCharacters + " " + sCharactersRemainingMessage + "</p>");
+                         panel.Controls.Add(p);
+
+                         TextBox tb = new TextBox();
+                         tb.ID = "textbox_" + pregunta.cvePregunta;
+                         tb.TextMode = TextBoxMode.MultiLine;
+                         tb.Rows = 4;
+                         tb.MaxLength = iMaxCharacters;
+                         tb.CssClass = "form-control form-text-area scrollbar-custom";
+                         tb.Attributes.Add("onKeyUp", "updateCharactersLeft(this); validateAnswerCharacters(event);");
+                         tb.Attributes.Add("maxlength", iMaxCharacters.ToString());
+                         tb.Attributes.Remove("cols");
+                         tb.Attributes.Add("runat", "server");
+                         tb.Attributes.Add("onvalid", "this.setCustomValidity('Por favor, responde la pregunta')");
+
+                         RequiredFieldValidator validator = new RequiredFieldValidator();
+                         validator.ControlToValidate = tb.ID;
+
+                         Panel pAlert = new Panel();
+                         pAlert.CssClass = "alert alert-danger alert-no-answer";
+
+                         LiteralControl lcText = new LiteralControl("<strong>Error:</strong> Por favor rellene este campo.");
+                         pAlert.Controls.Add(lcText);
+
+                         validator.Controls.Add(pAlert);
+
+                         panel.Controls.Add(tb);
+                         panel.Controls.Add(validator);
+
+                         PanelFormulario.Controls.Add(panel);
+
+                         iNumber++;*/
                     }
                 }
             }
@@ -145,7 +197,56 @@ namespace PremiosInstitucionales.WebForms
             aplicacionNueva.Status = StringValues.Solicitado;
             aplicacionNueva.cveCandidato = AplicacionService.GetCveCandidatoByCorreo(Session[StringValues.CorreoSesion].ToString());
             aplicacionNueva.cveCategoria = Request.QueryString["c"];
+            List<PI_BA_Respuesta> respuestas = new List<PI_BA_Respuesta>();
 
+            var subcategorias = ConvocatoriaService.GetSubcategoria(aplicacionNueva.cveCategoria);
+            var preguntas = AplicacionService.GetFormularioByCategoria(aplicacionNueva.cveCategoria);
+            if (subcategorias != null && subcategorias.Count > 0)
+            {
+                foreach (var sub in subcategorias)
+                {
+                    string[] values = Request.Form.GetValues(sub.cveSubcategoria);
+                    int x = 0;
+                    int numPreg = 1;
+
+                    while (x < values.Length)
+                    {
+                        foreach (var p in preguntas)
+                        {
+                            if (p.cveSubcategoria == sub.cveSubcategoria)
+                            {
+                                PI_BA_Respuesta respActual = new PI_BA_Respuesta();
+                                respActual.cveRespuesta = Guid.NewGuid().ToString();
+                                respActual.cvePregunta = p.cvePregunta;
+                                respActual.cveAplicacion = aplicacionNueva.cveAplicacion;
+                                respActual.Valor = values[x];
+                                x++;
+                                respActual.Numero = numPreg;
+                                respActual.cveSubcategoria = p.cveSubcategoria;
+                                respuestas.Add(respActual);
+                            }
+                            
+                            if(x == values.Length)
+                            {
+                                break;
+                            }
+                        }
+                        numPreg++;
+                    }
+                }
+            }
+
+            String sNombreArchivo = UploadFile();
+
+            if (sNombreArchivo != "Error")
+            {
+                aplicacionNueva.NombreArchivo = sNombreArchivo;
+                AplicacionService.CrearAplicacion(aplicacionNueva, respuestas);
+                Response.Redirect("AplicacionesCandidato.aspx?r=true", false);
+            }
+
+
+            /*
             List<PI_BA_Respuesta> respuestas = new List<PI_BA_Respuesta>();
             List<string> ltRespuestas = new List<string>();
             string[] ctrls = Request.Form.ToString().Split('&');
@@ -182,7 +283,7 @@ namespace PremiosInstitucionales.WebForms
                     AplicacionService.CrearAplicacion(aplicacionNueva, respuestas);
                     Response.Redirect("AplicacionesCandidato.aspx?r=true", false);
                 }
-            }
+            }*/
         }
 
         private int GetIndexFromArray(String[] arr, String value)

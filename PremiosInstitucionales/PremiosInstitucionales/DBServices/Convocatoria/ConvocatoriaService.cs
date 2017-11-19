@@ -72,6 +72,8 @@ namespace PremiosInstitucionales.DBServices.Convocatoria
             }
         }
 
+       
+
         public static void ActualizarPremio(string idPremio, string titulo, string descripcion, string imagenurl, string user)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
@@ -85,6 +87,55 @@ namespace PremiosInstitucionales.DBServices.Convocatoria
                 catch (Exception Ex)
                 {
                     Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                }
+            }
+        }
+
+
+        public static void CreateSubcategoria(PI_BA_Subcategoria Sub)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    dbContext.AddSubcategoria(Sub.cveSubcategoria, Sub.Nombre, Sub.Orden, Sub.cveCategoria);
+                    dbContext.SaveChanges();
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                }
+            }
+        }
+
+        public static List<GetSubcategorias_Result2> GetSubcategoria(String cveCategoria)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    return dbContext.GetSubcategorias(cveCategoria).ToList();
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
+                }
+            }
+        }
+
+        public static List<PI_BA_Categoria> GetCategoriasByConvocatoria(String idConvocatoria)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    return dbContext.GetCategoria(null, idConvocatoria).ToList();
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
                 }
             }
         }
@@ -112,22 +163,6 @@ namespace PremiosInstitucionales.DBServices.Convocatoria
                 try
                 {
                     return dbContext.GetCategoria(idCategoria, null).FirstOrDefault();
-                }
-                catch (Exception Ex)
-                {
-                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
-                    return null;
-                }
-            }
-        }
-
-        public static List<PI_BA_Categoria> GetCategoriasByConvocatoria(String idConvocatoria)
-        {
-            using (var dbContext = new wPremiosInstitucionalesdbEntities())
-            {
-                try
-                {
-                    return dbContext.GetCategoria(null, idConvocatoria).ToList();
                 }
                 catch (Exception Ex)
                 {

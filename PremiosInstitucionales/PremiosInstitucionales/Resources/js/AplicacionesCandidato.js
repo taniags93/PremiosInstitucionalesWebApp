@@ -11,10 +11,10 @@ function resizebpmProcess() {
 		for (var i = 0; i < bpmProcessList.length; i++){
 			var options = bpmProcessList[i].children;
 			for(var j = 0; j < options.length; j++){
-				if(j == 0){
+				if(j === 0){
 					options[j].children[0].children[0].innerHTML = "Registrada";
 				}
-				else if(j == options.length - 1){
+				else if(j === options.length - 1){
 					options[j].children[0].children[0].innerHTML = "Veredicto Final";
 				}
 				options[j].style.display = "block";
@@ -29,7 +29,7 @@ function resizebpmProcess() {
 			var options = bpmProcessList[i].children;
 			for(var j = 0; j < options.length; j++){
 				if (!options[j].className.includes("active")){
-					if(j == 0 || j == options.length-1){
+					if(j === 0 || j === options.length-1){
 						options[j].children[0].children[0].innerHTML = "&nbsp &nbsp &nbsp";
 					}
 					else {

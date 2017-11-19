@@ -107,6 +107,7 @@
     <EntitySetMapping Name="PI_BA_Pregunta">
       <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Pregunta">
         <MappingFragment StoreEntitySet="PI_BA_Pregunta">
+          <ScalarProperty Name="cveSubcategoria" ColumnName="cveSubcategoria" />
           <ScalarProperty Name="cvePregunta" ColumnName="cvePregunta" />
           <ScalarProperty Name="Texto" ColumnName="Texto" />
           <ScalarProperty Name="Orden" ColumnName="Orden" />
@@ -133,16 +134,6 @@
           <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
           <ScalarProperty Name="FechaEdicion" ColumnName="FechaEdicion" />
           <ScalarProperty Name="UsuarioEdicion" ColumnName="UsuarioEdicion" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PI_BA_Respuesta">
-      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Respuesta">
-        <MappingFragment StoreEntitySet="PI_BA_Respuesta">
-          <ScalarProperty Name="cveRespuesta" ColumnName="cveRespuesta" />
-          <ScalarProperty Name="Valor" ColumnName="Valor" />
-          <ScalarProperty Name="cvePregunta" ColumnName="cvePregunta" />
-          <ScalarProperty Name="cveAplicacion" ColumnName="cveAplicacion" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -193,5 +184,40 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="GetConfiguracion" FunctionName="wPremiosInstitucionalesdbModel.Store.GetConfiguracion" />
+    <FunctionImportMapping FunctionImportName="AddSubcategoria" FunctionName="wPremiosInstitucionalesdbModel.Store.AddSubcategoria" />
+    <EntitySetMapping Name="PI_BA_Subcategoria">
+      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Subcategoria">
+        <MappingFragment StoreEntitySet="PI_BA_Subcategoria">
+          <ScalarProperty Name="cveCategoria" ColumnName="cveCategoria" />
+          <ScalarProperty Name="Ciclo" ColumnName="Ciclo" />
+          <ScalarProperty Name="Orden" ColumnName="Orden" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="cveSubcategoria" ColumnName="cveSubcategoria" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetSubcategorias" FunctionName="wPremiosInstitucionalesdbModel.Store.GetSubcategorias">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="wPremiosInstitucionalesdbModel.GetSubcategorias_Result2">
+          <ScalarProperty Name="cveSubcategoria" ColumnName="cveSubcategoria" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Orden" ColumnName="Orden" />
+          <ScalarProperty Name="Ciclo" ColumnName="Ciclo" />
+          <ScalarProperty Name="cveCategoria" ColumnName="cveCategoria" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="PI_BA_Respuesta">
+      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Respuesta">
+        <MappingFragment StoreEntitySet="PI_BA_Respuesta">
+          <ScalarProperty Name="cveSubcategoria" ColumnName="cveSubcategoria" />
+          <ScalarProperty Name="Numero" ColumnName="Numero" />
+          <ScalarProperty Name="cveAplicacion" ColumnName="cveAplicacion" />
+          <ScalarProperty Name="cvePregunta" ColumnName="cvePregunta" />
+          <ScalarProperty Name="Valor" ColumnName="Valor" />
+          <ScalarProperty Name="cveRespuesta" ColumnName="cveRespuesta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -10,19 +10,12 @@
 namespace PremiosInstitucionales.Entities.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class PI_BA_Respuesta
+    public partial class ejemplo_Result
     {
-        public string cveRespuesta { get; set; }
-        public string Valor { get; set; }
-        public string cvePregunta { get; set; }
-        public string cveAplicacion { get; set; }
-        public Nullable<int> Numero { get; set; }
         public string cveSubcategoria { get; set; }
-    
-        public virtual PI_BA_Aplicacion PI_BA_Aplicacion { get; set; }
-        public virtual PI_BA_Pregunta PI_BA_Pregunta { get; set; }
-        public virtual PI_BA_Subcategoria PI_BA_Subcategoria { get; set; }
+        public string nombre { get; set; }
+        public Nullable<int> orden { get; set; }
+        public string cveCategoria { get; set; }
     }
 }
