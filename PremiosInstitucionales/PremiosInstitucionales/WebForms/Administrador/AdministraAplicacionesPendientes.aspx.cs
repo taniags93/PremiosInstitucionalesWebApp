@@ -143,7 +143,7 @@ namespace PremiosInstitucionales.WebForms
                                     {
                                         var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, app.cveAplicacion, 1);
 
-                                        LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='" + sub.cveSubcategoria + "' id=" + p.cvePregunta + " value='"+respuesta.Valor+"' class='form-control' style='width:100%;'><br>");
+                                        LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='" + sub.cveSubcategoria + "' id=" + p.cvePregunta + " value='"+respuesta.Valor+"' class='form-control' style='width:100%;' readonly><br>");
                                         panel.Controls.Add(pregunta);
                                     }
                                     panelCollapseBodyQuestions.Controls.Add(panel);
@@ -168,7 +168,7 @@ namespace PremiosInstitucionales.WebForms
                                             {
                                                 table += "<th>" + p.Texto + "</th>";
                                             }
-                                            ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='8' value=''>" + respuesta.Valor + "</textarea></td>";
+                                            ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='8' value='' readonly>" + respuesta.Valor + "</textarea></td>";
                                             questionIDs += p.cvePregunta + ",";
                                             k++;
                                         }

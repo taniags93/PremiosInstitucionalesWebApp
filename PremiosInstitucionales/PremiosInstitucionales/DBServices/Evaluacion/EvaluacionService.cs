@@ -47,7 +47,7 @@ namespace PremiosInstitucionales.DBServices.Evaluacion
             {
                 try
                 {
-                    dbContext.AddEvaluacion(ev.cveEvaluacion, ev.Calificacion, ev.cveAplicacion, ev.cveJuez);
+                    dbContext.AddEvaluacion(ev.cveEvaluacion, ev.Calificacion, ev.cveAplicacion, ev.cveJuez, ev.cveSubcategoria, ev.esFinal);
                     dbContext.SaveChanges();
                 }
                 catch (Exception Ex)
@@ -58,14 +58,14 @@ namespace PremiosInstitucionales.DBServices.Evaluacion
         }
 
         /// Pending
-        public static void ActualizaEvaluacion(String sEvalId, short calif)
+        public static void ActualizaEvaluacion(String sEvalId, float calif)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
             {
                 try
                 {
                     var eval = GetEvaluacionById(sEvalId);
-                    dbContext.UpdateEvaluacion(eval.cveEvaluacion, calif, eval.cveAplicacion, eval.cveJuez);
+                    dbContext.UpdateEvaluacion(eval.cveEvaluacion, calif, eval.cveAplicacion, eval.cveJuez, eval.cveSubcategoria, eval.esFinal);
                     dbContext.SaveChanges();
                 }
                 catch (Exception Ex)
@@ -81,7 +81,7 @@ namespace PremiosInstitucionales.DBServices.Evaluacion
             {
                 try
                 {
-                    return dbContext.GetEvaluacion(evalId, null, null).FirstOrDefault();
+                    return dbContext.GetEvaluacion(evalId, null, null, "yes", null).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -97,7 +97,27 @@ namespace PremiosInstitucionales.DBServices.Evaluacion
             {
                 try
                 {
-                    return dbContext.GetEvaluacion(null, appId, null).ToList();
+                    string esFinal = "yes";
+                    return dbContext.GetEvaluacion(null, appId, null, esFinal, null).ToList();
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
+                }
+            }
+        }
+
+        public static List<PI_BA_Evaluacion> GetEvaluacionesByAplicacionAndJuezAndSubcategoria(String appId, string juezMail, string cveSubcategoria)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    var juez = InformacionPersonalJuezService.GetJuezByCorreo(juezMail);
+
+                    string esFinal = "no";
+                    return dbContext.GetEvaluacion(null, appId, juez.cveJuez, esFinal, cveSubcategoria).ToList();
                 }
                 catch (Exception Ex)
                 {
@@ -114,7 +134,7 @@ namespace PremiosInstitucionales.DBServices.Evaluacion
                 try
                 {
                     var juez = InformacionPersonalJuezService.GetJuezByCorreo(juezMail);
-                    return dbContext.GetEvaluacion(null, appId, juez.cveJuez).FirstOrDefault();
+                    return dbContext.GetEvaluacion(null, appId, juez.cveJuez, "yes", null).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {

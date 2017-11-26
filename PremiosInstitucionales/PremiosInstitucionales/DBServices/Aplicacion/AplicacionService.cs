@@ -624,14 +624,14 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
             }
         }
 
-        public static void SaveRespuestaModificada(String idAplicacion, String idPregunta, String valorModificado)
+        public static void SaveRespuestaModificada(String idAplicacion, String idPregunta, String valorModificado, int numero)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
             {
                 try
                 {
                     var resp = dbContext.PI_BA_Respuesta.Where(r => r.cveAplicacion.Equals(idAplicacion) 
-                               && r.cvePregunta.Equals(idPregunta)).FirstOrDefault();
+                               && r.cvePregunta.Equals(idPregunta) && r.Numero == numero).FirstOrDefault();
                     resp.Valor = valorModificado;
                     dbContext.SaveChanges();
                 }

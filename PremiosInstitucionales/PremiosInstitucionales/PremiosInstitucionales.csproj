@@ -242,6 +242,7 @@
     <Content Include="Resources\js\custom-file-input.js" />
     <Content Include="Resources\js\dataTables.rowReorder.min.js" />
     <Content Include="Resources\js\editarConvocatoria.js" />
+    <Content Include="Resources\js\evaluaAplicacion.js" />
     <Content Include="Resources\js\global.js" />
     <Content Include="Resources\js\InformacionPersonalCandidato.js" />
     <Content Include="Resources\js\jquery-ui.js" />
@@ -367,7 +368,13 @@
     <Compile Include="Entities\Models\GetConvocatoria_Result.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Models\GetEvaluacion1_Result.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Models\GetEvaluacion_Result.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Models\GetEvaluacion_Result1.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Models\GetForma_Result.cs">
@@ -385,6 +392,9 @@
     <Compile Include="Entities\Models\GetPremio_Result.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Models\GetSubcategorias1_Result.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Models\GetSubcategorias_Result.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
@@ -392,6 +402,9 @@
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Models\GetSubcategorias_Result2.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Models\GetSubcategorias_Result3.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Models\GetSubcategoria_Result.cs">

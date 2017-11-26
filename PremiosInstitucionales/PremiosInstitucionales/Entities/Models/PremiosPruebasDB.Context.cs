@@ -31,17 +31,17 @@ namespace PremiosInstitucionales.Entities.Models
         public virtual DbSet<PI_BA_Candidato> PI_BA_Candidato { get; set; }
         public virtual DbSet<PI_BA_Categoria> PI_BA_Categoria { get; set; }
         public virtual DbSet<PI_BA_Convocatoria> PI_BA_Convocatoria { get; set; }
-        public virtual DbSet<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
         public virtual DbSet<PI_BA_Forma> PI_BA_Forma { get; set; }
         public virtual DbSet<PI_BA_Juez> PI_BA_Juez { get; set; }
         public virtual DbSet<PI_BA_JuezPorCategoria> PI_BA_JuezPorCategoria { get; set; }
-        public virtual DbSet<PI_BA_Pregunta> PI_BA_Pregunta { get; set; }
         public virtual DbSet<PI_BA_PreguntasPorForma> PI_BA_PreguntasPorForma { get; set; }
         public virtual DbSet<PI_BA_Premio> PI_BA_Premio { get; set; }
         public virtual DbSet<PI_SE_Administrador> PI_SE_Administrador { get; set; }
         public virtual DbSet<PI_SE_Configuracion> PI_SE_Configuracion { get; set; }
-        public virtual DbSet<PI_BA_Subcategoria> PI_BA_Subcategoria { get; set; }
         public virtual DbSet<PI_BA_Respuesta> PI_BA_Respuesta { get; set; }
+        public virtual DbSet<PI_BA_Pregunta> PI_BA_Pregunta { get; set; }
+        public virtual DbSet<PI_BA_Subcategoria> PI_BA_Subcategoria { get; set; }
+        public virtual DbSet<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
     
         public virtual int AddCandidato(string cveCandidato, string password, string nombre, string apellido, Nullable<bool> confirmado, string correo, string codigoConfirmacion, string telefono, string nacionalidad, string rFC, string direccion, string nombreImagen, Nullable<System.DateTime> fechaPrivacidadDatos)
         {
@@ -182,7 +182,7 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddConvocatoria", cveConvocatoriaParameter, fechaInicioParameter, fechaFinParameter, cvePremioParameter, tituloConvocatoriaParameter, fechaVeredictoParameter, fechaCreacionParameter, usuarioCreacionParameter, fechaEdicionParameter, usuarioEdicionParameter);
         }
     
-        public virtual int AddEvaluacion(string cveEvaluacion, Nullable<short> calificacion, string cveAplicacion, string cveJuez)
+        public virtual int AddEvaluacion(string cveEvaluacion, Nullable<double> calificacion, string cveAplicacion, string cveJuez, string cveSubcategoria, string esFinal)
         {
             var cveEvaluacionParameter = cveEvaluacion != null ?
                 new ObjectParameter("cveEvaluacion", cveEvaluacion) :
@@ -190,7 +190,7 @@ namespace PremiosInstitucionales.Entities.Models
     
             var calificacionParameter = calificacion.HasValue ?
                 new ObjectParameter("Calificacion", calificacion) :
-                new ObjectParameter("Calificacion", typeof(short));
+                new ObjectParameter("Calificacion", typeof(double));
     
             var cveAplicacionParameter = cveAplicacion != null ?
                 new ObjectParameter("cveAplicacion", cveAplicacion) :
@@ -200,7 +200,15 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveJuez", cveJuez) :
                 new ObjectParameter("cveJuez", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddEvaluacion", cveEvaluacionParameter, calificacionParameter, cveAplicacionParameter, cveJuezParameter);
+            var cveSubcategoriaParameter = cveSubcategoria != null ?
+                new ObjectParameter("cveSubcategoria", cveSubcategoria) :
+                new ObjectParameter("cveSubcategoria", typeof(string));
+    
+            var esFinalParameter = esFinal != null ?
+                new ObjectParameter("esFinal", esFinal) :
+                new ObjectParameter("esFinal", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddEvaluacion", cveEvaluacionParameter, calificacionParameter, cveAplicacionParameter, cveJuezParameter, cveSubcategoriaParameter, esFinalParameter);
         }
     
         public virtual int AddForma(string cveForma, string cveCategoria, Nullable<System.DateTime> fechaCreacion, string usuarioCreacion, Nullable<System.DateTime> fechaEdicion, string usuarioEdicion)
@@ -431,40 +439,6 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Convocatoria>("GetConvocatoria", mergeOption, cveConvocatoriaParameter);
         }
     
-        public virtual ObjectResult<PI_BA_Evaluacion> GetEvaluacion(string cveEvaluacion, string cveAplicacion, string cveJuez)
-        {
-            var cveEvaluacionParameter = cveEvaluacion != null ?
-                new ObjectParameter("cveEvaluacion", cveEvaluacion) :
-                new ObjectParameter("cveEvaluacion", typeof(string));
-    
-            var cveAplicacionParameter = cveAplicacion != null ?
-                new ObjectParameter("cveAplicacion", cveAplicacion) :
-                new ObjectParameter("cveAplicacion", typeof(string));
-    
-            var cveJuezParameter = cveJuez != null ?
-                new ObjectParameter("cveJuez", cveJuez) :
-                new ObjectParameter("cveJuez", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Evaluacion>("GetEvaluacion", cveEvaluacionParameter, cveAplicacionParameter, cveJuezParameter);
-        }
-    
-        public virtual ObjectResult<PI_BA_Evaluacion> GetEvaluacion(string cveEvaluacion, string cveAplicacion, string cveJuez, MergeOption mergeOption)
-        {
-            var cveEvaluacionParameter = cveEvaluacion != null ?
-                new ObjectParameter("cveEvaluacion", cveEvaluacion) :
-                new ObjectParameter("cveEvaluacion", typeof(string));
-    
-            var cveAplicacionParameter = cveAplicacion != null ?
-                new ObjectParameter("cveAplicacion", cveAplicacion) :
-                new ObjectParameter("cveAplicacion", typeof(string));
-    
-            var cveJuezParameter = cveJuez != null ?
-                new ObjectParameter("cveJuez", cveJuez) :
-                new ObjectParameter("cveJuez", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Evaluacion>("GetEvaluacion", mergeOption, cveEvaluacionParameter, cveAplicacionParameter, cveJuezParameter);
-        }
-    
         public virtual ObjectResult<PI_BA_Forma> GetForma(string cveForma)
         {
             var cveFormaParameter = cveForma != null ?
@@ -637,7 +611,7 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateCandidato", cveCandidatoParameter, passwordParameter, nombreParameter, apellidoParameter, confirmadoParameter, correoParameter, codigoConfirmacionParameter, telefonoParameter, nacionalidadParameter, rFCParameter, direccionParameter, nombreImagenParameter, fechaPrivacidadDatosParameter);
         }
     
-        public virtual int UpdateEvaluacion(string cveEvaluacion, Nullable<short> calificacion, string cveAplicacion, string cveJuez)
+        public virtual int UpdateEvaluacion(string cveEvaluacion, Nullable<double> calificacion, string cveAplicacion, string cveJuez, string cveSubcategoria, string esFinal)
         {
             var cveEvaluacionParameter = cveEvaluacion != null ?
                 new ObjectParameter("cveEvaluacion", cveEvaluacion) :
@@ -645,7 +619,7 @@ namespace PremiosInstitucionales.Entities.Models
     
             var calificacionParameter = calificacion.HasValue ?
                 new ObjectParameter("Calificacion", calificacion) :
-                new ObjectParameter("Calificacion", typeof(short));
+                new ObjectParameter("Calificacion", typeof(double));
     
             var cveAplicacionParameter = cveAplicacion != null ?
                 new ObjectParameter("cveAplicacion", cveAplicacion) :
@@ -655,7 +629,15 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveJuez", cveJuez) :
                 new ObjectParameter("cveJuez", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateEvaluacion", cveEvaluacionParameter, calificacionParameter, cveAplicacionParameter, cveJuezParameter);
+            var cveSubcategoriaParameter = cveSubcategoria != null ?
+                new ObjectParameter("cveSubcategoria", cveSubcategoria) :
+                new ObjectParameter("cveSubcategoria", typeof(string));
+    
+            var esFinalParameter = esFinal != null ?
+                new ObjectParameter("esFinal", esFinal) :
+                new ObjectParameter("esFinal", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateEvaluacion", cveEvaluacionParameter, calificacionParameter, cveAplicacionParameter, cveJuezParameter, cveSubcategoriaParameter, esFinalParameter);
         }
     
         public virtual int UpdateJuez(string cveJuez, string password, string nombre, string apellido, string correo, string nombreImagen)
@@ -813,13 +795,72 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ejemplo_Result>("ejemplo");
         }
     
-        public virtual ObjectResult<GetSubcategorias_Result2> GetSubcategorias(string cveCategoria)
+        public virtual ObjectResult<PI_BA_Subcategoria> GetSubcategorias(string cveCategoria)
         {
             var cveCategoriaParameter = cveCategoria != null ?
                 new ObjectParameter("cveCategoria", cveCategoria) :
                 new ObjectParameter("cveCategoria", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSubcategorias_Result2>("GetSubcategorias", cveCategoriaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Subcategoria>("GetSubcategorias", cveCategoriaParameter);
+        }
+    
+        public virtual ObjectResult<PI_BA_Subcategoria> GetSubcategorias(string cveCategoria, MergeOption mergeOption)
+        {
+            var cveCategoriaParameter = cveCategoria != null ?
+                new ObjectParameter("cveCategoria", cveCategoria) :
+                new ObjectParameter("cveCategoria", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Subcategoria>("GetSubcategorias", mergeOption, cveCategoriaParameter);
+        }
+    
+        public virtual ObjectResult<PI_BA_Evaluacion> GetEvaluacion(string cveEvaluacion, string cveAplicacion, string cveJuez, string esFinal, string cveSubcategoria)
+        {
+            var cveEvaluacionParameter = cveEvaluacion != null ?
+                new ObjectParameter("cveEvaluacion", cveEvaluacion) :
+                new ObjectParameter("cveEvaluacion", typeof(string));
+    
+            var cveAplicacionParameter = cveAplicacion != null ?
+                new ObjectParameter("cveAplicacion", cveAplicacion) :
+                new ObjectParameter("cveAplicacion", typeof(string));
+    
+            var cveJuezParameter = cveJuez != null ?
+                new ObjectParameter("cveJuez", cveJuez) :
+                new ObjectParameter("cveJuez", typeof(string));
+    
+            var esFinalParameter = esFinal != null ?
+                new ObjectParameter("esFinal", esFinal) :
+                new ObjectParameter("esFinal", typeof(string));
+    
+            var cveSubcategoriaParameter = cveSubcategoria != null ?
+                new ObjectParameter("cveSubcategoria", cveSubcategoria) :
+                new ObjectParameter("cveSubcategoria", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Evaluacion>("GetEvaluacion", cveEvaluacionParameter, cveAplicacionParameter, cveJuezParameter, esFinalParameter, cveSubcategoriaParameter);
+        }
+    
+        public virtual ObjectResult<PI_BA_Evaluacion> GetEvaluacion(string cveEvaluacion, string cveAplicacion, string cveJuez, string esFinal, string cveSubcategoria, MergeOption mergeOption)
+        {
+            var cveEvaluacionParameter = cveEvaluacion != null ?
+                new ObjectParameter("cveEvaluacion", cveEvaluacion) :
+                new ObjectParameter("cveEvaluacion", typeof(string));
+    
+            var cveAplicacionParameter = cveAplicacion != null ?
+                new ObjectParameter("cveAplicacion", cveAplicacion) :
+                new ObjectParameter("cveAplicacion", typeof(string));
+    
+            var cveJuezParameter = cveJuez != null ?
+                new ObjectParameter("cveJuez", cveJuez) :
+                new ObjectParameter("cveJuez", typeof(string));
+    
+            var esFinalParameter = esFinal != null ?
+                new ObjectParameter("esFinal", esFinal) :
+                new ObjectParameter("esFinal", typeof(string));
+    
+            var cveSubcategoriaParameter = cveSubcategoria != null ?
+                new ObjectParameter("cveSubcategoria", cveSubcategoria) :
+                new ObjectParameter("cveSubcategoria", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Evaluacion>("GetEvaluacion", mergeOption, cveEvaluacionParameter, cveAplicacionParameter, cveJuezParameter, esFinalParameter, cveSubcategoriaParameter);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace PremiosInstitucionales.Entities.Models
         {
             this.PI_BA_Pregunta = new HashSet<PI_BA_Pregunta>();
             this.PI_BA_Respuesta = new HashSet<PI_BA_Respuesta>();
+            this.PI_BA_Evaluacion = new HashSet<PI_BA_Evaluacion>();
         }
     
         public string cveSubcategoria { get; set; }
@@ -26,11 +27,14 @@ namespace PremiosInstitucionales.Entities.Models
         public Nullable<int> Orden { get; set; }
         public string Ciclo { get; set; }
         public string cveCategoria { get; set; }
+        public string Porcentaje { get; set; }
     
         public virtual PI_BA_Categoria PI_BA_Categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PI_BA_Pregunta> PI_BA_Pregunta { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PI_BA_Respuesta> PI_BA_Respuesta { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
     }
 }

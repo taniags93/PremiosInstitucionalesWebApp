@@ -11,12 +11,13 @@ namespace PremiosInstitucionales.Entities.Models
 {
     using System;
     
-    public partial class GetEvaluacion_Result
+    public partial class GetSubcategorias_Result3
     {
-        public string cveEvaluacion { get; set; }
-        public Nullable<short> Calificacion { get; set; }
-        public string cveAplicacion { get; set; }
-        public string cveJuez { get; set; }
         public string cveSubcategoria { get; set; }
+        public string Nombre { get; set; }
+        public Nullable<int> Orden { get; set; }
+        public string Ciclo { get; set; }
+        public string cveCategoria { get; set; }
+        public string Porcentaje { get; set; }
     }
 }

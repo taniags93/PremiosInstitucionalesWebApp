@@ -76,60 +76,83 @@ namespace PremiosInstitucionales.WebForms
             {
                 ClientScript.RegisterStartupScript(GetType(), "hwa", "writeName('"+FileName+"');", true);
             }
+            Panel panelCollapseBodyQuestions = new Panel();
+            panelCollapseBodyQuestions.CssClass = "row question-form";
+            panelCollapseBodyQuestions.Style.Add("margin-left", "10px");
+            panelCollapseBodyQuestions.Style.Add("margin-right", "10px");
 
-            // obtener lista de preguntas y respuestas para la aplicacion
-            var preguntas = AplicacionService.GetFormularioByCategoria(sCategoriaID);
+            // Mostrar formulario
+            var subcategorias = ConvocatoriaService.GetSubcategoria(categoria.cveCategoria);
+            var preguntas = AplicacionService.GetFormularioByCategoria(categoria.cveCategoria);
 
-            if (preguntas != null)
+
+            if (subcategorias != null && subcategorias.Count > 0)
             {
-                uploadFile.Visible = true;
-                short iNumber = 0;
-                foreach (var pregunta in preguntas)
+                foreach (var sub in subcategorias)
                 {
                     Panel panel = new Panel();
                     panel.CssClass = "question-box";
                     panel.Attributes.Add("runat", "server");
 
-                    LiteralControl h5 = new LiteralControl("<h5>" + (iNumber + 1) + ". " + pregunta.Texto + "</h5>");
+                    LiteralControl h5 = new LiteralControl("<h4>" + sub.Nombre + "</h4>");
                     panel.Controls.Add(h5);
-                    LiteralControl p = new LiteralControl("<p>" + iMaxCharacters + " " + sCharactersRemainingMessage + "</p>");
-                    panel.Controls.Add(p);
+                    if (sub.Ciclo == "No")
+                    {
+                        foreach (var p in preguntas)
+                        {
+                            if (p.cveSubcategoria == sub.cveSubcategoria)
+                            {
+                                var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, idApp, 1);
 
-                    TextBox tb = new TextBox();
-                    tb.ID = "textbox_" + pregunta.cvePregunta;
-                    tb.TextMode = TextBoxMode.MultiLine;
-                    tb.Rows = 4;
-                    tb.MaxLength = iMaxCharacters;
-                    tb.CssClass = "form-control form-text-area scrollbar-custom";
-                    tb.Attributes.Add("onKeyUp", "updateCharactersLeft(this); validateAnswerCharacters(event);");
-                    tb.Attributes.Add("maxlength", iMaxCharacters.ToString());
-                    tb.Attributes.Add("runat", "server");
-                    tb.Attributes.Add("onvalid", "this.setCustomValidity('Por favor, responde la pregunta')");
-                    tb.Attributes.Remove("cols");
+                                LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='" + sub.cveSubcategoria + "' id=" + p.cvePregunta + " value='" + respuesta.Valor + "' class='form-control' style='width:100%;'><br>");
+                                panel.Controls.Add(pregunta);
+                            }
+                            panelCollapseBodyQuestions.Controls.Add(panel);
+                        }
+                    }
+                    else
+                    {
+                        string table = "<table id='table-" + sub.cveSubcategoria + "' style='width:100%;' class='table table-striped'><thead><tr>";
+                        string ansRows = "<tr>";
+                        string questionIDs = "";
+                        int i = 0;
+                        int k = 0;
+                        var respuestas = AplicacionService.GetRespuestasBySubcategoriaAndAplicacion(sub.cveSubcategoria,idApp);
+                        while (k < respuestas.Count)
+                        {
+                            foreach (var p in preguntas)
+                            {
+                                if (p.cveSubcategoria == sub.cveSubcategoria)
+                                {
+                                    var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, idApp, i + 1);
+                                    if (i == 0)
+                                    {
+                                        table += "<th>" + p.Texto + "</th>";
+                                    }
+                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='8' value=''>" + respuesta.Valor + "</textarea></td>";
+                                    questionIDs += p.cvePregunta + ",";
+                                    k++;
+                                }
+                            }
+                            i++;
+                            ansRows += "</tr>";
+                        }
 
-                    var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacion(pregunta.cvePregunta, Request.QueryString["aplicacion"]);
-                    if (respuesta != null)
-                    tb.Text = respuesta.Valor;
+                        table += "</tr></thead>";
+                        table += "<tbody>" + ansRows + "</tbody></table>";
 
-                    RequiredFieldValidator validator = new RequiredFieldValidator();
-                    validator.ControlToValidate = tb.ID;
+                        LiteralControl tabla = new LiteralControl(table);
+                        LiteralControl saveRowControl = new LiteralControl("<div id='saveRow-" + sub.cveSubcategoria + "' style='display:none;' data-rows='" + questionIDs + "'></div>");
 
-                    Panel pAlert = new Panel();
-                    pAlert.CssClass = "alert alert-danger alert-no-answer";
+                        panel.Controls.Add(tabla);
+                        panel.Controls.Add(saveRowControl);
 
-                    LiteralControl lcText = new LiteralControl("<strong>Error:</strong> Por favor rellene este campo.");
-                    pAlert.Controls.Add(lcText);
+                        panelCollapseBodyQuestions.Controls.Add(panel);
 
-                    validator.Controls.Add(pAlert);
-
-                    panel.Controls.Add(tb);
-                    panel.Controls.Add(validator);
-
-                    PanelFormulario.Controls.Add(panel);
-
-                    iNumber++;
+                    }
                 }
             }
+            PanelFormulario.Controls.Add(panelCollapseBodyQuestions);
 
         }
 
@@ -149,6 +172,48 @@ namespace PremiosInstitucionales.WebForms
                 }
             }
 
+
+            var aplicacionID = Request.QueryString["aplicacion"];
+            var categoriaID = AplicacionService.GetCveCategoriaByAplicacion(aplicacionID);
+            var subcategorias = ConvocatoriaService.GetSubcategoria(categoriaID);
+            var preguntas = AplicacionService.GetFormularioByCategoria(categoriaID);
+            if (subcategorias != null && subcategorias.Count > 0)
+            {
+                foreach (var sub in subcategorias)
+                {
+                    string[] values = Request.Form.GetValues(sub.cveSubcategoria);
+                    int x = 0;
+                    int numPreg = 1;
+
+                    while (x < values.Length)
+                    {
+                        foreach (var p in preguntas)
+                        {
+                            if (p.cveSubcategoria == sub.cveSubcategoria)
+                            {
+                                // guardar cambios en la respuesta
+                                AplicacionService.SaveRespuestaModificada(aplicacionID, p.cvePregunta, values[x], numPreg);
+                                x++;
+                            }
+
+                            if (x == values.Length)
+                            {
+                                break;
+                            }
+                        }
+                        numPreg++;
+                    }
+                }
+            }
+
+           
+            // cambiar status de la aplicacion a Modificado
+            AplicacionService.SetAplicacionModificada(aplicacionID);
+
+            // redireccionar a inicio
+            Response.Redirect("AplicacionesCandidato.aspx?r=true", false);
+
+            /*
             // modificar el texto de las respuestas
             // obtener string con controles en Request
             string[] ctrls = Request.Form.ToString().Split('&');
@@ -173,7 +238,7 @@ namespace PremiosInstitucionales.WebForms
             AplicacionService.SetAplicacionModificada(Request.QueryString["aplicacion"]);
 
             // redireccionar a inicio
-            Response.Redirect("AplicacionesCandidato.aspx?r=true", false);
+            Response.Redirect("AplicacionesCandidato.aspx?r=true", false);*/
         }
 
         private int GetIndexFromArray(String[] arr, String value)

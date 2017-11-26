@@ -25,11 +25,12 @@ namespace PremiosInstitucionales.Entities.Models
         public string Texto { get; set; }
         public Nullable<int> Orden { get; set; }
         public string cveSubcategoria { get; set; }
+        public string JuezVisible { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PI_BA_PreguntasPorForma> PI_BA_PreguntasPorForma { get; set; }
-        public virtual PI_BA_Subcategoria PI_BA_Subcategoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PI_BA_Respuesta> PI_BA_Respuesta { get; set; }
+        public virtual PI_BA_Subcategoria PI_BA_Subcategoria { get; set; }
     }
 }

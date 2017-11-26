@@ -58,13 +58,13 @@ namespace PremiosInstitucionales.WebForms {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl PanelEvaluacion;
         
         /// <summary>
-        /// aplicationEvaluationNumber control.
+        /// PanelFinal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox aplicationEvaluationNumber;
+        protected global::System.Web.UI.WebControls.Panel PanelFinal;
         
         /// <summary>
         /// evaluateApplicationBtn control.

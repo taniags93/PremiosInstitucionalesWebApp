@@ -17,8 +17,8 @@ namespace PremiosInstitucionales.Entities.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PI_BA_Juez()
         {
-            this.PI_BA_Evaluacion = new HashSet<PI_BA_Evaluacion>();
             this.PI_BA_JuezPorCategoria = new HashSet<PI_BA_JuezPorCategoria>();
+            this.PI_BA_Evaluacion = new HashSet<PI_BA_Evaluacion>();
         }
     
         public string cveJuez { get; set; }
@@ -29,8 +29,8 @@ namespace PremiosInstitucionales.Entities.Models
         public string NombreImagen { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PI_BA_JuezPorCategoria> PI_BA_JuezPorCategoria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
     }
 }

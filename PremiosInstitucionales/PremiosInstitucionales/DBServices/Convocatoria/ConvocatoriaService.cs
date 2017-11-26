@@ -108,7 +108,7 @@ namespace PremiosInstitucionales.DBServices.Convocatoria
             }
         }
 
-        public static List<GetSubcategorias_Result2> GetSubcategoria(String cveCategoria)
+        public static List<PI_BA_Subcategoria> GetSubcategoria(String cveCategoria)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
             {

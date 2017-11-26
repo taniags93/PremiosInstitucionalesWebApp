@@ -83,7 +83,7 @@ namespace PremiosInstitucionales.WebForms
                                 {
                                     evaluateApplicationBtn.Visible = false;
                                     modifiyEvaluationBtn.Visible = true;
-                                    aplicationEvaluationNumber.Text = Eval.Calificacion.ToString();
+                                   // aplicationEvaluationNumber.Text = Eval.Calificacion.ToString();
                                 }
                                 else
                                 {
@@ -92,6 +92,13 @@ namespace PremiosInstitucionales.WebForms
                                 }
 
                                 CrearFormulario(sCategoriaID, premio, categoria);
+                                Panel final = new Panel();
+                                LiteralControl finalText = new LiteralControl("<h3>Calificacion final: </h3><div style='display:inline-flex'><input type='number' step='any' id='final' name='final' style='text-align:center;font-size:-webkit-xxx-large;width:130px;' readonly /><h3>%</h3></div>");
+
+                                final.Controls.Add(finalText);
+
+                                PanelFinal.Controls.Add(final);
+                                
                                 return;
                             }
                         }
@@ -100,7 +107,7 @@ namespace PremiosInstitucionales.WebForms
                 Response.Redirect("inicioJuez.aspx", false);
             }
         }
-
+       
         private void LoadFile()
         {
             var Aplicacion = AplicacionService.GetAplicacionById(cveAplicacion);
@@ -143,33 +150,156 @@ namespace PremiosInstitucionales.WebForms
         {
             litTituloPremio.Text = "Premio " + premio.Nombre;
             litTituloCategoria.Text = "Categoría: " + categoria.Nombre;
+            Panel panelCollapseBodyQuestions = new Panel();
+            panelCollapseBodyQuestions.CssClass = "row question-form";
+            panelCollapseBodyQuestions.Style.Add("margin-left", "10px");
+            panelCollapseBodyQuestions.Style.Add("margin-right", "10px");
 
             // obtener lista de preguntas y respuestas para la aplicacion
-            var preguntas = AplicacionService.GetFormularioByCategoria(sCategoriaID);
+            var subcategorias = ConvocatoriaService.GetSubcategoria(categoria.cveCategoria);
+            var preguntas = AplicacionService.GetFormularioByCategoria(categoria.cveCategoria);
+            string sMail = Session[StringValues.CorreoSesion].ToString();
+            var Eval = EvaluacionService.GetEvaluacionByAplicacionAndJuez(sMail, cveAplicacion);
 
-            if (preguntas != null)
+
+            if (subcategorias != null && subcategorias.Count > 0)
             {
-                short iNumber = 0;
-                foreach (var pregunta in preguntas)
+                foreach (var sub in subcategorias)
                 {
                     Panel panel = new Panel();
                     panel.CssClass = "question-box";
+                    panel.Attributes.Add("runat", "server");
 
-                    LiteralControl lcPregunta = new LiteralControl("<h5> <strong>" + (iNumber + 1) + ". " + pregunta.Texto + "</strong> </h5>");
-                    panel.Controls.Add(lcPregunta);
-
-                    var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacion(pregunta.cvePregunta, cveAplicacion);
-                    string[] lines = respuesta.Valor.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                    for (int i = 0; i < lines.Length; i++)
+                    LiteralControl h5 = new LiteralControl("<h4>" + sub.Nombre + "</h4>");
+                    panel.Controls.Add(h5);
+                    if (sub.Ciclo == "No")
                     {
-                        LiteralControl lcRespuesta = new LiteralControl("<h5>" + lines[i] + "</h5>");
-                        panel.Controls.Add(lcRespuesta);
-                    }
+                        foreach (var p in preguntas)
+                        {
+                            if (p.cveSubcategoria == sub.cveSubcategoria)
+                            {
+                                if(p.JuezVisible.Equals("1"))
+                                {
+                                    var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, cveAplicacion, 1);
 
-                    PanelFormulario.Controls.Add(panel);
-                    iNumber++;
+                                    LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='" + sub.cveSubcategoria + "' id=" + p.cvePregunta + " value='" + respuesta.Valor + "' class='form-control' style='width:100%;' readonly><br>");
+                                    panel.Controls.Add(pregunta);
+                                }
+                                
+                            }
+                            panelCollapseBodyQuestions.Controls.Add(panel);
+                        }
+
+                        string evalRes = "";
+                     if(Eval != null)
+                        {
+                            var res = EvaluacionService.GetEvaluacionesByAplicacionAndJuezAndSubcategoria(cveAplicacion, sMail, sub.cveSubcategoria);
+                            evalRes = "<span style ='display:flex;'><strong style='align-self:flex-end;'> Calificación " + sub.Nombre + " (" + sub.Porcentaje + "%)</strong><input type='number' min='1' max='10' class='addCalif' data-porcentaje='" + sub.Porcentaje + "' name='calificacion-" + sub.cveSubcategoria + "' value='"+res[0].Calificacion+"' class='form-control' style='width:10%;margin-left:15px;'></span>";
+
+
+
+                        }
+                        else
+                        {
+                            evalRes = "<span style ='display:flex;'><strong style='align-self:flex-end;'> Calificación " + sub.Nombre + " (" + sub.Porcentaje + "%)</strong><input type='number' min='1' max='10' class='addCalif' data-porcentaje='" + sub.Porcentaje + "' name='calificacion-" + sub.cveSubcategoria + "' value='' class='form-control' style='width:10%;margin-left:15px;'></span>";
+
+                        }
+                        LiteralControl calificacion = new LiteralControl(
+                          "<div style=\"width:100%; display: inline-block;\">" +
+                                                "<div class=\"panel panel-primary\">" +
+                                                    "<div class=\"panel-heading\">" +
+                                                        "<div class=\"row\" style=\"text-align: center;\">" +
+                                                            "<div class=\"huge\">De acuerdo con los criterios que aparecen en la parte superior de la tabla, califique la labor de cada candidato usando una escala del 1 al 10, en la que 10 significa un desempeño excelente en el criterio en cuestión.</div>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                        "<div class=\"panel-footer\" style=\"background-color: white;\">" +
+                                                         evalRes +
+                                                            "<div class=\"clearfix\"></div>" +
+                                                        "</div>" +
+                                                    "</a>" +
+                                                "</div>" +
+                                            "</div>"
+                      );
+
+                        panelCollapseBodyQuestions.Controls.Add(calificacion);
+
+                    }
+                    else
+                    {
+                        string table = "<table id='table-" + sub.cveSubcategoria + "' style='width:100%;' class='table table-striped'><thead><tr>";
+                        string ansRows = "<tr>";
+                        string questionIDs = "";
+                        int i = 0;
+                        int k = 0;
+                        var respuestas = AplicacionService.GetRespuestasBySubcategoriaAndAplicacion(sub.cveSubcategoria, cveAplicacion);
+                        while (k < respuestas.Count)
+                        {
+                            foreach (var p in preguntas)
+                            {
+                                if (p.cveSubcategoria == sub.cveSubcategoria)
+                                {
+                                    var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, cveAplicacion, i + 1);
+                                    if (i == 0)
+                                    {
+                                        table += "<th>" + p.Texto + "</th>";
+                                    }
+                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='8' value='' readonly>" + respuesta.Valor + "</textarea></td>";
+                                    questionIDs += p.cvePregunta + ",";
+                                    k++;
+                                }
+                            }
+                            i++;
+                            ansRows += "</tr>";
+                        }
+
+                        table += "</tr></thead>";
+                        table += "<tbody>" + ansRows + "</tbody></table>";
+
+                        LiteralControl tabla = new LiteralControl(table);
+                        LiteralControl saveRowControl = new LiteralControl("<div id='saveRow-" + sub.cveSubcategoria + "' style='display:none;' data-rows='" + questionIDs + "'></div>");
+
+                        panel.Controls.Add(tabla);
+                        panel.Controls.Add(saveRowControl);
+
+                        panelCollapseBodyQuestions.Controls.Add(panel);
+
+                        string evalRes = "";
+                        if (Eval != null)
+                        {
+                            var res = EvaluacionService.GetEvaluacionesByAplicacionAndJuezAndSubcategoria(cveAplicacion, sMail, sub.cveSubcategoria);
+                            evalRes = "<span style ='display:flex;'><strong style='align-self:flex-end;'> Calificación " + sub.Nombre + " (" + sub.Porcentaje + "%)</strong><input type='number' min='1' max='10' class='addCalif' data-porcentaje='" + sub.Porcentaje + "' name='calificacion-" + sub.cveSubcategoria + "' value='" + res[0].Calificacion + "' class='form-control' style='width:10%;margin-left:15px;'></span>";
+
+
+
+                        }
+                        else
+                        {
+                            evalRes = "<span style ='display:flex;'><strong style='align-self:flex-end;'> Calificación " + sub.Nombre + " (" + sub.Porcentaje + "%)</strong><input type='number' min='1' max='10' class='addCalif' data-porcentaje='" + sub.Porcentaje + "' name='calificacion-" + sub.cveSubcategoria + "' value='' class='form-control' style='width:10%;margin-left:15px;'></span>";
+
+                        }
+                        LiteralControl calificacion = new LiteralControl(
+                        "<div style=\"width:100%; display: inline-block;\">" +
+                                              "<div class=\"panel panel-primary\">" +
+                                                  "<div class=\"panel-heading\">" +
+                                                      "<div class=\"row\" style=\"text-align: center;\">" +
+                                                          "<div class=\"huge\">De acuerdo con los criterios que aparecen en la parte superior de la tabla, califique la labor de cada candidato usando una escala del 1 al 10, en la que 10 significa un desempeño excelente en el criterio en cuestión.</div>" +
+                                                      "</div>" +
+                                                  "</div>" +
+                                                      "<div class=\"panel-footer\" style=\"background-color: white;\">" +
+                                                      evalRes +
+                                                      "<div class=\"clearfix\"></div>" +
+                                                      "</div>" +
+                                                  "</a>" +
+                                              "</div>" +
+                                          "</div>"
+                    );
+
+                        panelCollapseBodyQuestions.Controls.Add(calificacion);
+
+                    }
                 }
             }
+            PanelFormulario.Controls.Add(panelCollapseBodyQuestions);
         }
 
         private bool CheckValidCategory(List<PI_BA_Categoria> ltCategories, string sCategoryID)
@@ -186,21 +316,53 @@ namespace PremiosInstitucionales.WebForms
 
         protected void EvaluarAplicacion(object sender, EventArgs e)
         {
+
             try
             {
                 String cveJuez = InformacionPersonalJuezService.GetJuezByCorreo(Session[StringValues.CorreoSesion].ToString()).cveJuez;
                 // Verificar que no exista ya una evaluación
                 if (EvaluacionService.GetEvaluacionByAplicacionAndJuez(cveAplicacion, cveJuez) == null)
                 {
-                    short evaluacion = 0;
-                    short.TryParse(aplicationEvaluationNumber.Text, out evaluacion);
-                    PI_BA_Evaluacion ev = new PI_BA_Evaluacion();
-                    ev.cveEvaluacion = Guid.NewGuid().ToString();
-                    ev.cveAplicacion = cveAplicacion;
-                    ev.cveJuez = cveJuez;
-                    ev.Calificacion = evaluacion;
-                    EvaluacionService.CrearEvaluacion(ev);
-                    cveMensaje = 1;
+                    // obtener lista de preguntas y respuestas para la aplicacion
+                    String cveCategoria = AplicacionService.GetCveCategoriaByAplicacion(cveAplicacion);
+
+                    var subcategorias = ConvocatoriaService.GetSubcategoria(cveCategoria);
+
+                    string subID = "";
+                    if (subcategorias != null && subcategorias.Count > 0)
+                    {
+                        foreach (var sub in subcategorias)
+                        {
+                            string[] values = Request.Form.GetValues("calificacion-" + sub.cveSubcategoria);
+                            if (values != null)
+                            {
+                                PI_BA_Evaluacion ev = new PI_BA_Evaluacion();
+                                ev.cveEvaluacion = Guid.NewGuid().ToString();
+                                ev.cveAplicacion = cveAplicacion;
+                                ev.cveJuez = cveJuez;
+                                ev.Calificacion = float.Parse(values[0]);
+                                ev.cveSubcategoria = sub.cveSubcategoria;
+                                subID = sub.cveSubcategoria;
+                                ev.esFinal = "no";
+                                EvaluacionService.CrearEvaluacion(ev);
+                                cveMensaje = 1;
+                            }
+                        }
+                        string[] valueFinal = Request.Form.GetValues("final");
+                        if (valueFinal != null)
+                        {
+                            PI_BA_Evaluacion ev = new PI_BA_Evaluacion();
+                            ev.cveEvaluacion = Guid.NewGuid().ToString();
+                            ev.cveAplicacion = cveAplicacion;
+                            ev.cveJuez = cveJuez;
+                            ev.Calificacion = float.Parse(valueFinal[0]);
+                            ev.cveSubcategoria = subID;
+                            ev.esFinal = "yes";
+                            EvaluacionService.CrearEvaluacion(ev);
+                            cveMensaje = 1;
+                        }
+                    }
+                    
                 }
                 // Si ya existe
                 else
@@ -250,10 +412,37 @@ namespace PremiosInstitucionales.WebForms
                 {
                     try
                     {
-                        short evaluacion = 0;
-                        short.TryParse(aplicationEvaluationNumber.Text, out evaluacion);
+                        String cveCategoria = AplicacionService.GetCveCategoriaByAplicacion(cveAplicacion);
 
-                        EvaluacionService.ActualizaEvaluacion(eval.cveEvaluacion, evaluacion);
+                        var subcategorias = ConvocatoriaService.GetSubcategoria(cveCategoria);
+                        float evaluacion = 0;
+                        if (subcategorias != null && subcategorias.Count > 0)
+                        {
+                            foreach (var sub in subcategorias)
+                            {
+                                var res = EvaluacionService.GetEvaluacionesByAplicacionAndJuezAndSubcategoria(cveAplicacion, juez.Correo, sub.cveSubcategoria);
+
+                                string[] values = Request.Form.GetValues("calificacion-" + sub.cveSubcategoria);
+                                if (values != null)
+                                {
+                                    evaluacion = float.Parse(values[0]);
+                                    EvaluacionService.ActualizaEvaluacion(res[0].cveEvaluacion, evaluacion);
+
+                                }
+
+                            }
+
+                            string[] valueFinal = Request.Form.GetValues("final");
+                            if (valueFinal != null)
+                            {
+                                evaluacion = float.Parse(valueFinal[0]);
+                                EvaluacionService.ActualizaEvaluacion(eval.cveEvaluacion, evaluacion);
+
+                            }
+
+
+                        }
+
                         cveMensaje = 1;
                     }
                     catch (Exception Ex2)

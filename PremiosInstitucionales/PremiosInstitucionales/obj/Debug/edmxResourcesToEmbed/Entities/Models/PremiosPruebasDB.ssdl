@@ -61,9 +61,11 @@
       <PropertyRef Name="cveEvaluacion" />
     </Key>
     <Property Name="cveEvaluacion" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Calificacion" Type="smallint" />
+    <Property Name="Calificacion" Type="float" />
     <Property Name="cveAplicacion" Type="varchar" MaxLength="50" />
     <Property Name="cveJuez" Type="varchar" MaxLength="50" />
+    <Property Name="cveSubcategoria" Type="varchar" MaxLength="50" />
+    <Property Name="esFinal" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PI_BA_Forma">
     <Key>
@@ -103,6 +105,7 @@
     <Property Name="Texto" Type="varchar" MaxLength="1000" />
     <Property Name="Orden" Type="int" />
     <Property Name="cveSubcategoria" Type="varchar" MaxLength="50" />
+    <Property Name="JuezVisible" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PI_BA_PreguntasPorForma">
     <Key>
@@ -145,6 +148,7 @@
     <Property Name="Orden" Type="int" />
     <Property Name="Ciclo" Type="varchar" MaxLength="50" />
     <Property Name="cveCategoria" Type="varchar" MaxLength="50" />
+    <Property Name="Porcentaje" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PI_SE_Administrador">
     <Key>
@@ -245,6 +249,18 @@
       </Principal>
       <Dependent Role="PI_BA_Evaluacion">
         <PropertyRef Name="cveJuez" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PI_BA_Evaluacion_PI_BA_Subcategoria">
+    <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="0..1" />
+    <End Role="PI_BA_Evaluacion" Type="Self.PI_BA_Evaluacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Subcategoria">
+        <PropertyRef Name="cveSubcategoria" />
+      </Principal>
+      <Dependent Role="PI_BA_Evaluacion">
+        <PropertyRef Name="cveSubcategoria" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -407,9 +423,11 @@
   </Function>
   <Function Name="AddEvaluacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveEvaluacion" Type="varchar" Mode="In" />
-    <Parameter Name="Calificacion" Type="smallint" Mode="In" />
+    <Parameter Name="Calificacion" Type="float" Mode="In" />
     <Parameter Name="cveAplicacion" Type="varchar" Mode="In" />
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
+    <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
+    <Parameter Name="esFinal" Type="varchar" Mode="In" />
   </Function>
   <Function Name="AddForma" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveForma" Type="varchar" Mode="In" />
@@ -472,6 +490,8 @@
     <Parameter Name="cveEvaluacion" Type="varchar" Mode="In" />
     <Parameter Name="cveAplicacion" Type="varchar" Mode="In" />
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
+    <Parameter Name="esFinal" Type="varchar" Mode="In" />
+    <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
   </Function>
   <Function Name="GetForma" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveForma" Type="varchar" Mode="In" />
@@ -526,9 +546,11 @@
   </Function>
   <Function Name="UpdateEvaluacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveEvaluacion" Type="varchar" Mode="In" />
-    <Parameter Name="Calificacion" Type="smallint" Mode="In" />
+    <Parameter Name="Calificacion" Type="float" Mode="In" />
     <Parameter Name="cveAplicacion" Type="varchar" Mode="In" />
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
+    <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
+    <Parameter Name="esFinal" Type="varchar" Mode="In" />
   </Function>
   <Function Name="UpdateJuez" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
@@ -590,6 +612,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_PI_BA_Evaluacion_PI_BA_Juez" Association="Self.FK_PI_BA_Evaluacion_PI_BA_Juez">
       <End Role="PI_BA_Juez" EntitySet="PI_BA_Juez" />
+      <End Role="PI_BA_Evaluacion" EntitySet="PI_BA_Evaluacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PI_BA_Evaluacion_PI_BA_Subcategoria" Association="Self.FK_PI_BA_Evaluacion_PI_BA_Subcategoria">
+      <End Role="PI_BA_Subcategoria" EntitySet="PI_BA_Subcategoria" />
       <End Role="PI_BA_Evaluacion" EntitySet="PI_BA_Evaluacion" />
     </AssociationSet>
     <AssociationSet Name="FK_PI_BA_Forma_PI_BA_Categoria" Association="Self.FK_PI_BA_Forma_PI_BA_Categoria">

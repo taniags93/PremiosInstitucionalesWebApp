@@ -161,6 +161,8 @@ namespace PremiosInstitucionales.WebForms
                                 "</li>";
             }
 
+            htmlContent += "<li><a href = \"#" + premio.GetHashCode() + "\" data-toggle=\"tab\">Concentrado</a></li>";
+
             htmlContent += "</ul>" +
                                 "</div>" +
                             "</div>";
