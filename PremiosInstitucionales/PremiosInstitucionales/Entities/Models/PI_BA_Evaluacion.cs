@@ -21,8 +21,8 @@ namespace PremiosInstitucionales.Entities.Models
         public string cveSubcategoria { get; set; }
         public string esFinal { get; set; }
     
-        public virtual PI_BA_Aplicacion PI_BA_Aplicacion { get; set; }
         public virtual PI_BA_Juez PI_BA_Juez { get; set; }
         public virtual PI_BA_Subcategoria PI_BA_Subcategoria { get; set; }
+        public virtual PI_BA_Aplicacion PI_BA_Aplicacion { get; set; }
     }
 }

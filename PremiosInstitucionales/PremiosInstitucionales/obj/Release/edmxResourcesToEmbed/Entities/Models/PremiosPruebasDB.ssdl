@@ -9,6 +9,7 @@
     <Property Name="cveCandidato" Type="varchar" MaxLength="50" />
     <Property Name="cveCategoria" Type="varchar" MaxLength="50" />
     <Property Name="NombreArchivo" Type="varchar" MaxLength="50" />
+    <Property Name="ArchivoCarta" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PI_BA_Candidato">
     <Key>
@@ -61,9 +62,11 @@
       <PropertyRef Name="cveEvaluacion" />
     </Key>
     <Property Name="cveEvaluacion" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Calificacion" Type="smallint" />
+    <Property Name="Calificacion" Type="float" />
     <Property Name="cveAplicacion" Type="varchar" MaxLength="50" />
     <Property Name="cveJuez" Type="varchar" MaxLength="50" />
+    <Property Name="cveSubcategoria" Type="varchar" MaxLength="50" />
+    <Property Name="esFinal" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PI_BA_Forma">
     <Key>
@@ -102,6 +105,8 @@
     <Property Name="cvePregunta" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Texto" Type="varchar" MaxLength="1000" />
     <Property Name="Orden" Type="int" />
+    <Property Name="cveSubcategoria" Type="varchar" MaxLength="50" />
+    <Property Name="JuezVisible" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PI_BA_PreguntasPorForma">
     <Key>
@@ -132,6 +137,19 @@
     <Property Name="Valor" Type="varchar" MaxLength="500" />
     <Property Name="cvePregunta" Type="varchar" MaxLength="50" />
     <Property Name="cveAplicacion" Type="varchar" MaxLength="50" />
+    <Property Name="Numero" Type="int" />
+    <Property Name="cveSubcategoria" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PI_BA_Subcategoria">
+    <Key>
+      <PropertyRef Name="cveSubcategoria" />
+    </Key>
+    <Property Name="cveSubcategoria" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="100" />
+    <Property Name="Orden" Type="int" />
+    <Property Name="Ciclo" Type="varchar" MaxLength="50" />
+    <Property Name="cveCategoria" Type="varchar" MaxLength="50" />
+    <Property Name="Porcentaje" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PI_SE_Administrador">
     <Key>
@@ -235,6 +253,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_PI_BA_Evaluacion_PI_BA_Subcategoria">
+    <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="0..1" />
+    <End Role="PI_BA_Evaluacion" Type="Self.PI_BA_Evaluacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Subcategoria">
+        <PropertyRef Name="cveSubcategoria" />
+      </Principal>
+      <Dependent Role="PI_BA_Evaluacion">
+        <PropertyRef Name="cveSubcategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_PI_BA_Forma_PI_BA_Categoria">
     <End Role="PI_BA_Categoria" Type="Self.PI_BA_Categoria" Multiplicity="0..1" />
     <End Role="PI_BA_Forma" Type="Self.PI_BA_Forma" Multiplicity="*" />
@@ -268,6 +298,18 @@
       </Principal>
       <Dependent Role="PI_BA_JuezPorCategoria">
         <PropertyRef Name="cveJuez" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PI_BA_Pregunta_PI_BA_Subcategoria">
+    <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="0..1" />
+    <End Role="PI_BA_Pregunta" Type="Self.PI_BA_Pregunta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Subcategoria">
+        <PropertyRef Name="cveSubcategoria" />
+      </Principal>
+      <Dependent Role="PI_BA_Pregunta">
+        <PropertyRef Name="cveSubcategoria" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -319,6 +361,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_PI_BA_Respuesta_PI_BA_Subcategoria">
+    <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="0..1" />
+    <End Role="PI_BA_Respuesta" Type="Self.PI_BA_Respuesta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Subcategoria">
+        <PropertyRef Name="cveSubcategoria" />
+      </Principal>
+      <Dependent Role="PI_BA_Respuesta">
+        <PropertyRef Name="cveSubcategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PI_BA_Subcategoria_PI_BA_Categoria">
+    <End Role="PI_BA_Categoria" Type="Self.PI_BA_Categoria" Multiplicity="0..1" />
+    <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Categoria">
+        <PropertyRef Name="cveCategoria" />
+      </Principal>
+      <Dependent Role="PI_BA_Subcategoria">
+        <PropertyRef Name="cveCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Function Name="AddCandidato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveCandidato" Type="varchar" Mode="In" />
     <Parameter Name="Password" Type="varchar" Mode="In" />
@@ -358,9 +424,11 @@
   </Function>
   <Function Name="AddEvaluacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveEvaluacion" Type="varchar" Mode="In" />
-    <Parameter Name="Calificacion" Type="smallint" Mode="In" />
+    <Parameter Name="Calificacion" Type="float" Mode="In" />
     <Parameter Name="cveAplicacion" Type="varchar" Mode="In" />
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
+    <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
+    <Parameter Name="esFinal" Type="varchar" Mode="In" />
   </Function>
   <Function Name="AddForma" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveForma" Type="varchar" Mode="In" />
@@ -387,6 +455,20 @@
     <Parameter Name="UsuarioCreacion" Type="varchar" Mode="In" />
     <Parameter Name="FechaEdicion" Type="date" Mode="In" />
     <Parameter Name="UsuarioEdicion" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="AddRespuesta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="cveRespuesta" Type="varchar" Mode="In" />
+    <Parameter Name="Valor" Type="varchar" Mode="In" />
+    <Parameter Name="cvePregunta" Type="varchar" Mode="In" />
+    <Parameter Name="cveAplicacion" Type="varchar" Mode="In" />
+    <Parameter Name="Numero" Type="int" Mode="In" />
+    <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="AddSubcategoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
+    <Parameter Name="nombre" Type="varchar" Mode="In" />
+    <Parameter Name="orden" Type="int" Mode="In" />
+    <Parameter Name="cveCategoria" Type="varchar" Mode="In" />
   </Function>
   <Function Name="ConfirmarCandidato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="CodigoConfirmacion" Type="varchar" Mode="In" />
@@ -417,6 +499,8 @@
     <Parameter Name="cveEvaluacion" Type="varchar" Mode="In" />
     <Parameter Name="cveAplicacion" Type="varchar" Mode="In" />
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
+    <Parameter Name="esFinal" Type="varchar" Mode="In" />
+    <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
   </Function>
   <Function Name="GetForma" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveForma" Type="varchar" Mode="In" />
@@ -432,6 +516,9 @@
     <Parameter Name="cvePremio" Type="varchar" Mode="In" />
   </Function>
   <Function Name="GetPremioByIdCategoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="cveCategoria" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetSubcategorias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveCategoria" Type="varchar" Mode="In" />
   </Function>
   <Function Name="UpdateAdministrador" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -468,9 +555,11 @@
   </Function>
   <Function Name="UpdateEvaluacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveEvaluacion" Type="varchar" Mode="In" />
-    <Parameter Name="Calificacion" Type="smallint" Mode="In" />
+    <Parameter Name="Calificacion" Type="float" Mode="In" />
     <Parameter Name="cveAplicacion" Type="varchar" Mode="In" />
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
+    <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
+    <Parameter Name="esFinal" Type="varchar" Mode="In" />
   </Function>
   <Function Name="UpdateJuez" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
@@ -503,6 +592,7 @@
     <EntitySet Name="PI_BA_PreguntasPorForma" EntityType="Self.PI_BA_PreguntasPorForma" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PI_BA_Premio" EntityType="Self.PI_BA_Premio" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PI_BA_Respuesta" EntityType="Self.PI_BA_Respuesta" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PI_BA_Subcategoria" EntityType="Self.PI_BA_Subcategoria" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PI_SE_Administrador" EntityType="Self.PI_SE_Administrador" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PI_SE_Configuracion" EntityType="Self.PI_SE_Configuracion" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_PI_BA_Aplicacion_PI_BA_Candidato" Association="Self.FK_PI_BA_Aplicacion_PI_BA_Candidato">
@@ -533,6 +623,10 @@
       <End Role="PI_BA_Juez" EntitySet="PI_BA_Juez" />
       <End Role="PI_BA_Evaluacion" EntitySet="PI_BA_Evaluacion" />
     </AssociationSet>
+    <AssociationSet Name="FK_PI_BA_Evaluacion_PI_BA_Subcategoria" Association="Self.FK_PI_BA_Evaluacion_PI_BA_Subcategoria">
+      <End Role="PI_BA_Subcategoria" EntitySet="PI_BA_Subcategoria" />
+      <End Role="PI_BA_Evaluacion" EntitySet="PI_BA_Evaluacion" />
+    </AssociationSet>
     <AssociationSet Name="FK_PI_BA_Forma_PI_BA_Categoria" Association="Self.FK_PI_BA_Forma_PI_BA_Categoria">
       <End Role="PI_BA_Categoria" EntitySet="PI_BA_Categoria" />
       <End Role="PI_BA_Forma" EntitySet="PI_BA_Forma" />
@@ -544,6 +638,10 @@
     <AssociationSet Name="FK_PI_BA_JuezPorCategoria_PI_BA_Juez" Association="Self.FK_PI_BA_JuezPorCategoria_PI_BA_Juez">
       <End Role="PI_BA_Juez" EntitySet="PI_BA_Juez" />
       <End Role="PI_BA_JuezPorCategoria" EntitySet="PI_BA_JuezPorCategoria" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PI_BA_Pregunta_PI_BA_Subcategoria" Association="Self.FK_PI_BA_Pregunta_PI_BA_Subcategoria">
+      <End Role="PI_BA_Subcategoria" EntitySet="PI_BA_Subcategoria" />
+      <End Role="PI_BA_Pregunta" EntitySet="PI_BA_Pregunta" />
     </AssociationSet>
     <AssociationSet Name="FK_PI_BA_PreguntasPorForma_PI_BA_Forma" Association="Self.FK_PI_BA_PreguntasPorForma_PI_BA_Forma">
       <End Role="PI_BA_Forma" EntitySet="PI_BA_Forma" />
@@ -560,6 +658,14 @@
     <AssociationSet Name="FK_PI_BA_Respuesta_PI_BA_Pregunta" Association="Self.FK_PI_BA_Respuesta_PI_BA_Pregunta">
       <End Role="PI_BA_Pregunta" EntitySet="PI_BA_Pregunta" />
       <End Role="PI_BA_Respuesta" EntitySet="PI_BA_Respuesta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PI_BA_Respuesta_PI_BA_Subcategoria" Association="Self.FK_PI_BA_Respuesta_PI_BA_Subcategoria">
+      <End Role="PI_BA_Subcategoria" EntitySet="PI_BA_Subcategoria" />
+      <End Role="PI_BA_Respuesta" EntitySet="PI_BA_Respuesta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PI_BA_Subcategoria_PI_BA_Categoria" Association="Self.FK_PI_BA_Subcategoria_PI_BA_Categoria">
+      <End Role="PI_BA_Categoria" EntitySet="PI_BA_Categoria" />
+      <End Role="PI_BA_Subcategoria" EntitySet="PI_BA_Subcategoria" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

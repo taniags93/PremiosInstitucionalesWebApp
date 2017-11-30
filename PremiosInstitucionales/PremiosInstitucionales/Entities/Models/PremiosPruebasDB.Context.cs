@@ -27,7 +27,6 @@ namespace PremiosInstitucionales.Entities.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<PI_BA_Aplicacion> PI_BA_Aplicacion { get; set; }
         public virtual DbSet<PI_BA_Candidato> PI_BA_Candidato { get; set; }
         public virtual DbSet<PI_BA_Categoria> PI_BA_Categoria { get; set; }
         public virtual DbSet<PI_BA_Convocatoria> PI_BA_Convocatoria { get; set; }
@@ -42,6 +41,7 @@ namespace PremiosInstitucionales.Entities.Models
         public virtual DbSet<PI_BA_Pregunta> PI_BA_Pregunta { get; set; }
         public virtual DbSet<PI_BA_Subcategoria> PI_BA_Subcategoria { get; set; }
         public virtual DbSet<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
+        public virtual DbSet<PI_BA_Aplicacion> PI_BA_Aplicacion { get; set; }
     
         public virtual int AddCandidato(string cveCandidato, string password, string nombre, string apellido, Nullable<bool> confirmado, string correo, string codigoConfirmacion, string telefono, string nacionalidad, string rFC, string direccion, string nombreImagen, Nullable<System.DateTime> fechaPrivacidadDatos)
         {
@@ -861,6 +861,35 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveSubcategoria", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Evaluacion>("GetEvaluacion", mergeOption, cveEvaluacionParameter, cveAplicacionParameter, cveJuezParameter, esFinalParameter, cveSubcategoriaParameter);
+        }
+    
+        public virtual int AddRespuesta(string cveRespuesta, string valor, string cvePregunta, string cveAplicacion, Nullable<int> numero, string cveSubcategoria)
+        {
+            var cveRespuestaParameter = cveRespuesta != null ?
+                new ObjectParameter("cveRespuesta", cveRespuesta) :
+                new ObjectParameter("cveRespuesta", typeof(string));
+    
+            var valorParameter = valor != null ?
+                new ObjectParameter("Valor", valor) :
+                new ObjectParameter("Valor", typeof(string));
+    
+            var cvePreguntaParameter = cvePregunta != null ?
+                new ObjectParameter("cvePregunta", cvePregunta) :
+                new ObjectParameter("cvePregunta", typeof(string));
+    
+            var cveAplicacionParameter = cveAplicacion != null ?
+                new ObjectParameter("cveAplicacion", cveAplicacion) :
+                new ObjectParameter("cveAplicacion", typeof(string));
+    
+            var numeroParameter = numero.HasValue ?
+                new ObjectParameter("Numero", numero) :
+                new ObjectParameter("Numero", typeof(int));
+    
+            var cveSubcategoriaParameter = cveSubcategoria != null ?
+                new ObjectParameter("cveSubcategoria", cveSubcategoria) :
+                new ObjectParameter("cveSubcategoria", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddRespuesta", cveRespuestaParameter, valorParameter, cvePreguntaParameter, cveAplicacionParameter, numeroParameter, cveSubcategoriaParameter);
         }
     }
 }

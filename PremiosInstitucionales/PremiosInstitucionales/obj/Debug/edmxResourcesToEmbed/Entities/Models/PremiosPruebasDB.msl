@@ -1,17 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="wPremiosInstitucionalesdbModelStoreContainer" CdmEntityContainer="wPremiosInstitucionalesdbEntities">
-    <EntitySetMapping Name="PI_BA_Aplicacion">
-      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion">
-        <MappingFragment StoreEntitySet="PI_BA_Aplicacion">
-          <ScalarProperty Name="cveAplicacion" ColumnName="cveAplicacion" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="cveCandidato" ColumnName="cveCandidato" />
-          <ScalarProperty Name="cveCategoria" ColumnName="cveCategoria" />
-          <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PI_BA_Candidato">
       <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Candidato">
         <MappingFragment StoreEntitySet="PI_BA_Candidato">
@@ -213,5 +202,17 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="GetEvaluacion" FunctionName="wPremiosInstitucionalesdbModel.Store.GetEvaluacion" />
+    <EntitySetMapping Name="PI_BA_Aplicacion">
+      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion">
+        <MappingFragment StoreEntitySet="PI_BA_Aplicacion">
+          <ScalarProperty Name="ArchivoCarta" ColumnName="ArchivoCarta" />
+          <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
+          <ScalarProperty Name="cveCategoria" ColumnName="cveCategoria" />
+          <ScalarProperty Name="cveCandidato" ColumnName="cveCandidato" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="cveAplicacion" ColumnName="cveAplicacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
