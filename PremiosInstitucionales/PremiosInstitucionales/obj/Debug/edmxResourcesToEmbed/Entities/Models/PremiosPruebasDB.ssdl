@@ -9,7 +9,6 @@
     <Property Name="cveCandidato" Type="varchar" MaxLength="50" />
     <Property Name="cveCategoria" Type="varchar" MaxLength="50" />
     <Property Name="NombreArchivo" Type="varchar" MaxLength="50" />
-    <Property Name="ArchivoCarta" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="PI_BA_Candidato">
     <Key>

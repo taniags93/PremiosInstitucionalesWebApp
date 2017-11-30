@@ -26,16 +26,11 @@ $(function () {
 
 $(document).ready(function () {
     var num = 10000;
-
-
     $(".add_button").click(function (e) {
         e.preventDefault();
-        var select = $("#subcategoriasList").html();
-
-        $('#simpleList').append('<div class="list-group-item"><div style="display:flex;">'+select+'<input class="pregunta form-control" id="pregunta_' + num + '" type="text" name="mytext" placeholder= "Pregunta" pos="" style="margin-left:20px;"/></div><a href="#" class="remove">Eliminar</a></div>');
+        $('#simpleList').append('<div class="list-group-item"><input class="pregunta form-control" id="pregunta_' + num + '" type="text" name="mytext" placeholder= "Pregunta" pos=""/><a href="#" class="remove">Eliminar</a></div>');
         num++;
     });
-
 
     $('.wrapper').on("click", ".remove", function (e) {
         e.preventDefault();
@@ -45,12 +40,8 @@ $(document).ready(function () {
     $('#simpleList').sortable({
         stop: function (event, div) {
         }
-
     });
-
-
 });
-
 
 // Asignar Juez a categoria
 $(document).ready(function () {
@@ -88,38 +79,6 @@ $(document).ready(function () {
         }
     });
 
-    var table = $("#listaSubcategoriasTable").DataTable({
-        "rowReorder": true,
-        "aaSorting": [],
-        "order": [[1, "asc"]],
-        "language":
-        {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast": "Último",
-                "sNext": "Siguiente",
-                "sPrevious": "Anterior"
-            },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            }
-
-        }
-    });
-    
     stockTable.on('click', 'tbody tr', function () {
         var $row = $(this);
         var addRow = stockTable.row($row);

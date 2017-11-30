@@ -72,16 +72,9 @@ namespace PremiosInstitucionales.WebForms
 
             string idApp = Request.QueryString["aplicacion"];
             string FileName = AplicacionService.GetAplicacionById(idApp).NombreArchivo;
-            string CartaFileName = AplicacionService.GetAplicacionById(idApp).ArchivoCarta;
-
             if (FileName != null)
             {
                 ClientScript.RegisterStartupScript(GetType(), "hwa", "writeName('"+FileName+"');", true);
-            }
-
-            if (CartaFileName != null)
-            {
-                ClientScript.RegisterStartupScript(GetType(), "name", "writeNameCarta('" + CartaFileName + "');", true);
             }
             Panel panelCollapseBodyQuestions = new Panel();
             panelCollapseBodyQuestions.CssClass = "row question-form";
@@ -91,7 +84,6 @@ namespace PremiosInstitucionales.WebForms
             // Mostrar formulario
             var subcategorias = ConvocatoriaService.GetSubcategoria(categoria.cveCategoria);
             var preguntas = AplicacionService.GetFormularioByCategoria(categoria.cveCategoria);
-            uploadFile.Visible = true;
 
 
             if (subcategorias != null && subcategorias.Count > 0)
@@ -136,11 +128,9 @@ namespace PremiosInstitucionales.WebForms
                                     if (i == 0)
                                     {
                                         table += "<th>" + p.Texto + "</th>";
-                                        questionIDs += p.cvePregunta + ",";
-
                                     }
-                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row"+i+"-" + p.cvePregunta + "' cols='20' rows='4' value=''>" + respuesta.Valor + "</textarea></td>";
-                                    
+                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='8' value=''>" + respuesta.Valor + "</textarea></td>";
+                                    questionIDs += p.cvePregunta + ",";
                                     k++;
                                 }
                             }
@@ -151,17 +141,10 @@ namespace PremiosInstitucionales.WebForms
                         table += "</tr></thead>";
                         table += "<tbody>" + ansRows + "</tbody></table>";
 
-
-                        string add = "<a data-toggle='modal' id='addRow-" + sub.cveSubcategoria + "' data-sub='" + sub.cveSubcategoria + "' class='addRow' style='cursor: pointer;'><img src = '/Resources/svg/plus.svg' class='avatar img-circle' alt='avatar' style='width: 50px;'/></a><a data-toggle='modal' id='remove-" + sub.cveSubcategoria + "' data-sub='" + sub.cveSubcategoria + "' class='removeRow' style='cursor: pointer;'><img src = '/Resources/svg/minus.svg' class='avatar img-circle' alt='avatar' style='width: 55px; margin-left:15px;'/></a><br><br>";
-                        LiteralControl addControl = new LiteralControl(add);
-
-
-
                         LiteralControl tabla = new LiteralControl(table);
                         LiteralControl saveRowControl = new LiteralControl("<div id='saveRow-" + sub.cveSubcategoria + "' style='display:none;' data-rows='" + questionIDs + "'></div>");
 
                         panel.Controls.Add(tabla);
-                        panel.Controls.Add(addControl);
                         panel.Controls.Add(saveRowControl);
 
                         panelCollapseBodyQuestions.Controls.Add(panel);
@@ -177,20 +160,19 @@ namespace PremiosInstitucionales.WebForms
         {
             // actualizar archivo
             string sArchivo = UploadFile();
-            String NombreCarta = UploadFileCarta();
-
-            if (sArchivo != null && NombreCarta != null)
+            if (sArchivo != null)
             {
-                if (sArchivo != "Error" && NombreCarta != "Error")
+                if (sArchivo != "Error")
                 {
-                    AplicacionService.UpdateAplicacionArchivo(Request.QueryString["aplicacion"], sArchivo, NombreCarta);
+                    AplicacionService.UpdateAplicacionArchivo(Request.QueryString["aplicacion"], sArchivo);
                 }
                 else
                 {
                     return;
                 }
             }
-            
+
+
             var aplicacionID = Request.QueryString["aplicacion"];
             var categoriaID = AplicacionService.GetCveCategoriaByAplicacion(aplicacionID);
             var subcategorias = ConvocatoriaService.GetSubcategoria(categoriaID);
@@ -209,24 +191,8 @@ namespace PremiosInstitucionales.WebForms
                         {
                             if (p.cveSubcategoria == sub.cveSubcategoria)
                             {
-                                var resp = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, aplicacionID, numPreg);
-                                if (resp != null)
-                                {
-                                    // guardar cambios en la respuesta
-                                    AplicacionService.SaveRespuestaModificada(aplicacionID, p.cvePregunta, values[x], numPreg);
-
-                                }
-                                else
-                                {
-                                    PI_BA_Respuesta respuesta = new PI_BA_Respuesta();
-                                    respuesta.cveRespuesta = Guid.NewGuid().ToString();
-                                    respuesta.cvePregunta = p.cvePregunta;
-                                    respuesta.cveAplicacion = aplicacionID;
-                                    respuesta.Valor = values[x];
-                                    respuesta.Numero = numPreg;
-                                    respuesta.cveSubcategoria = p.cveSubcategoria;
-                                    AplicacionService.AgregarRespuesta(respuesta);
-                                }
+                                // guardar cambios en la respuesta
+                                AplicacionService.SaveRespuestaModificada(aplicacionID, p.cvePregunta, values[x], numPreg);
                                 x++;
                             }
 
@@ -334,54 +300,6 @@ namespace PremiosInstitucionales.WebForms
                 if (FileName != null && FileName.Length > 0)
                 {
                     File.Delete(Server.MapPath("~/UsersAppsFiles/") + FileName);
-                }
-
-                // Upload image to server
-                file.SaveAs(Server.MapPath(Path.Combine("~/UsersAppsFiles/", sNombreArchivo)));
-                return sNombreArchivo;
-            }
-
-            return null;
-        }
-
-        protected string UploadFileCarta()
-        {
-            HttpPostedFile file = Request.Files["file2"];
-
-            //check file was submitted
-            if (file != null && file.ContentLength > 0)
-            {
-                string fname = Path.GetFileName(file.FileName);
-
-                // Get string image format (png, jpg, etc)
-                var startIndex = fname.LastIndexOf(".");
-                var endIndex = fname.Length - startIndex;
-                string sFormat = fname.Substring(startIndex, endIndex).ToLower();
-                string sName = fname.Substring(0, fname.Length - sFormat.Length);
-                string sNombreArchivo = sName + new Random().Next(10000, 99999) + sFormat;
-
-                // Formatos Validos
-                List<String> supportedFormats = new List<String>()
-                {
-                    ".png",
-                    ".jpg",
-                    ".jpeg",
-                    ".bmp",
-                    ".txt",
-                    ".doc",
-                    ".docx",
-                    ".pdf",
-                    ".xlsx",
-                    ".xls",
-                    ".csv",
-                    ".ppt",
-                    ".pptx"
-                };
-
-                if (!supportedFormats.Contains(sFormat))
-                {
-                    MasterPage.ShowMessage("Error", "El archivo proporcionado debe ser un archivo de texto, una hoja de cálculo o un imagen.");
-                    return "Error";
                 }
 
                 // Upload image to server

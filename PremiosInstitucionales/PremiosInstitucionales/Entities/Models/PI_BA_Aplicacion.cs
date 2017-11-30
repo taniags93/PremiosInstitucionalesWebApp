@@ -18,8 +18,8 @@ namespace PremiosInstitucionales.Entities.Models
         public PI_BA_Aplicacion()
         {
             this.PI_BA_Categoria1 = new HashSet<PI_BA_Categoria>();
-            this.PI_BA_Evaluacion = new HashSet<PI_BA_Evaluacion>();
             this.PI_BA_Respuesta = new HashSet<PI_BA_Respuesta>();
+            this.PI_BA_Evaluacion = new HashSet<PI_BA_Evaluacion>();
         }
     
         public string cveAplicacion { get; set; }
@@ -27,15 +27,14 @@ namespace PremiosInstitucionales.Entities.Models
         public string cveCandidato { get; set; }
         public string cveCategoria { get; set; }
         public string NombreArchivo { get; set; }
-        public string ArchivoCarta { get; set; }
     
         public virtual PI_BA_Candidato PI_BA_Candidato { get; set; }
         public virtual PI_BA_Categoria PI_BA_Categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PI_BA_Categoria> PI_BA_Categoria1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PI_BA_Respuesta> PI_BA_Respuesta { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
     }
 }

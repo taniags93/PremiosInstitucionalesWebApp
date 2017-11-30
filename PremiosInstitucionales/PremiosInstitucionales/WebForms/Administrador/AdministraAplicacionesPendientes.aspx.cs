@@ -99,7 +99,7 @@ namespace PremiosInstitucionales.WebForms
                     lbUserProfile.Attributes.Add("onclick", "window.open('AdministraInformacionPersonal.aspx?id=" + candidato.cveCandidato + "&t=candidato');");
                     panelCollapseBody.Controls.Add(lbUserProfile);
 
-                    panelCollapseBody.Controls.Add(new LiteralControl("</div> <div class='col-sm-6'> <h5> <strong> Archivos proporcionados: </strong> </h5>"));
+                    panelCollapseBody.Controls.Add(new LiteralControl("</div> <div class='col-sm-6'> <h5> <strong> Archivo proporcionado: </strong> </h5>"));
 
                     LinkButton lbDocumento = new LinkButton();
                     lbDocumento.Text = app.NombreArchivo;
@@ -109,17 +109,6 @@ namespace PremiosInstitucionales.WebForms
                     lbDocumento.Command += new CommandEventHandler(DownloadFile);
                     lbDocumento.CommandArgument = app.cveAplicacion;
                     panelCollapseBody.Controls.Add(lbDocumento);
-
-                    panelCollapseBody.Controls.Add(new LiteralControl("<br>"));
-
-                    LinkButton cartaDocumento = new LinkButton();
-                    cartaDocumento.Text = app.ArchivoCarta;
-                    cartaDocumento.Style.Add("font-size", "14pt");
-                    cartaDocumento.Style.Add("color", "#00acc1");
-                    cartaDocumento.Style.Add("text-decoration", "underline");
-                    cartaDocumento.Command += new CommandEventHandler(DownloadFile);
-                    cartaDocumento.CommandArgument = app.cveAplicacion;
-                    panelCollapseBody.Controls.Add(cartaDocumento);
 
                     panelCollapseBody.Controls.Add(new LiteralControl("</div> </div>"));
 
@@ -179,7 +168,7 @@ namespace PremiosInstitucionales.WebForms
                                             {
                                                 table += "<th>" + p.Texto + "</th>";
                                             }
-                                            ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='4' value='' readonly>" + respuesta.Valor + "</textarea></td>";
+                                            ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='8' value='' readonly>" + respuesta.Valor + "</textarea></td>";
                                             questionIDs += p.cvePregunta + ",";
                                             k++;
                                         }

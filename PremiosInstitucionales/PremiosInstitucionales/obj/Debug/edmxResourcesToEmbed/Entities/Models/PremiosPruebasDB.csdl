@@ -1,5 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="wPremiosInstitucionalesdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="PI_BA_Aplicacion">
+    <Key>
+      <PropertyRef Name="cveAplicacion" />
+    </Key>
+    <Property Name="cveAplicacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="cveCandidato" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cveCategoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="NombreArchivo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PI_BA_Candidato" Relationship="Self.FK_PI_BA_Aplicacion_PI_BA_Candidato" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Candidato" />
+    <NavigationProperty Name="PI_BA_Categoria" Relationship="Self.FK_PI_BA_Aplicacion_PI_BA_Categoria" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Categoria" />
+    <NavigationProperty Name="PI_BA_Categoria1" Relationship="Self.FK_PI_BA_Categoria_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Categoria" />
+    <NavigationProperty Name="PI_BA_Respuesta" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Respuesta" />
+    <NavigationProperty Name="PI_BA_Evaluacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Evaluacion" />
+  </EntityType>
   <EntityType Name="PI_BA_Candidato">
     <Key>
       <PropertyRef Name="cveCandidato" />
@@ -17,7 +32,7 @@
     <Property Name="Direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="NombreImagen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="FechaPrivacidadDatos" Type="DateTime" Precision="0" />
-    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato" FromRole="PI_BA_Candidato" ToRole="PI_BA_Aplicacion" />
+    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="Self.FK_PI_BA_Aplicacion_PI_BA_Candidato" FromRole="PI_BA_Candidato" ToRole="PI_BA_Aplicacion" />
   </EntityType>
   <EntityType Name="PI_BA_Categoria">
     <Key>
@@ -31,12 +46,12 @@
     <Property Name="UsuarioCreacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="FechaEdicion" Type="DateTime" Precision="0" />
     <Property Name="UsuarioEdicion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="Self.FK_PI_BA_Aplicacion_PI_BA_Categoria" FromRole="PI_BA_Categoria" ToRole="PI_BA_Aplicacion" />
+    <NavigationProperty Name="PI_BA_Aplicacion1" Relationship="Self.FK_PI_BA_Categoria_PI_BA_Aplicacion" FromRole="PI_BA_Categoria" ToRole="PI_BA_Aplicacion" />
     <NavigationProperty Name="PI_BA_Convocatoria" Relationship="Self.FK_PI_BA_Categoria_PI_BA_Convocatoria" FromRole="PI_BA_Categoria" ToRole="PI_BA_Convocatoria" />
     <NavigationProperty Name="PI_BA_Forma" Relationship="Self.FK_PI_BA_Forma_PI_BA_Categoria" FromRole="PI_BA_Categoria" ToRole="PI_BA_Forma" />
     <NavigationProperty Name="PI_BA_JuezPorCategoria" Relationship="Self.FK_PI_BA_JuezPorCategoria_PI_BA_Categoria" FromRole="PI_BA_Categoria" ToRole="PI_BA_JuezPorCategoria" />
     <NavigationProperty Name="PI_BA_Subcategoria" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Subcategoria_PI_BA_Categoria" FromRole="PI_BA_Categoria" ToRole="PI_BA_Subcategoria" />
-    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Categoria" FromRole="PI_BA_Categoria" ToRole="PI_BA_Aplicacion" />
-    <NavigationProperty Name="PI_BA_Aplicacion1" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Categoria_PI_BA_Aplicacion" FromRole="PI_BA_Categoria" ToRole="PI_BA_Aplicacion" />
   </EntityType>
   <EntityType Name="PI_BA_Convocatoria">
     <Key>
@@ -123,6 +138,42 @@
     <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
+  <Association Name="FK_PI_BA_Aplicacion_PI_BA_Candidato">
+    <End Role="PI_BA_Candidato" Type="Self.PI_BA_Candidato" Multiplicity="0..1" />
+    <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Candidato">
+        <PropertyRef Name="cveCandidato" />
+      </Principal>
+      <Dependent Role="PI_BA_Aplicacion">
+        <PropertyRef Name="cveCandidato" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PI_BA_Aplicacion_PI_BA_Categoria">
+    <End Role="PI_BA_Categoria" Type="Self.PI_BA_Categoria" Multiplicity="0..1" />
+    <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Categoria">
+        <PropertyRef Name="cveCategoria" />
+      </Principal>
+      <Dependent Role="PI_BA_Aplicacion">
+        <PropertyRef Name="cveCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PI_BA_Categoria_PI_BA_Aplicacion">
+    <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="0..1" />
+    <End Role="PI_BA_Categoria" Type="Self.PI_BA_Categoria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Aplicacion">
+        <PropertyRef Name="cveAplicacion" />
+      </Principal>
+      <Dependent Role="PI_BA_Categoria">
+        <PropertyRef Name="cveAplicacionGanadora" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_PI_BA_Categoria_PI_BA_Convocatoria">
     <End Role="PI_BA_Convocatoria" Type="Self.PI_BA_Convocatoria" Multiplicity="0..1" />
     <End Role="PI_BA_Categoria" Type="Self.PI_BA_Categoria" Multiplicity="*" />
@@ -196,6 +247,7 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="wPremiosInstitucionalesdbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PI_BA_Aplicacion" EntityType="Self.PI_BA_Aplicacion" />
     <EntitySet Name="PI_BA_Candidato" EntityType="Self.PI_BA_Candidato" />
     <EntitySet Name="PI_BA_Categoria" EntityType="Self.PI_BA_Categoria" />
     <EntitySet Name="PI_BA_Convocatoria" EntityType="Self.PI_BA_Convocatoria" />
@@ -205,6 +257,18 @@
     <EntitySet Name="PI_BA_PreguntasPorForma" EntityType="Self.PI_BA_PreguntasPorForma" />
     <EntitySet Name="PI_BA_Premio" EntityType="Self.PI_BA_Premio" />
     <EntitySet Name="PI_SE_Administrador" EntityType="Self.PI_SE_Administrador" />
+    <AssociationSet Name="FK_PI_BA_Aplicacion_PI_BA_Candidato" Association="Self.FK_PI_BA_Aplicacion_PI_BA_Candidato">
+      <End Role="PI_BA_Candidato" EntitySet="PI_BA_Candidato" />
+      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PI_BA_Aplicacion_PI_BA_Categoria" Association="Self.FK_PI_BA_Aplicacion_PI_BA_Categoria">
+      <End Role="PI_BA_Categoria" EntitySet="PI_BA_Categoria" />
+      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PI_BA_Categoria_PI_BA_Aplicacion" Association="Self.FK_PI_BA_Categoria_PI_BA_Aplicacion">
+      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
+      <End Role="PI_BA_Categoria" EntitySet="PI_BA_Categoria" />
+    </AssociationSet>
     <AssociationSet Name="FK_PI_BA_Categoria_PI_BA_Convocatoria" Association="Self.FK_PI_BA_Categoria_PI_BA_Convocatoria">
       <End Role="PI_BA_Convocatoria" EntitySet="PI_BA_Convocatoria" />
       <End Role="PI_BA_Categoria" EntitySet="PI_BA_Categoria" />
@@ -408,6 +472,10 @@
     </FunctionImport>
     <FunctionImport Name="ejemplo" ReturnType="Collection(wPremiosInstitucionalesdbModel.ejemplo_Result)" />
     <EntitySet Name="PI_BA_Respuesta" EntityType="wPremiosInstitucionalesdbModel.PI_BA_Respuesta" />
+    <AssociationSet Name="FK_PI_BA_Respuesta_PI_BA_Aplicacion" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion">
+      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
+      <End Role="PI_BA_Respuesta" EntitySet="PI_BA_Respuesta" />
+    </AssociationSet>
     <EntitySet Name="PI_BA_Pregunta" EntityType="wPremiosInstitucionalesdbModel.PI_BA_Pregunta" />
     <AssociationSet Name="FK_PI_BA_PreguntasPorForma_PI_BA_Pregunta" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_PreguntasPorForma_PI_BA_Pregunta">
       <End Role="PI_BA_Pregunta" EntitySet="PI_BA_Pregunta" />
@@ -434,6 +502,10 @@
       <Parameter Name="cveCategoria" Mode="In" Type="String" />
     </FunctionImport>
     <EntitySet Name="PI_BA_Evaluacion" EntityType="wPremiosInstitucionalesdbModel.PI_BA_Evaluacion" />
+    <AssociationSet Name="FK_PI_BA_Evaluacion_PI_BA_Aplicacion" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion">
+      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
+      <End Role="PI_BA_Evaluacion" EntitySet="PI_BA_Evaluacion" />
+    </AssociationSet>
     <AssociationSet Name="FK_PI_BA_Evaluacion_PI_BA_Juez" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Juez">
       <End Role="PI_BA_Juez" EntitySet="PI_BA_Juez" />
       <End Role="PI_BA_Evaluacion" EntitySet="PI_BA_Evaluacion" />
@@ -449,27 +521,6 @@
       <Parameter Name="esFinal" Mode="In" Type="String" />
       <Parameter Name="cveSubcategoria" Mode="In" Type="String" />
     </FunctionImport>
-    <EntitySet Name="PI_BA_Aplicacion" EntityType="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" />
-    <AssociationSet Name="FK_PI_BA_Aplicacion_PI_BA_Candidato" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato">
-      <End Role="PI_BA_Candidato" EntitySet="PI_BA_Candidato" />
-      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
-    </AssociationSet>
-    <AssociationSet Name="FK_PI_BA_Aplicacion_PI_BA_Categoria" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Categoria">
-      <End Role="PI_BA_Categoria" EntitySet="PI_BA_Categoria" />
-      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
-    </AssociationSet>
-    <AssociationSet Name="FK_PI_BA_Categoria_PI_BA_Aplicacion" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Categoria_PI_BA_Aplicacion">
-      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
-      <End Role="PI_BA_Categoria" EntitySet="PI_BA_Categoria" />
-    </AssociationSet>
-    <AssociationSet Name="FK_PI_BA_Evaluacion_PI_BA_Aplicacion" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion">
-      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
-      <End Role="PI_BA_Evaluacion" EntitySet="PI_BA_Evaluacion" />
-    </AssociationSet>
-    <AssociationSet Name="FK_PI_BA_Respuesta_PI_BA_Aplicacion" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion">
-      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
-      <End Role="PI_BA_Respuesta" EntitySet="PI_BA_Respuesta" />
-    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="GetAdministrador_Result">
     <Property Type="String" Name="cveAdministrador" Nullable="false" MaxLength="50" />
@@ -646,10 +697,22 @@
     <Property Name="cveAplicacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Numero" Type="Int32" />
     <Property Name="cveSubcategoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion" FromRole="PI_BA_Respuesta" ToRole="PI_BA_Aplicacion" />
     <NavigationProperty Name="PI_BA_Pregunta" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Pregunta" FromRole="PI_BA_Respuesta" ToRole="PI_BA_Pregunta" />
     <NavigationProperty Name="PI_BA_Subcategoria" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Subcategoria" FromRole="PI_BA_Respuesta" ToRole="PI_BA_Subcategoria" />
-    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion" FromRole="PI_BA_Respuesta" ToRole="PI_BA_Aplicacion" />
   </EntityType>
+  <Association Name="FK_PI_BA_Respuesta_PI_BA_Aplicacion">
+    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Role="PI_BA_Aplicacion" Multiplicity="0..1" />
+    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Respuesta" Role="PI_BA_Respuesta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Aplicacion">
+        <PropertyRef Name="cveAplicacion" />
+      </Principal>
+      <Dependent Role="PI_BA_Respuesta">
+        <PropertyRef Name="cveAplicacion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityType Name="PI_BA_Pregunta">
     <Key>
       <PropertyRef Name="cvePregunta" />
@@ -772,10 +835,22 @@
     <Property Name="cveJuez" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="cveSubcategoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="esFinal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion" FromRole="PI_BA_Evaluacion" ToRole="PI_BA_Aplicacion" />
     <NavigationProperty Name="PI_BA_Juez" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Juez" FromRole="PI_BA_Evaluacion" ToRole="PI_BA_Juez" />
     <NavigationProperty Name="PI_BA_Subcategoria" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Subcategoria" FromRole="PI_BA_Evaluacion" ToRole="PI_BA_Subcategoria" />
-    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion" FromRole="PI_BA_Evaluacion" ToRole="PI_BA_Aplicacion" />
   </EntityType>
+  <Association Name="FK_PI_BA_Evaluacion_PI_BA_Aplicacion">
+    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Role="PI_BA_Aplicacion" Multiplicity="0..1" />
+    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Evaluacion" Role="PI_BA_Evaluacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Aplicacion">
+        <PropertyRef Name="cveAplicacion" />
+      </Principal>
+      <Dependent Role="PI_BA_Evaluacion">
+        <PropertyRef Name="cveAplicacion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_PI_BA_Evaluacion_PI_BA_Juez">
     <End Type="wPremiosInstitucionalesdbModel.PI_BA_Juez" Role="PI_BA_Juez" Multiplicity="0..1" />
     <End Type="wPremiosInstitucionalesdbModel.PI_BA_Evaluacion" Role="PI_BA_Evaluacion" Multiplicity="*" />
@@ -808,80 +883,4 @@
     <Property Type="String" Name="cveSubcategoria" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="esFinal" Nullable="true" MaxLength="50" />
   </ComplexType>
-  <EntityType Name="PI_BA_Aplicacion">
-    <Key>
-      <PropertyRef Name="cveAplicacion" />
-    </Key>
-    <Property Name="cveAplicacion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="cveCandidato" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="cveCategoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="NombreArchivo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="ArchivoCarta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="PI_BA_Candidato" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Candidato" />
-    <NavigationProperty Name="PI_BA_Categoria" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Categoria" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Categoria" />
-    <NavigationProperty Name="PI_BA_Categoria1" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Categoria_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Categoria" />
-    <NavigationProperty Name="PI_BA_Evaluacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Evaluacion" />
-    <NavigationProperty Name="PI_BA_Respuesta" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Respuesta" />
-  </EntityType>
-  <Association Name="FK_PI_BA_Aplicacion_PI_BA_Candidato">
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Candidato" Role="PI_BA_Candidato" Multiplicity="0..1" />
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Role="PI_BA_Aplicacion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PI_BA_Candidato">
-        <PropertyRef Name="cveCandidato" />
-      </Principal>
-      <Dependent Role="PI_BA_Aplicacion">
-        <PropertyRef Name="cveCandidato" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_PI_BA_Aplicacion_PI_BA_Categoria">
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Categoria" Role="PI_BA_Categoria" Multiplicity="0..1" />
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Role="PI_BA_Aplicacion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PI_BA_Categoria">
-        <PropertyRef Name="cveCategoria" />
-      </Principal>
-      <Dependent Role="PI_BA_Aplicacion">
-        <PropertyRef Name="cveCategoria" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_PI_BA_Categoria_PI_BA_Aplicacion">
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Role="PI_BA_Aplicacion" Multiplicity="0..1" />
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Categoria" Role="PI_BA_Categoria" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PI_BA_Aplicacion">
-        <PropertyRef Name="cveAplicacion" />
-      </Principal>
-      <Dependent Role="PI_BA_Categoria">
-        <PropertyRef Name="cveAplicacionGanadora" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_PI_BA_Evaluacion_PI_BA_Aplicacion">
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Role="PI_BA_Aplicacion" Multiplicity="0..1" />
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Evaluacion" Role="PI_BA_Evaluacion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PI_BA_Aplicacion">
-        <PropertyRef Name="cveAplicacion" />
-      </Principal>
-      <Dependent Role="PI_BA_Evaluacion">
-        <PropertyRef Name="cveAplicacion" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_PI_BA_Respuesta_PI_BA_Aplicacion">
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Role="PI_BA_Aplicacion" Multiplicity="0..1" />
-    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Respuesta" Role="PI_BA_Respuesta" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PI_BA_Aplicacion">
-        <PropertyRef Name="cveAplicacion" />
-      </Principal>
-      <Dependent Role="PI_BA_Respuesta">
-        <PropertyRef Name="cveAplicacion" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

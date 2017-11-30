@@ -548,21 +548,6 @@ input[type=number]::-webkit-outer-spin-button {
 
 }
 
-textarea {
-    background: transparent;
-    resize: none;
-    border: none;
-    overflow: auto;
-    outline: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    width: 100%;
-    -webkit-box-sizing: border-box; /* <=iOS4, <= Android  2.3 */
-    -moz-box-sizing: border-box; /* FF1+ */
-    box-sizing: border-box;
-}
-
 .judge-list{
 	display: block;
 	background-color: white;

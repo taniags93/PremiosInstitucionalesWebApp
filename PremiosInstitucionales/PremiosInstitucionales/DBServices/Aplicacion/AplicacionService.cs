@@ -233,23 +233,6 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
             }
         }
 
-        public static void AgregarRespuesta(PI_BA_Respuesta resp)
-        {
-            using (var dbContext = new wPremiosInstitucionalesdbEntities())
-            {
-                try
-                {
-                    dbContext.PI_BA_Respuesta.Add(resp);
-                    
-                    dbContext.SaveChanges();
-                }
-                catch (Exception Ex)
-                {
-                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
-                }
-            }
-        }
-
         public static String GetCveCandidatoByCorreo(String correo)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
@@ -304,7 +287,7 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
             }
         }
 
-        public static void UpdateAplicacionArchivo(String cveApp, String sArchivo, String cArchivo)
+        public static void UpdateAplicacionArchivo(String cveApp, String sArchivo)
         {
             using (var dbContext = new wPremiosInstitucionalesdbEntities())
             {
@@ -312,7 +295,6 @@ namespace PremiosInstitucionales.DBServices.Aplicacion
                 {
                     var aplicacion = dbContext.PI_BA_Aplicacion.Where(a => a.cveAplicacion.Equals(cveApp)).ToList().FirstOrDefault();
                     aplicacion.NombreArchivo = sArchivo;
-                    aplicacion.ArchivoCarta = cArchivo;
                     dbContext.SaveChanges();
                 }
                 catch (Exception Ex)
