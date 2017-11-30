@@ -123,7 +123,7 @@ namespace PremiosInstitucionales.WebForms
                                 if (p.cveSubcategoria == sub.cveSubcategoria)
                                 {
                                     table += "<th>"+p.Texto+"</th>";
-                                    ansRows += "<td><textarea name='"+sub.cveSubcategoria+"' id='row1-"+p.cvePregunta+"' cols='20' rows='8' ></textarea></td>";
+                                    ansRows += "<td><textarea name='"+sub.cveSubcategoria+"' id='row1-"+p.cvePregunta+"' cols='20' rows='4' ></textarea></td>";
                                     questionIDs += p.cvePregunta + ",";
                                 }
                             }
@@ -237,10 +237,12 @@ namespace PremiosInstitucionales.WebForms
             }
 
             String sNombreArchivo = UploadFile();
+            String NombreCarta = UploadFileCarta();
 
-            if (sNombreArchivo != "Error")
+            if (sNombreArchivo != "Error" && NombreCarta != "Error")
             {
                 aplicacionNueva.NombreArchivo = sNombreArchivo;
+                aplicacionNueva.ArchivoCarta = NombreCarta;
                 AplicacionService.CrearAplicacion(aplicacionNueva, respuestas);
                 Response.Redirect("AplicacionesCandidato.aspx?r=true", false);
             }
@@ -337,6 +339,62 @@ namespace PremiosInstitucionales.WebForms
                 {
                     MasterPage.ShowMessage("Error", "El archivo proporcionado debe ser un archivo de texto, una hoja de cálculo o un imagen.");
                     return "Error";
+                }
+
+                // Upload image to server
+                file.SaveAs(Server.MapPath(Path.Combine("~/UsersAppsFiles/", sNombreArchivo)));
+                return sNombreArchivo;
+            }
+
+            return null;
+        }
+
+        protected string UploadFileCarta()
+        {
+            HttpPostedFile file = Request.Files["file2"];
+
+            //check file was submitted
+            if (file != null && file.ContentLength > 0)
+            {
+                string fname = Path.GetFileName(file.FileName);
+
+                // Get string image format (png, jpg, etc)
+                var startIndex = fname.LastIndexOf(".");
+                var endIndex = fname.Length - startIndex;
+                string sFormat = fname.Substring(startIndex, endIndex).ToLower();
+                string sName = fname.Substring(0, fname.Length - sFormat.Length);
+                string sNombreArchivo = sName + new Random().Next(10000, 99999) + sFormat;
+
+                // Formatos Validos
+                List<String> supportedFormats = new List<String>()
+                {
+                    ".png",
+                    ".jpg",
+                    ".jpeg",
+                    ".bmp",
+                    ".txt",
+                    ".doc",
+                    ".docx",
+                    ".pdf",
+                    ".xlsx",
+                    ".xls",
+                    ".csv",
+                    ".ppt",
+                    ".pptx"
+                };
+
+                if (!supportedFormats.Contains(sFormat))
+                {
+                    MasterPage.ShowMessage("Error", "El archivo proporcionado debe ser un archivo de texto, una hoja de cálculo o un imagen.");
+                    return "Error";
+                }
+
+                // Delete previous image...
+                string idApp = Request.QueryString["aplicacion"];
+                string FileName = AplicacionService.GetAplicacionById(idApp).NombreArchivo;
+                if (FileName != null && FileName.Length > 0)
+                {
+                    File.Delete(Server.MapPath("~/UsersAppsFiles/") + FileName);
                 }
 
                 // Upload image to server

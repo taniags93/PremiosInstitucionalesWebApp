@@ -63,7 +63,7 @@ namespace PremiosInstitucionales.WebForms
 
         private void CrearArchivo()
         {
-            LiteralControl lcPregunta = new LiteralControl("<div class='col-sm-4'> <h5> <strong>" + "Archivo proporcionado:" + "</strong> </h5>");
+            LiteralControl lcPregunta = new LiteralControl("<div class='col-sm-4'> <h5> <strong>" + "Archivos proporcionados:" + "</strong> </h5>");
             PanelArchivo.Controls.Add(lcPregunta);
 
             string appId = Request.QueryString["a"];
@@ -77,6 +77,18 @@ namespace PremiosInstitucionales.WebForms
             lbDocumento.Command += new CommandEventHandler(DownloadFile);
             lbDocumento.CommandArgument = appId;
             PanelArchivo.Controls.Add(lbDocumento);
+
+            PanelArchivo.Controls.Add(new LiteralControl("<br>"));
+
+            LinkButton cartaDocumento = new LinkButton();
+            cartaDocumento.Text = app.ArchivoCarta;
+            cartaDocumento.Style.Add("font-size", "14pt");
+            cartaDocumento.Style.Add("color", "#00acc1");
+            cartaDocumento.Style.Add("text-decoration", "underline");
+            cartaDocumento.Command += new CommandEventHandler(DownloadFile);
+            cartaDocumento.CommandArgument = app.cveAplicacion;
+            PanelArchivo.Controls.Add(cartaDocumento);
+
             PanelArchivo.Controls.Add(new LiteralControl("</div> </div> <br/>"));
         }
 
@@ -126,34 +138,84 @@ namespace PremiosInstitucionales.WebForms
         {
             litTituloPremio.Text = "Premio " + premio.Nombre;
             litTituloCategoria.Text = "Categoría: " + categoria.Nombre;
+            String app = Request.QueryString["a"];
 
-            // obtener lista de preguntas y respuestas para la aplicacion
-            var preguntas = AplicacionService.GetFormularioByCategoria(sCategoriaID);
+            String emailCandidato = Session[StringValues.CorreoSesion].ToString();
 
-            if (preguntas != null)
+            // vaciar coleccion de preguntas para evitar IDs repetidos
+            PanelFormulario.Controls.Clear();
+
+            // obtener lista de preguntas para la categoria y desplegar el formulario
+            var subcategorias = ConvocatoriaService.GetSubcategoria(categoria.cveCategoria);
+            var preguntas = AplicacionService.GetFormularioByCategoria(categoria.cveCategoria);
+
+
+            if (subcategorias != null && subcategorias.Count > 0)
             {
-                short iNumber = 0;
-                foreach (var pregunta in preguntas)
+                foreach (var sub in subcategorias)
                 {
                     Panel panel = new Panel();
                     panel.CssClass = "question-box";
+                    panel.Attributes.Add("runat", "server");
 
-                    LiteralControl lcPregunta = new LiteralControl("<h5> <strong>" + (iNumber + 1) + ". " + pregunta.Texto + "</strong> </h5>");
-                    panel.Controls.Add(lcPregunta);
-
-                    var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacion(pregunta.cvePregunta, Request.QueryString["a"]);
-                    string[] lines = respuesta.Valor.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                    for (int i = 0; i < lines.Length; i++)
+                    LiteralControl h5 = new LiteralControl("<h4>" + sub.Nombre + "</h4>");
+                    panel.Controls.Add(h5);
+                    if (sub.Ciclo == "No")
                     {
-                        LiteralControl lcRespuesta = new LiteralControl("<h5>" + lines[i] + "</h5>");
-                        panel.Controls.Add(lcRespuesta);
-                    }
+                        foreach (var p in preguntas)
+                        {
+                            if (p.cveSubcategoria == sub.cveSubcategoria)
+                            {
+                                var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, app, 1);
 
-                    PanelFormulario.Controls.Add(panel);
-                    iNumber++;
+                                LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='" + sub.cveSubcategoria + "' id=" + p.cvePregunta + " value='" + respuesta.Valor + "' class='form-control' style='width:100%;' readonly><br>");
+                                panel.Controls.Add(pregunta);
+                            }
+                            PanelFormulario.Controls.Add(panel);
+                        }
+                    }
+                    else
+                    {
+                        string table = "<table id='table-" + sub.cveSubcategoria + "' style='width:100%;' class='table table-striped'><thead><tr>";
+                        string ansRows = "<tr>";
+                        string questionIDs = "";
+                        int i = 0;
+                        int k = 0;
+                        var respuestas = AplicacionService.GetRespuestasBySubcategoriaAndAplicacion(sub.cveSubcategoria, app);
+                        while (k < respuestas.Count)
+                        {
+                            foreach (var p in preguntas)
+                            {
+                                if (p.cveSubcategoria == sub.cveSubcategoria)
+                                {
+                                    var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, app, i + 1);
+                                    if (i == 0)
+                                    {
+                                        table += "<th>" + p.Texto + "</th>";
+                                        questionIDs += p.cvePregunta + ",";
+
+                                    }
+                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='4' value='' readonly>" + respuesta.Valor + "</textarea></td>";
+                                    k++;
+                                }
+                            }
+                            i++;
+                            ansRows += "</tr>";
+                        }
+
+                        table += "</tr></thead>";
+                        table += "<tbody>" + ansRows + "</tbody></table>";
+
+                        LiteralControl tabla = new LiteralControl(table);
+                        LiteralControl saveRowControl = new LiteralControl("<div id='saveRow-" + sub.cveSubcategoria + "' style='display:none;' data-rows='" + questionIDs + "'></div>");
+
+                        panel.Controls.Add(tabla);
+                        panel.Controls.Add(saveRowControl);
+
+                        PanelFormulario.Controls.Add(panel);
+                    }
                 }
             }
-
         }
 
         private PI_BA_Evaluacion CheckExistenceOfEvaluation(string sMail, string sAppId)

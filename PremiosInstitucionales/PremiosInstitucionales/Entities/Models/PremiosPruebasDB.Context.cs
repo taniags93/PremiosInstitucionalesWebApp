@@ -813,6 +813,35 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Subcategoria>("GetSubcategorias", mergeOption, cveCategoriaParameter);
         }
     
+        public virtual int AddRespuesta(string cveRespuesta, string valor, string cvePregunta, string cveAplicacion, Nullable<int> numero, string cveSubcategoria)
+        {
+            var cveRespuestaParameter = cveRespuesta != null ?
+                new ObjectParameter("cveRespuesta", cveRespuesta) :
+                new ObjectParameter("cveRespuesta", typeof(string));
+    
+            var valorParameter = valor != null ?
+                new ObjectParameter("Valor", valor) :
+                new ObjectParameter("Valor", typeof(string));
+    
+            var cvePreguntaParameter = cvePregunta != null ?
+                new ObjectParameter("cvePregunta", cvePregunta) :
+                new ObjectParameter("cvePregunta", typeof(string));
+    
+            var cveAplicacionParameter = cveAplicacion != null ?
+                new ObjectParameter("cveAplicacion", cveAplicacion) :
+                new ObjectParameter("cveAplicacion", typeof(string));
+    
+            var numeroParameter = numero.HasValue ?
+                new ObjectParameter("Numero", numero) :
+                new ObjectParameter("Numero", typeof(int));
+    
+            var cveSubcategoriaParameter = cveSubcategoria != null ?
+                new ObjectParameter("cveSubcategoria", cveSubcategoria) :
+                new ObjectParameter("cveSubcategoria", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddRespuesta", cveRespuestaParameter, valorParameter, cvePreguntaParameter, cveAplicacionParameter, numeroParameter, cveSubcategoriaParameter);
+        }
+    
         public virtual ObjectResult<PI_BA_Evaluacion> GetEvaluacion(string cveEvaluacion, string cveAplicacion, string cveJuez, string esFinal, string cveSubcategoria)
         {
             var cveEvaluacionParameter = cveEvaluacion != null ?

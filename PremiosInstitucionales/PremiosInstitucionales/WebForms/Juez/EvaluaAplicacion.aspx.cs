@@ -133,6 +133,18 @@ namespace PremiosInstitucionales.WebForms
             lbDocumento.CommandArgument = cveAplicacion;
             PanelArchivo.Controls.Add(lbDocumento);
 
+            PanelArchivo.Controls.Add(new LiteralControl("<br>"));
+
+            LinkButton cartaDocumento = new LinkButton();
+            cartaDocumento.Text = Aplicacion.ArchivoCarta;
+            cartaDocumento.Style.Add("font-size", "16pt");
+            cartaDocumento.Style.Add("color", "#00acc1");
+            cartaDocumento.Style.Add("text-decoration", "underline");
+            cartaDocumento.Command += new CommandEventHandler(DownloadFile);
+            cartaDocumento.CommandArgument = cveAplicacion;
+            PanelArchivo.Controls.Add(cartaDocumento);
+
+
             PanelArchivo.Controls.Add(new LiteralControl("</div> </div>"));
         }
 
@@ -243,7 +255,7 @@ namespace PremiosInstitucionales.WebForms
                                     {
                                         table += "<th>" + p.Texto + "</th>";
                                     }
-                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='8' value='' readonly>" + respuesta.Valor + "</textarea></td>";
+                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row1-" + p.cvePregunta + "' cols='20' rows='4' value='' readonly>" + respuesta.Valor + "</textarea></td>";
                                     questionIDs += p.cvePregunta + ",";
                                     k++;
                                 }

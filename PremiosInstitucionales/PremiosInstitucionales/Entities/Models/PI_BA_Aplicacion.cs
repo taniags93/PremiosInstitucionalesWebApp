@@ -27,6 +27,7 @@ namespace PremiosInstitucionales.Entities.Models
         public string cveCandidato { get; set; }
         public string cveCategoria { get; set; }
         public string NombreArchivo { get; set; }
+        public string ArchivoCarta { get; set; }
     
         public virtual PI_BA_Candidato PI_BA_Candidato { get; set; }
         public virtual PI_BA_Categoria PI_BA_Categoria { get; set; }

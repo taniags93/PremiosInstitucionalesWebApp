@@ -14,6 +14,7 @@
           <Property Name="cveCandidato" Type="varchar" MaxLength="50" />
           <Property Name="cveCategoria" Type="varchar" MaxLength="50" />
           <Property Name="NombreArchivo" Type="varchar" MaxLength="50" />
+          <Property Name="ArchivoCarta" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PI_BA_Candidato">
           <Key>
@@ -234,7 +235,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PI_BA_Evaluacion_PI_BA_Aplicacion">
-          <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="0..1" />
+          <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PI_BA_Evaluacion" Type="Self.PI_BA_Evaluacion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PI_BA_Aplicacion">
@@ -342,7 +345,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PI_BA_Respuesta_PI_BA_Aplicacion">
-          <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="0..1" />
+          <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PI_BA_Respuesta" Type="Self.PI_BA_Respuesta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PI_BA_Aplicacion">
@@ -459,6 +464,14 @@
           <Parameter Name="UsuarioCreacion" Type="varchar" Mode="In" />
           <Parameter Name="FechaEdicion" Type="date" Mode="In" />
           <Parameter Name="UsuarioEdicion" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="AddRespuesta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cveRespuesta" Type="varchar" Mode="In" />
+          <Parameter Name="Valor" Type="varchar" Mode="In" />
+          <Parameter Name="cvePregunta" Type="varchar" Mode="In" />
+          <Parameter Name="cveAplicacion" Type="varchar" Mode="In" />
+          <Parameter Name="Numero" Type="int" Mode="In" />
+          <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
         </Function>
         <Function Name="AddSubcategoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="cveSubcategoria" Type="varchar" Mode="In" />
@@ -682,6 +695,7 @@
           <NavigationProperty Name="PI_BA_Categoria1" Relationship="Self.FK_PI_BA_Categoria_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Categoria" />
           <NavigationProperty Name="PI_BA_Respuesta" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Respuesta" />
           <NavigationProperty Name="PI_BA_Evaluacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Evaluacion" />
+          <Property Name="ArchivoCarta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PI_BA_Candidato">
           <Key>
@@ -1182,6 +1196,14 @@
             <End Role="PI_BA_Subcategoria" EntitySet="PI_BA_Subcategoria" />
             <End Role="PI_BA_Evaluacion" EntitySet="PI_BA_Evaluacion" />
           </AssociationSet>
+          <FunctionImport Name="AddRespuesta">
+            <Parameter Name="cveRespuesta" Mode="In" Type="String" />
+            <Parameter Name="Valor" Mode="In" Type="String" />
+            <Parameter Name="cvePregunta" Mode="In" Type="String" />
+            <Parameter Name="cveAplicacion" Mode="In" Type="String" />
+            <Parameter Name="Numero" Mode="In" Type="Int32" />
+            <Parameter Name="cveSubcategoria" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="GetEvaluacion" EntitySet="PI_BA_Evaluacion" ReturnType="Collection(wPremiosInstitucionalesdbModel.PI_BA_Evaluacion)">
             <Parameter Name="cveEvaluacion" Mode="In" Type="String" />
             <Parameter Name="cveAplicacion" Mode="In" Type="String" />
@@ -1551,6 +1573,22 @@
           <Property Type="String" Name="cveSubcategoria" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="esFinal" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <ComplexType Name="GetEvaluacion1_Result1">
+          <Property Type="String" Name="cveEvaluacion" Nullable="false" MaxLength="50" />
+          <Property Type="Double" Name="Calificacion" Nullable="true" />
+          <Property Type="String" Name="cveAplicacion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="cveJuez" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="cveSubcategoria" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="esFinal" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetEvaluacion_Result2">
+          <Property Type="String" Name="cveEvaluacion" Nullable="false" MaxLength="50" />
+          <Property Type="Double" Name="Calificacion" Nullable="true" />
+          <Property Type="String" Name="cveAplicacion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="cveJuez" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="cveSubcategoria" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="esFinal" Nullable="true" MaxLength="50" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1560,6 +1598,7 @@
           <EntitySetMapping Name="PI_BA_Aplicacion">
             <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion">
               <MappingFragment StoreEntitySet="PI_BA_Aplicacion">
+                <ScalarProperty Name="ArchivoCarta" ColumnName="ArchivoCarta" />
                 <ScalarProperty Name="cveAplicacion" ColumnName="cveAplicacion" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="cveCandidato" ColumnName="cveCandidato" />
@@ -1781,6 +1820,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddRespuesta" FunctionName="wPremiosInstitucionalesdbModel.Store.AddRespuesta" />
           <FunctionImportMapping FunctionImportName="GetEvaluacion" FunctionName="wPremiosInstitucionalesdbModel.Store.GetEvaluacion">
           </FunctionImportMapping>
         </EntityContainerMapping>

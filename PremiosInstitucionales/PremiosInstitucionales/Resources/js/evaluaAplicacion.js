@@ -4,8 +4,9 @@
     $(".addCalif").each(function (index) {
         var val = $(this).val();
         var por = $(this).data("porcentaje");
-        por = "." + por;
-        total += val * por;
+        por = por / 100;
+        if (val != 0 && por != 0)
+            total += val * por;
     });
     total = total * 10;
     $("#final").val(total);
@@ -17,8 +18,9 @@
         $(".addCalif").each(function (index) {
             var val = $(this).val();
             var por = $(this).data("porcentaje");
-            por = "." + por;
-            total += val * por;
+            por = por / 100;
+            if( val != 0 && por != 0)
+                total += val * por;
         });
         total = total * 10;
         total = total.toFixed(2);

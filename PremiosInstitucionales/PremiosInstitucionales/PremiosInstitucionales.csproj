@@ -371,10 +371,16 @@
     <Compile Include="Entities\Models\GetEvaluacion1_Result.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Models\GetEvaluacion1_Result1.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Models\GetEvaluacion_Result.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Models\GetEvaluacion_Result1.cs">
+      <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Models\GetEvaluacion_Result2.cs">
       <DependentUpon>PremiosPruebasDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Models\GetForma_Result.cs">
