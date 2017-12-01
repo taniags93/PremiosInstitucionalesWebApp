@@ -139,7 +139,7 @@ namespace PremiosInstitucionales.WebForms
                                         questionIDs += p.cvePregunta + ",";
 
                                     }
-                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' maxlength='500' id='row" + i + "-" + p.cvePregunta + "' cols='20' rows='8' value='' required>" + respuesta.Valor + "</textarea></td>";
+                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' maxlength='500' id='row" + i + "-" + p.cvePregunta + "' cols='20' rows='4' value='' required>" + respuesta.Valor + "</textarea></td>";
                                     k++;
                                 }
                             }

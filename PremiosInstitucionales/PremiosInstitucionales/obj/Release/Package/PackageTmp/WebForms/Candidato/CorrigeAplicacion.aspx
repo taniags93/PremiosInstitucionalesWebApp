@@ -32,6 +32,7 @@
 			</div>
 		</div>
         <div class="text-center">
+            <h6 runat="server" id="instructions" visible="true" style="text-align:left;">* Favor de llenar todos los campos, en caso de que algo no aplique escriba 'NA'</h6>
 			<h5 runat="server" id="alreadySubmittedLabel" visible="false"> Ya se ha realizado una aplicación para esta categoría. Para conocer el estatus, por favor dirigirse a <a href="WebForms/AplicacionesCandidato.aspx"> mis aplicaciones vigentes </a></h5>
 		</div>
 
