@@ -77,6 +77,7 @@ namespace PremiosInstitucionales.WebForms
             {
                 // mostrar error y ocultar boton de enviar
                 alreadySubmittedLabel.Visible = true;
+                instructions.Visible = false;
                 EnviarBtn.Visible = false;
 
                 btnManager.Visible = false;
@@ -108,7 +109,7 @@ namespace PremiosInstitucionales.WebForms
                             {
                                 if (p.cveSubcategoria == sub.cveSubcategoria)
                                 {
-                                    LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='"+sub.cveSubcategoria+"' id=" + p.cvePregunta + " value='' class='form-control' style='width:100%;'><br>");
+                                    LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' maxlength='500' name='" + sub.cveSubcategoria+"' id=" + p.cvePregunta + " value='' class='form-control' style='width:100%;' required><br>");
                                     panel.Controls.Add(pregunta);
                                 }
                             }
@@ -123,7 +124,7 @@ namespace PremiosInstitucionales.WebForms
                                 if (p.cveSubcategoria == sub.cveSubcategoria)
                                 {
                                     table += "<th>"+p.Texto+"</th>";
-                                    ansRows += "<td><textarea name='"+sub.cveSubcategoria+"' id='row1-"+p.cvePregunta+"' cols='20' rows='4' ></textarea></td>";
+                                    ansRows += "<td><textarea maxlength='500' name='" + sub.cveSubcategoria+"' id='row1-"+p.cvePregunta+"' cols='20' rows='4' required></textarea></td>";
                                     questionIDs += p.cvePregunta + ",";
                                 }
                             }
@@ -387,14 +388,6 @@ namespace PremiosInstitucionales.WebForms
                 {
                     MasterPage.ShowMessage("Error", "El archivo proporcionado debe ser un archivo de texto, una hoja de cálculo o un imagen.");
                     return "Error";
-                }
-
-                // Delete previous image...
-                string idApp = Request.QueryString["aplicacion"];
-                string FileName = AplicacionService.GetAplicacionById(idApp).NombreArchivo;
-                if (FileName != null && FileName.Length > 0)
-                {
-                    File.Delete(Server.MapPath("~/UsersAppsFiles/") + FileName);
                 }
 
                 // Upload image to server

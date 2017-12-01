@@ -9,7 +9,7 @@
         var rowCount = $(tableid + " tr").length;
         var rowToAppend = "<tr>"
         for (var x = 0; x < numRows.length; x++){
-            rowToAppend += "<td><textarea name='"+sub+"' id='row" + rowCount + "-" + numRows[x] + "' cols='20' rows='8' ></textarea></td>";
+            rowToAppend += "<td><textarea name='"+sub+"' id='row" + rowCount + "-" + numRows[x] + "' cols='20' rows='4' ></textarea></td>";
         }
         rowToAppend += "</tr>";
         $(tableid + ' tr:last').after(rowToAppend);

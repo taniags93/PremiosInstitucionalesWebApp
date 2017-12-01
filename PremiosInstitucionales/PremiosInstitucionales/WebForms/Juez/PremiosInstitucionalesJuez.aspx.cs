@@ -138,7 +138,8 @@ namespace PremiosInstitucionales.WebForms
 
                                             // <!-- Botton -->
                                             "<span class=\"pull-right\">" +
-                                                "<a class=\"btn btn-primary\"  href=\"ListaParticipantes.aspx?c=" + categoria.cveCategoria + "\" style=\"margin-top:5px; margin-bottom:15px;\">Ver Aplicaciones</a>" +
+                                                "<a class=\"btn btn-primary\"  href=\"VerConcentrado.aspx?c=" + categoria.cveCategoria + "\" style=\"margin-top:5px; margin-bottom:15px;\">Ver Concentrado</a>" +
+                                                "<a class=\"btn btn-primary\"  href=\"ListaParticipantes.aspx?c=" + categoria.cveCategoria + "\" style=\"margin-left:10px;margin-top:5px; margin-bottom:15px;\">Ver Aplicaciones</a>" +
                                             "</span>" +
                                         "</div>" +
                                     "</div>" +
@@ -161,7 +162,6 @@ namespace PremiosInstitucionales.WebForms
                                 "</li>";
             }
 
-            htmlContent += "<li><a href = \"#" + premio.GetHashCode() + "\" data-toggle=\"tab\">Concentrado</a></li>";
 
             htmlContent += "</ul>" +
                                 "</div>" +

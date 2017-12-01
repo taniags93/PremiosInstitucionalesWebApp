@@ -32,7 +32,7 @@ $(document).ready(function () {
         e.preventDefault();
         var select = $("#subcategoriasList").html();
 
-        $('#simpleList').append('<div class="list-group-item"><div style="display:flex;">'+select+'<input class="pregunta form-control" id="pregunta_' + num + '" type="text" name="mytext" placeholder= "Pregunta" pos="" style="margin-left:20px;"/></div><a href="#" class="remove">Eliminar</a></div>');
+        $('#simpleList').append('<div class="list-group-item"><div style="display:flex;">' + select + '<input class="pregunta form-control" id="pregunta_' + num + '" type="text" name="mytext" placeholder= "Pregunta" pos="" style="margin-left:20px;"/></div><a href="#" class="remove">Eliminar</a></div>');
         num++;
     });
 
@@ -119,7 +119,7 @@ $(document).ready(function () {
 
         }
     });
-    
+
     stockTable.on('click', 'tbody tr', function () {
         var $row = $(this);
         var addRow = stockTable.row($row);

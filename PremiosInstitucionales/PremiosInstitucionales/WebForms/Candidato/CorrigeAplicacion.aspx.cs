@@ -112,7 +112,7 @@ namespace PremiosInstitucionales.WebForms
                             {
                                 var respuesta = AplicacionService.GetRespuestaByPreguntaAndAplicacionAndNumero(p.cvePregunta, idApp, 1);
 
-                                LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' name='" + sub.cveSubcategoria + "' id=" + p.cvePregunta + " value='" + respuesta.Valor + "' class='form-control' style='width:100%;'><br>");
+                                LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' maxlength='500' name='" + sub.cveSubcategoria + "' id=" + p.cvePregunta + " value='" + respuesta.Valor + "' class='form-control' style='width:100%;' required><br>");
                                 panel.Controls.Add(pregunta);
                             }
                             panelCollapseBodyQuestions.Controls.Add(panel);
@@ -139,7 +139,7 @@ namespace PremiosInstitucionales.WebForms
                                         questionIDs += p.cvePregunta + ",";
 
                                     }
-                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' id='row" + i + "-" + p.cvePregunta + "' cols='20' rows='8' value=''>" + respuesta.Valor + "</textarea></td>";
+                                    ansRows += "<td><textarea name='" + sub.cveSubcategoria + "' maxlength='500' id='row" + i + "-" + p.cvePregunta + "' cols='20' rows='8' value='' required>" + respuesta.Valor + "</textarea></td>";
                                     k++;
                                 }
                             }
@@ -394,7 +394,7 @@ namespace PremiosInstitucionales.WebForms
 
                 // Delete previous image...
                 string idApp = Request.QueryString["aplicacion"];
-                string FileName = AplicacionService.GetAplicacionById(idApp).NombreArchivo;
+                string FileName = AplicacionService.GetAplicacionById(idApp).ArchivoCarta;
                 if (FileName != null && FileName.Length > 0)
                 {
                     File.Delete(Server.MapPath("~/UsersAppsFiles/") + FileName);

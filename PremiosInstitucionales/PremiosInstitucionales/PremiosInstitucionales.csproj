@@ -300,6 +300,7 @@
     <Content Include="WebForms\Juez\ListaParticipantes.aspx" />
     <Content Include="WebForms\Candidato\ListaPremios.aspx" />
     <Content Include="WebForms\Juez\PremiosInstitucionalesJuez.aspx" />
+    <Content Include="WebForms\Juez\VerConcentrado.aspx" />
     <Content Include="WebForms\RecuperaCuenta.aspx" />
     <Content Include="MP-Login.Master" />
     <Content Include="MP-Global.Master" />
@@ -669,6 +670,13 @@
     </Compile>
     <Compile Include="WebForms\Juez\InicioJuez.aspx.designer.cs">
       <DependentUpon>InicioJuez.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForms\Juez\VerConcentrado.aspx.cs">
+      <DependentUpon>VerConcentrado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForms\Juez\VerConcentrado.aspx.designer.cs">
+      <DependentUpon>VerConcentrado.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForms\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
