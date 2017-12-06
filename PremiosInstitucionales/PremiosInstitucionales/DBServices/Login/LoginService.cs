@@ -64,9 +64,15 @@ namespace PremiosInstitucionales.DBServices.Login
                 String sTipo;
 
                 var candidato = GetCandidato(sCorreo);
+                Boolean confirmacion = candidato.Confirmado ?? false;
 
                 if (candidato != null)
                 {
+                    if (!confirmacion)
+                    {
+                        return StringValues.RolNotFound;
+
+                    }
                     sUser = candidato.Correo;
                     sPassword = candidato.Password;
                     sTipo = StringValues.RolCandidato;
