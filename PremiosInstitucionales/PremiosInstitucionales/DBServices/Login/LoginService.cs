@@ -64,10 +64,11 @@ namespace PremiosInstitucionales.DBServices.Login
                 String sTipo;
 
                 var candidato = GetCandidato(sCorreo);
-                Boolean confirmacion = candidato.Confirmado ?? false;
 
                 if (candidato != null)
                 {
+                    Boolean confirmacion = candidato.Confirmado ?? false;
+
                     if (!confirmacion)
                     {
                         return StringValues.RolNotFound;
