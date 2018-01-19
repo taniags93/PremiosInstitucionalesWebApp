@@ -24,6 +24,20 @@ namespace PremiosInstitucionales
             ScriptManager.RegisterStartupScript(Page, typeof(Page), "showE", showMsg_JS, true);
         }
 
+        public void ShowMessage2(String MessageType, String Message)
+        {
+            // Creamos el titutlo del Modal
+            modalMensajeTitulo2.Controls.Clear();
+            modalMensajeTitulo2.Controls.Add(new LiteralControl(ModalTitle(MessageType)));
+
+            // Mensaje del Modal
+            Mensaje2.Text = Message;
+
+            // Mostramos el Modal
+            String showMsg_JS = "$('#modalMensaje2').modal('show')";
+            ScriptManager.RegisterStartupScript(Page, typeof(Page), "showE", showMsg_JS, true);
+        }
+
         public String ModalTitle(String Title)
         {
             switch (Title)

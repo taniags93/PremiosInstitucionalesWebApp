@@ -108,10 +108,10 @@ namespace PremiosInstitucionales.WebForms
 
                 if (!matchCorreo.Success)
                 {
-                    MasterPage.ShowMessage("Error", "Dirección de correo no válida.");   
+                    MasterPage.ShowMessage("Error", "Dirección de correo no válida.");
                 }
                 else
-                { 
+                {
                     if (password1.Length < 6 || !matchNumero.Success || !matchLetra.Success)
                     {
                         MasterPage.ShowMessage("Error", "Contraseña debe ser de al menos 6 caracteres y debe contener al menos un número y una letra.");
@@ -145,11 +145,19 @@ namespace PremiosInstitucionales.WebForms
         protected void Recover_Click(object sender, EventArgs e)
         {
             String email = userforgot.Text.ToString();
-            String id = RecuperarService.GetID(email);
+            String id = RecuperarService.GetID2(email);
+            var today = DateTime.Now;
+            var tomorrow = today.AddDays(1);
+            var token = today + id;
+            token = sha256(token);
+
             if (id != null)
             {
+                //Save token and date into database
+                RecuperarService.AgregarTokenDB(id, token, tomorrow);
+
                 var MailService = new MailService();
-                if (MailService.EnviarCorreoRecuperacion(email, id))
+                if (MailService.EnviarCorreoRecuperacion(email, token))
                 {
                     ScriptManager.RegisterStartupScript(Page, typeof(Page), "forgotPassword", "forgotPassword(false);", true);
                     MasterPage.ShowMessage("Aviso", "Se envió un correo para la recuperación de la contraseña.");

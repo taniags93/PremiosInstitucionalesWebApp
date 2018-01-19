@@ -14,7 +14,7 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalCandidato
             {
                 try
                 {
-                    return dbContext.GetCandidato(null, null).ToList();
+                    return dbContext.GetCandidato(null, null, null).ToList();
                 }
                 catch (Exception Ex)
                 {
@@ -30,7 +30,7 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalCandidato
             {
                 try
                 {
-                    return dbContext.GetCandidato(sCorreo, null).FirstOrDefault();
+                    return dbContext.GetCandidato(sCorreo, null, null).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -46,7 +46,23 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalCandidato
             {
                 try
                 {
-                    return dbContext.GetCandidato(null, sUserId).FirstOrDefault();
+                    return dbContext.GetCandidato(null, sUserId, null).FirstOrDefault();
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
+                }
+            }
+        }
+
+        public static PI_BA_Candidato GetCandidatoByToken(String token)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    return dbContext.GetCandidato(null, null, token).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -62,7 +78,7 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalCandidato
             {
                 try
                 {
-                    dbContext.UpdateCandidato(  objCandidato.cveCandidato,
+                    dbContext.UpdateCandidato(objCandidato.cveCandidato,
                                                 objCandidato.Password,
                                                 objCandidato.Nombre,
                                                 objCandidato.Apellido,
@@ -74,7 +90,9 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalCandidato
                                                 objCandidato.RFC,
                                                 objCandidato.Direccion,
                                                 objCandidato.NombreImagen,
-                                                objCandidato.FechaPrivacidadDatos  );
+                                                objCandidato.FechaPrivacidadDatos,
+                                                objCandidato.FechaExpiracionRecuperar,
+                                                objCandidato.TokenRecuperar);
                     dbContext.SaveChanges();
                     return true;
                 }

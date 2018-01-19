@@ -17,5 +17,7 @@ namespace PremiosInstitucionales.Entities.Models
         public string cveAdministrador { get; set; }
         public string Password { get; set; }
         public string Correo { get; set; }
+        public Nullable<System.DateTime> FechaExpiracionRecuperar { get; set; }
+        public string TokenRecuperar { get; set; }
     }
 }

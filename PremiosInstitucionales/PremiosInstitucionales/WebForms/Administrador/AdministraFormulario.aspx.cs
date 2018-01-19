@@ -315,15 +315,10 @@ namespace PremiosInstitucionales.WebForms
                     TableCell tdLastName = new TableCell();
                     tdLastName.Text = juez.Apellido;
 
-                    TableCell tdEmail = new TableCell();
-
-                    LiteralControl lHiddenValue = new LiteralControl("<span id=\"" + juez.cveJuez + "\">" + juez.Correo + "</span>");
-                    tdEmail.Controls.Add(lHiddenValue);
-
+                    
                     tr.Controls.Add(tdIP);
                     tr.Controls.Add(tdName);
                     tr.Controls.Add(tdLastName);
-                    tr.Controls.Add(tdEmail);
                     if (!AplicacionService.GetJuecesIdsCategoria(idCategoria).Contains(juez.cveJuez))
                     {
                         listaJuecesTableBody.Controls.Add(tr);

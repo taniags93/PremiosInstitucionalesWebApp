@@ -13,7 +13,7 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalJuez
             {
                 try
                 {
-                    return dbContext.GetJuez(null, null).ToList();
+                    return dbContext.GetJuez(null, null, null).ToList();
                 }
                 catch (Exception Ex)
                 {
@@ -29,7 +29,23 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalJuez
             {
                 try
                 {
-                    return dbContext.GetJuez(correo, null).FirstOrDefault();
+                    return dbContext.GetJuez(correo, null, null).FirstOrDefault();
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
+                }
+            }
+        }
+
+        public static PI_BA_Juez GetJuezByToken(string token)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    return dbContext.GetJuez(null, null, token).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -45,7 +61,7 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalJuez
             {
                 try
                 {
-                    return dbContext.GetJuez(null, id).FirstOrDefault();
+                    return dbContext.GetJuez(null, id, null).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -66,7 +82,9 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalJuez
                                             objJuez.Nombre,
                                             objJuez.Apellido,
                                             objJuez.Correo,
-                                            objJuez.NombreImagen   );
+                                            objJuez.NombreImagen,
+                                            objJuez.FechaExpiracionRecuperar,
+                                            objJuez.TokenRecuperar  );
                     dbContext.SaveChanges();
                     return true;
                 }

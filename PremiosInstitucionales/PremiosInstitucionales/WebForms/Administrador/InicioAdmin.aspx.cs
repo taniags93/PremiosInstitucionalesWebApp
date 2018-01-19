@@ -1,4 +1,5 @@
 ﻿using PremiosInstitucionales.DBServices.Registro;
+using PremiosInstitucionales.DBServices.InformacionPersonalJuez;
 using PremiosInstitucionales.Values;
 using System;
 using System.Text.RegularExpressions;
@@ -47,6 +48,19 @@ namespace PremiosInstitucionales.WebForms
             {
                 MasterPage.ShowMessage("Error", "Dirección de correo no válida.");
                 return;
+            }
+
+            var jueces = InformacionPersonalJuezService.GetJueces();
+            if (jueces != null)
+            {
+                foreach (var juez in jueces)
+                {
+                    if(juez.Correo == correoInvitar)
+                    {
+                        MasterPage.ShowMessage("Error", "Ese correo ya está registrado.");
+                        return;
+                    }
+                }
             }
 
             string contrasena = System.Web.Security.Membership.GeneratePassword(7, 0);

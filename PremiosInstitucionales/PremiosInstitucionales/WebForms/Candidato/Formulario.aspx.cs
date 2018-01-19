@@ -109,7 +109,7 @@ namespace PremiosInstitucionales.WebForms
                             {
                                 if (p.cveSubcategoria == sub.cveSubcategoria)
                                 {
-                                    LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' maxlength='500' name='" + sub.cveSubcategoria+"' id=" + p.cvePregunta + " value='' class='form-control' style='width:100%;' required><br>");
+                                    LiteralControl pregunta = new LiteralControl(p.Texto + "<input type='text' maxlength='200' name='" + sub.cveSubcategoria+"' id=" + p.cvePregunta + " value='' class='form-control' style='width:100%;' required><br>");
                                     panel.Controls.Add(pregunta);
                                 }
                             }
@@ -240,6 +240,7 @@ namespace PremiosInstitucionales.WebForms
             String sNombreArchivo = UploadFile();
             String NombreCarta = UploadFileCarta();
 
+
             if (sNombreArchivo != "Error" && NombreCarta != "Error")
             {
                 aplicacionNueva.NombreArchivo = sNombreArchivo;
@@ -310,6 +311,7 @@ namespace PremiosInstitucionales.WebForms
             if (file != null && file.ContentLength > 0)
             {
                 string fname = Path.GetFileName(file.FileName);
+                int contLength = file.ContentLength;
 
                 // Get string image format (png, jpg, etc)
                 var startIndex = fname.LastIndexOf(".");
@@ -325,23 +327,21 @@ namespace PremiosInstitucionales.WebForms
                     ".jpg",
                     ".jpeg",
                     ".bmp",
-                    ".txt",
                     ".doc",
                     ".docx",
-                    ".pdf",
-                    ".xlsx",
-                    ".xls",
-                    ".csv",
-                    ".ppt",
-                    ".pptx"
+                    ".pdf"
                 };
 
                 if (!supportedFormats.Contains(sFormat))
                 {
-                    MasterPage.ShowMessage("Error", "El archivo proporcionado debe ser un archivo de texto, una hoja de cálculo o un imagen.");
+                    MasterPage.ShowMessage("Error", "La carta del proponente proporcionada debe ser un archivo de texto o una imagen.");
                     return "Error";
                 }
-
+                if (contLength > 30000000)
+                {
+                    MasterPage.ShowMessage("Error", "La carta del proponente proporcionada debe pesar a lo mucho 30mb.");
+                    return "Error";
+                }
                 // Upload image to server
                 file.SaveAs(Server.MapPath(Path.Combine("~/UsersAppsFiles/", sNombreArchivo)));
                 return sNombreArchivo;
@@ -358,6 +358,7 @@ namespace PremiosInstitucionales.WebForms
             if (file != null && file.ContentLength > 0)
             {
                 string fname = Path.GetFileName(file.FileName);
+                int contLength = file.ContentLength;
 
                 // Get string image format (png, jpg, etc)
                 var startIndex = fname.LastIndexOf(".");
@@ -373,20 +374,20 @@ namespace PremiosInstitucionales.WebForms
                     ".jpg",
                     ".jpeg",
                     ".bmp",
-                    ".txt",
                     ".doc",
                     ".docx",
-                    ".pdf",
-                    ".xlsx",
-                    ".xls",
-                    ".csv",
-                    ".ppt",
-                    ".pptx"
+                    ".pdf"
                 };
 
                 if (!supportedFormats.Contains(sFormat))
                 {
-                    MasterPage.ShowMessage("Error", "El archivo proporcionado debe ser un archivo de texto, una hoja de cálculo o un imagen.");
+                    MasterPage.ShowMessage("Error", "La semblanza del candidato proporcionada debe ser un archivo de texto o una imagen.");
+                    return "Error";
+                }
+
+                if (contLength > 30000000)
+                {
+                    MasterPage.ShowMessage("Error", "La semblanza del candidato proporcionada debe pesar a lo mucho 30mb.");
                     return "Error";
                 }
 

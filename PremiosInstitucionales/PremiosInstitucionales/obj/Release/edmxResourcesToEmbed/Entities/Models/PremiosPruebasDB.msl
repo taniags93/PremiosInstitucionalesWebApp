@@ -13,25 +13,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="PI_BA_Candidato">
-      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Candidato">
-        <MappingFragment StoreEntitySet="PI_BA_Candidato">
-          <ScalarProperty Name="cveCandidato" ColumnName="cveCandidato" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-          <ScalarProperty Name="Apellido" ColumnName="Apellido" />
-          <ScalarProperty Name="Confirmado" ColumnName="Confirmado" />
-          <ScalarProperty Name="Correo" ColumnName="Correo" />
-          <ScalarProperty Name="CodigoConfirmacion" ColumnName="CodigoConfirmacion" />
-          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-          <ScalarProperty Name="Nacionalidad" ColumnName="Nacionalidad" />
-          <ScalarProperty Name="RFC" ColumnName="RFC" />
-          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-          <ScalarProperty Name="NombreImagen" ColumnName="NombreImagen" />
-          <ScalarProperty Name="FechaPrivacidadDatos" ColumnName="FechaPrivacidadDatos" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PI_BA_Categoria">
       <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Categoria">
         <MappingFragment StoreEntitySet="PI_BA_Categoria">
@@ -77,6 +58,8 @@
     <EntitySetMapping Name="PI_BA_Juez">
       <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Juez">
         <MappingFragment StoreEntitySet="PI_BA_Juez">
+          <ScalarProperty Name="TokenRecuperar" ColumnName="TokenRecuperar" />
+          <ScalarProperty Name="FechaExpiracionRecuperar" ColumnName="FechaExpiracionRecuperar" />
           <ScalarProperty Name="cveJuez" ColumnName="cveJuez" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
@@ -121,6 +104,8 @@
     <EntitySetMapping Name="PI_SE_Administrador">
       <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_SE_Administrador">
         <MappingFragment StoreEntitySet="PI_SE_Administrador">
+          <ScalarProperty Name="TokenRecuperar" ColumnName="TokenRecuperar" />
+          <ScalarProperty Name="FechaExpiracionRecuperar" ColumnName="FechaExpiracionRecuperar" />
           <ScalarProperty Name="cveAdministrador" ColumnName="cveAdministrador" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Correo" ColumnName="Correo" />
@@ -215,5 +200,26 @@
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="AddRespuesta" FunctionName="wPremiosInstitucionalesdbModel.Store.AddRespuesta" />
     <FunctionImportMapping FunctionImportName="GetEvaluacion" FunctionName="wPremiosInstitucionalesdbModel.Store.GetEvaluacion" />
+    <EntitySetMapping Name="PI_BA_Candidato">
+      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_BA_Candidato">
+        <MappingFragment StoreEntitySet="PI_BA_Candidato">
+          <ScalarProperty Name="TokenRecuperar" ColumnName="TokenRecuperar" />
+          <ScalarProperty Name="FechaExpiracionRecuperar" ColumnName="FechaExpiracionRecuperar" />
+          <ScalarProperty Name="FechaPrivacidadDatos" ColumnName="FechaPrivacidadDatos" />
+          <ScalarProperty Name="NombreImagen" ColumnName="NombreImagen" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="RFC" ColumnName="RFC" />
+          <ScalarProperty Name="Nacionalidad" ColumnName="Nacionalidad" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="CodigoConfirmacion" ColumnName="CodigoConfirmacion" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Confirmado" ColumnName="Confirmado" />
+          <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="cveCandidato" ColumnName="cveCandidato" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

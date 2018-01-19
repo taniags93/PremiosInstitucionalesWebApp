@@ -28,7 +28,6 @@ namespace PremiosInstitucionales.Entities.Models
         }
     
         public virtual DbSet<PI_BA_Aplicacion> PI_BA_Aplicacion { get; set; }
-        public virtual DbSet<PI_BA_Candidato> PI_BA_Candidato { get; set; }
         public virtual DbSet<PI_BA_Categoria> PI_BA_Categoria { get; set; }
         public virtual DbSet<PI_BA_Convocatoria> PI_BA_Convocatoria { get; set; }
         public virtual DbSet<PI_BA_Forma> PI_BA_Forma { get; set; }
@@ -42,8 +41,9 @@ namespace PremiosInstitucionales.Entities.Models
         public virtual DbSet<PI_BA_Pregunta> PI_BA_Pregunta { get; set; }
         public virtual DbSet<PI_BA_Subcategoria> PI_BA_Subcategoria { get; set; }
         public virtual DbSet<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
+        public virtual DbSet<PI_BA_Candidato> PI_BA_Candidato { get; set; }
     
-        public virtual int AddCandidato(string cveCandidato, string password, string nombre, string apellido, Nullable<bool> confirmado, string correo, string codigoConfirmacion, string telefono, string nacionalidad, string rFC, string direccion, string nombreImagen, Nullable<System.DateTime> fechaPrivacidadDatos)
+        public virtual int AddCandidato(string cveCandidato, string password, string nombre, string apellido, Nullable<bool> confirmado, string correo, string codigoConfirmacion, string telefono, string nacionalidad, string rFC, string direccion, string nombreImagen, Nullable<System.DateTime> fechaPrivacidadDatos, Nullable<System.DateTime> fechaExpiracionRecuperar, string tokenRecuperar)
         {
             var cveCandidatoParameter = cveCandidato != null ?
                 new ObjectParameter("cveCandidato", cveCandidato) :
@@ -97,7 +97,15 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("FechaPrivacidadDatos", fechaPrivacidadDatos) :
                 new ObjectParameter("FechaPrivacidadDatos", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddCandidato", cveCandidatoParameter, passwordParameter, nombreParameter, apellidoParameter, confirmadoParameter, correoParameter, codigoConfirmacionParameter, telefonoParameter, nacionalidadParameter, rFCParameter, direccionParameter, nombreImagenParameter, fechaPrivacidadDatosParameter);
+            var fechaExpiracionRecuperarParameter = fechaExpiracionRecuperar.HasValue ?
+                new ObjectParameter("FechaExpiracionRecuperar", fechaExpiracionRecuperar) :
+                new ObjectParameter("FechaExpiracionRecuperar", typeof(System.DateTime));
+    
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddCandidato", cveCandidatoParameter, passwordParameter, nombreParameter, apellidoParameter, confirmadoParameter, correoParameter, codigoConfirmacionParameter, telefonoParameter, nacionalidadParameter, rFCParameter, direccionParameter, nombreImagenParameter, fechaPrivacidadDatosParameter, fechaExpiracionRecuperarParameter, tokenRecuperarParameter);
         }
     
         public virtual int AddCategoria(string cveCategoria, string nombre, string cveConvocatoria, string cveAplicacionGanadora, Nullable<System.DateTime> fechaCreacion, string usuarioCreacion, Nullable<System.DateTime> fechaEdicion, string usuarioEdicion)
@@ -240,7 +248,7 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddForma", cveFormaParameter, cveCategoriaParameter, fechaCreacionParameter, usuarioCreacionParameter, fechaEdicionParameter, usuarioEdicionParameter);
         }
     
-        public virtual int AddJuez(string cveJuez, string password, string nombre, string apellido, string correo, string nombreImagen)
+        public virtual int AddJuez(string cveJuez, string password, string nombre, string apellido, string correo, string nombreImagen, Nullable<System.DateTime> fechaExpiracionRecuperar, string tokenRecuperar)
         {
             var cveJuezParameter = cveJuez != null ?
                 new ObjectParameter("cveJuez", cveJuez) :
@@ -266,7 +274,15 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("NombreImagen", nombreImagen) :
                 new ObjectParameter("NombreImagen", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddJuez", cveJuezParameter, passwordParameter, nombreParameter, apellidoParameter, correoParameter, nombreImagenParameter);
+            var fechaExpiracionRecuperarParameter = fechaExpiracionRecuperar.HasValue ?
+                new ObjectParameter("FechaExpiracionRecuperar", fechaExpiracionRecuperar) :
+                new ObjectParameter("FechaExpiracionRecuperar", typeof(System.DateTime));
+    
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddJuez", cveJuezParameter, passwordParameter, nombreParameter, apellidoParameter, correoParameter, nombreImagenParameter, fechaExpiracionRecuperarParameter, tokenRecuperarParameter);
         }
     
         public virtual int AddPremio(string cvePremio, string nombre, string nombreImagen, string descripcion, Nullable<System.DateTime> fechaCreacion, string usuarioCreacion, Nullable<System.DateTime> fechaEdicion, string usuarioEdicion)
@@ -315,7 +331,7 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ConfirmarCandidato", codigoConfirmacionParameter);
         }
     
-        public virtual ObjectResult<PI_SE_Administrador> GetAdministrador(string correo, string cveAdministrador)
+        public virtual ObjectResult<PI_SE_Administrador> GetAdministrador(string correo, string cveAdministrador, string tokenRecuperar)
         {
             var correoParameter = correo != null ?
                 new ObjectParameter("Correo", correo) :
@@ -325,10 +341,14 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveAdministrador", cveAdministrador) :
                 new ObjectParameter("cveAdministrador", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_SE_Administrador>("GetAdministrador", correoParameter, cveAdministradorParameter);
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_SE_Administrador>("GetAdministrador", correoParameter, cveAdministradorParameter, tokenRecuperarParameter);
         }
     
-        public virtual ObjectResult<PI_SE_Administrador> GetAdministrador(string correo, string cveAdministrador, MergeOption mergeOption)
+        public virtual ObjectResult<PI_SE_Administrador> GetAdministrador(string correo, string cveAdministrador, string tokenRecuperar, MergeOption mergeOption)
         {
             var correoParameter = correo != null ?
                 new ObjectParameter("Correo", correo) :
@@ -338,10 +358,14 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveAdministrador", cveAdministrador) :
                 new ObjectParameter("cveAdministrador", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_SE_Administrador>("GetAdministrador", mergeOption, correoParameter, cveAdministradorParameter);
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_SE_Administrador>("GetAdministrador", mergeOption, correoParameter, cveAdministradorParameter, tokenRecuperarParameter);
         }
     
-        public virtual ObjectResult<PI_BA_Candidato> GetCandidato(string correo, string cveCandidato)
+        public virtual ObjectResult<PI_BA_Candidato> GetCandidato(string correo, string cveCandidato, string tokenRecuperar)
         {
             var correoParameter = correo != null ?
                 new ObjectParameter("Correo", correo) :
@@ -351,10 +375,14 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveCandidato", cveCandidato) :
                 new ObjectParameter("cveCandidato", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Candidato>("GetCandidato", correoParameter, cveCandidatoParameter);
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Candidato>("GetCandidato", correoParameter, cveCandidatoParameter, tokenRecuperarParameter);
         }
     
-        public virtual ObjectResult<PI_BA_Candidato> GetCandidato(string correo, string cveCandidato, MergeOption mergeOption)
+        public virtual ObjectResult<PI_BA_Candidato> GetCandidato(string correo, string cveCandidato, string tokenRecuperar, MergeOption mergeOption)
         {
             var correoParameter = correo != null ?
                 new ObjectParameter("Correo", correo) :
@@ -364,7 +392,11 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveCandidato", cveCandidato) :
                 new ObjectParameter("cveCandidato", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Candidato>("GetCandidato", mergeOption, correoParameter, cveCandidatoParameter);
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Candidato>("GetCandidato", mergeOption, correoParameter, cveCandidatoParameter, tokenRecuperarParameter);
         }
     
         public virtual ObjectResult<PI_BA_Categoria> GetCategoria(string cveCategoria, string cveConvocatoria)
@@ -457,7 +489,7 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Forma>("GetForma", mergeOption, cveFormaParameter);
         }
     
-        public virtual ObjectResult<PI_BA_Juez> GetJuez(string correo, string cveJuez)
+        public virtual ObjectResult<PI_BA_Juez> GetJuez(string correo, string cveJuez, string tokenRecuperar)
         {
             var correoParameter = correo != null ?
                 new ObjectParameter("Correo", correo) :
@@ -467,10 +499,14 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveJuez", cveJuez) :
                 new ObjectParameter("cveJuez", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Juez>("GetJuez", correoParameter, cveJuezParameter);
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Juez>("GetJuez", correoParameter, cveJuezParameter, tokenRecuperarParameter);
         }
     
-        public virtual ObjectResult<PI_BA_Juez> GetJuez(string correo, string cveJuez, MergeOption mergeOption)
+        public virtual ObjectResult<PI_BA_Juez> GetJuez(string correo, string cveJuez, string tokenRecuperar, MergeOption mergeOption)
         {
             var correoParameter = correo != null ?
                 new ObjectParameter("Correo", correo) :
@@ -480,7 +516,11 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("cveJuez", cveJuez) :
                 new ObjectParameter("cveJuez", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Juez>("GetJuez", mergeOption, correoParameter, cveJuezParameter);
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Juez>("GetJuez", mergeOption, correoParameter, cveJuezParameter, tokenRecuperarParameter);
         }
     
         public virtual ObjectResult<PI_BA_Convocatoria> GetMostRecentConvocatoria(string cvePremio)
@@ -537,7 +577,7 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PI_BA_Premio>("GetPremioByIdCategoria", mergeOption, cveCategoriaParameter);
         }
     
-        public virtual int UpdateAdministrador(string cveAdministrador, string password, string correo)
+        public virtual int UpdateAdministrador(string cveAdministrador, string password, string correo, Nullable<System.DateTime> fechaExpiracionRecuperar, string tokenRecuperar)
         {
             var cveAdministradorParameter = cveAdministrador != null ?
                 new ObjectParameter("cveAdministrador", cveAdministrador) :
@@ -551,10 +591,18 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("Correo", correo) :
                 new ObjectParameter("Correo", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAdministrador", cveAdministradorParameter, passwordParameter, correoParameter);
+            var fechaExpiracionRecuperarParameter = fechaExpiracionRecuperar.HasValue ?
+                new ObjectParameter("FechaExpiracionRecuperar", fechaExpiracionRecuperar) :
+                new ObjectParameter("FechaExpiracionRecuperar", typeof(System.DateTime));
+    
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAdministrador", cveAdministradorParameter, passwordParameter, correoParameter, fechaExpiracionRecuperarParameter, tokenRecuperarParameter);
         }
     
-        public virtual int UpdateCandidato(string cveCandidato, string password, string nombre, string apellido, Nullable<bool> confirmado, string correo, string codigoConfirmacion, string telefono, string nacionalidad, string rFC, string direccion, string nombreImagen, Nullable<System.DateTime> fechaPrivacidadDatos)
+        public virtual int UpdateCandidato(string cveCandidato, string password, string nombre, string apellido, Nullable<bool> confirmado, string correo, string codigoConfirmacion, string telefono, string nacionalidad, string rFC, string direccion, string nombreImagen, Nullable<System.DateTime> fechaPrivacidadDatos, Nullable<System.DateTime> fechaExpiracionRecuperar, string tokenRecuperar)
         {
             var cveCandidatoParameter = cveCandidato != null ?
                 new ObjectParameter("cveCandidato", cveCandidato) :
@@ -608,7 +656,15 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("FechaPrivacidadDatos", fechaPrivacidadDatos) :
                 new ObjectParameter("FechaPrivacidadDatos", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateCandidato", cveCandidatoParameter, passwordParameter, nombreParameter, apellidoParameter, confirmadoParameter, correoParameter, codigoConfirmacionParameter, telefonoParameter, nacionalidadParameter, rFCParameter, direccionParameter, nombreImagenParameter, fechaPrivacidadDatosParameter);
+            var fechaExpiracionRecuperarParameter = fechaExpiracionRecuperar.HasValue ?
+                new ObjectParameter("FechaExpiracionRecuperar", fechaExpiracionRecuperar) :
+                new ObjectParameter("FechaExpiracionRecuperar", typeof(System.DateTime));
+    
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateCandidato", cveCandidatoParameter, passwordParameter, nombreParameter, apellidoParameter, confirmadoParameter, correoParameter, codigoConfirmacionParameter, telefonoParameter, nacionalidadParameter, rFCParameter, direccionParameter, nombreImagenParameter, fechaPrivacidadDatosParameter, fechaExpiracionRecuperarParameter, tokenRecuperarParameter);
         }
     
         public virtual int UpdateEvaluacion(string cveEvaluacion, Nullable<double> calificacion, string cveAplicacion, string cveJuez, string cveSubcategoria, string esFinal)
@@ -640,7 +696,7 @@ namespace PremiosInstitucionales.Entities.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateEvaluacion", cveEvaluacionParameter, calificacionParameter, cveAplicacionParameter, cveJuezParameter, cveSubcategoriaParameter, esFinalParameter);
         }
     
-        public virtual int UpdateJuez(string cveJuez, string password, string nombre, string apellido, string correo, string nombreImagen)
+        public virtual int UpdateJuez(string cveJuez, string password, string nombre, string apellido, string correo, string nombreImagen, Nullable<System.DateTime> fechaExpiracionRecuperar, string tokenRecuperar)
         {
             var cveJuezParameter = cveJuez != null ?
                 new ObjectParameter("cveJuez", cveJuez) :
@@ -666,7 +722,15 @@ namespace PremiosInstitucionales.Entities.Models
                 new ObjectParameter("NombreImagen", nombreImagen) :
                 new ObjectParameter("NombreImagen", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateJuez", cveJuezParameter, passwordParameter, nombreParameter, apellidoParameter, correoParameter, nombreImagenParameter);
+            var fechaExpiracionRecuperarParameter = fechaExpiracionRecuperar.HasValue ?
+                new ObjectParameter("FechaExpiracionRecuperar", fechaExpiracionRecuperar) :
+                new ObjectParameter("FechaExpiracionRecuperar", typeof(System.DateTime));
+    
+            var tokenRecuperarParameter = tokenRecuperar != null ?
+                new ObjectParameter("TokenRecuperar", tokenRecuperar) :
+                new ObjectParameter("TokenRecuperar", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateJuez", cveJuezParameter, passwordParameter, nombreParameter, apellidoParameter, correoParameter, nombreImagenParameter, fechaExpiracionRecuperarParameter, tokenRecuperarParameter);
         }
     
         public virtual int UpdatePremio(string cvePremio, string nombre, string nombreImagen, string descripcion, Nullable<System.DateTime> fechaCreacion, string usuarioCreacion, Nullable<System.DateTime> fechaEdicion, string usuarioEdicion)

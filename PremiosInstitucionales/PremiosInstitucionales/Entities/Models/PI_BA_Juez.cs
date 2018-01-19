@@ -27,6 +27,8 @@ namespace PremiosInstitucionales.Entities.Models
         public string Apellido { get; set; }
         public string Correo { get; set; }
         public string NombreImagen { get; set; }
+        public Nullable<System.DateTime> FechaExpiracionRecuperar { get; set; }
+        public string TokenRecuperar { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PI_BA_JuezPorCategoria> PI_BA_JuezPorCategoria { get; set; }

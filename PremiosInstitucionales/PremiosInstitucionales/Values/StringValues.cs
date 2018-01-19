@@ -13,6 +13,7 @@ namespace PremiosInstitucionales.Values
         public static readonly String RolAdmin = "admin";
         public static readonly String RolIncorrecto = "incorrect";
         public static readonly String RolNotFound = "not found";
+        public static readonly String NotVerified = "email not verified";
 
         // valores para variables a guardar en sesion
         public static readonly String CorreoSesion = "correo";

@@ -273,6 +273,7 @@
     <Content Include="Values\CorreoInvitacionCandidato.txt" />
     <Content Include="Values\CorreoInvitacionJuez.txt" />
     <Content Include="Values\CorreoConfirmaCuenta.txt" />
+    <Content Include="Values\CorreoModificacionPassword.txt" />
     <Content Include="Values\CorreoRecuperaPassword.txt" />
     <Content Include="Values\CorreoSolicitudCambio.txt" />
     <Content Include="WebForms\Administrador\AdministraAplicacionesPendientes.aspx" />
@@ -678,6 +679,7 @@
     <Compile Include="WebForms\Juez\VerConcentrado.aspx.designer.cs">
       <DependentUpon>VerConcentrado.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebForms\KeyPressEventArgs.cs" />
     <Compile Include="WebForms\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

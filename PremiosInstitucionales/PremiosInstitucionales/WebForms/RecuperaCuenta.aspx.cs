@@ -1,8 +1,15 @@
 ﻿using PremiosInstitucionales.DBServices.Recuperar;
+using PremiosInstitucionales.DBServices.Mail;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
+using PremiosInstitucionales.DBServices.InformacionPersonalCandidato;
+using PremiosInstitucionales.DBServices.InformacionPersonalJuez;
+using PremiosInstitucionales.DBServices.InformacionPersonalAdministrador;
+
+
+
 
 namespace PremiosInstitucionales.WebForms
 {
@@ -19,7 +26,10 @@ namespace PremiosInstitucionales.WebForms
             String password1 = PasswordTextBox.Text;
             String password2 = ConfirmPasswordTextBox.Text;
             bool sePudo = false;
+            string toMail = "";
+            string id = "";
             bool contrasenas = false;
+            bool fechaExp = false;
             if (password1.Equals(password2))
             {
                 Regex regexNumero = new Regex(@".*\d.*");
@@ -34,20 +44,60 @@ namespace PremiosInstitucionales.WebForms
                 {
                     contrasenas = true;
                     String cve = Request.QueryString["codigo"];
-                    char tipo = cve[0];
-                    if (tipo == 'c')
+
+                    var candidato = InformacionPersonalCandidatoService.GetCandidatoByToken(cve);
+
+                    if (candidato != null)
                     {
-                        sePudo = RecuperarService.CambiarContrasenaCandidato(cve.Substring(1), sha256(password1));
+                        if(candidato.FechaExpiracionRecuperar > DateTime.Now)
+                        {
+                            sePudo = RecuperarService.CambiarContrasenaCandidato(candidato.cveCandidato, sha256(password1));
+                            toMail = candidato.Correo;
+                            id = candidato.cveCandidato;
+                        }
+                        else
+                        {
+                            fechaExp = true;
+                        }
                     }
-                    else if (tipo == 'j')
+                    else
                     {
-                        sePudo = RecuperarService.CambiarContrasenaJuez(cve.Substring(1), sha256(password1));
+                        var juez = InformacionPersonalJuezService.GetJuezByToken(cve);
+
+                        if (juez != null)
+                        {
+                            if (juez.FechaExpiracionRecuperar > DateTime.Now)
+                            {
+                                sePudo = RecuperarService.CambiarContrasenaJuez(juez.cveJuez, sha256(password1));
+                                toMail = juez.Correo;
+                                id = juez.cveJuez;
+                            }
+                            else
+                            {
+                                fechaExp = true;
+                            }
+                        }
+                        else
+                        {
+                            var administrador = InformacionPersonalAdministradorService.GetAdministradorByToken(cve);
+
+                            if (administrador != null)
+                            { 
+                                if (administrador.FechaExpiracionRecuperar > DateTime.Now)
+                                {
+                                    sePudo = RecuperarService.CambiarContrasenaAdministrador(administrador.cveAdministrador, sha256(password1));
+                                    toMail = administrador.Correo;
+                                    id = administrador.cveAdministrador;
+                                }
+                                else
+                                {
+                                    fechaExp = true;
+                                }
+                                
+                            }
+                        }
                     }
-                    else if (tipo == 'a')
-                    {
-                        sePudo = RecuperarService.CambiarContrasenaAdministrador(cve.Substring(1), sha256(password1));
-                    }
-                }      
+                }
             }
             else
             {
@@ -55,11 +105,23 @@ namespace PremiosInstitucionales.WebForms
             }
             if (sePudo)
             {
-                MasterPage.ShowMessage("Aviso", "Contraseña cambiada exitosamente.");
+                var MailService = new MailService();
+                if (MailService.EnviarCorreoInvitacionCandidato(toMail, id))
+                {
+                    MasterPage.ShowMessage("Aviso", "Contraseña cambiada exitosamente.");
+                }
+                else
+                {
+                    MasterPage.ShowMessage("Error", "Dirección de correo no válida.");
+                }
+            }
+            else if (fechaExp)
+            {
+                MasterPage.ShowMessage("Error", "Error: URL Expirada.");
             }
             else if (contrasenas)
             {
-                MasterPage.ShowMessage("Error", "Error interno.");
+                MasterPage.ShowMessage("Error", "Error: URL inválida.");
             }
         }
 

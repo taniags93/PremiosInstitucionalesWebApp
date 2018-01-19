@@ -51,8 +51,8 @@ namespace PremiosInstitucionales.WebForms
                     divControl.Attributes.Add("class", "crumbs");
                     divControl.Visible = true;
                     estadosaplicaciones.Controls.Add(divControl);
-
-                    divControl.Controls.Add(new LiteralControl(obtenerHtmlMapaEstados(ap)));
+                    string mapaEstados = obtenerHtmlMapaEstados(ap);
+                    divControl.Controls.Add(new LiteralControl(mapaEstados));
                 }
             }
             else
@@ -69,16 +69,30 @@ namespace PremiosInstitucionales.WebForms
 
         public static String crearHtmlMapaEstados(PI_BA_Aplicacion ap, String estados)
         {
+
+            String premio = AplicacionService.GetPremioByClaveCategoria(ap.cveCategoria).Nombre.ToString();
+            String imagen = "";
+
+            if (AplicacionService.GetPremioByClaveCategoria(ap.cveCategoria).NombreImagen != null)
+            {
+                imagen = "<img src = /AwardPictures/" + AplicacionService.GetPremioByClaveCategoria(ap.cveCategoria).NombreImagen.ToString() + " class=\"img-square\"/>";
+
+            }
+            else
+            {
+                imagen = "<img src = /Resources/img/default-award.png class=\"img-square\"/>";
+            }
+
             return "<div class=\"panel-heading\">" +
                         "<h3 class=\"panel-title\">" +
-                               "Premio: <strong>" + AplicacionService.GetPremioByClaveCategoria(ap.cveCategoria).Nombre.ToString() + "</strong>" +
+                               "Premio: <strong>" + premio + "</strong>" +
                                "<strong> / </strong>" +
                                "Categoria: <strong>" + AplicacionService.GetCategoriaByClaveCategoria(ap.cveCategoria).Nombre.ToString() + "</strong>" +
                         "</h3>" +
                     "</div>" +
                     "<div class=\"panel-body\">" +
                         "<div class=\"div-img\">" +
-                            "<img src = /AwardPictures/" + AplicacionService.GetPremioByClaveCategoria(ap.cveCategoria).NombreImagen.ToString() + " class=\"img-square\"/>" +
+                             imagen +
                         "</div>" +
                         "<div class=\"div-bpm\">" +
                             "Estado de la solicitud:" +

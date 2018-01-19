@@ -15,7 +15,7 @@ namespace PremiosInstitucionales.DBServices.Registro
                     // Si no hay ningun usuario registrado con ese correo
                     if (!ExisteUsuario(correo))
                     {
-                        dbContext.AddJuez(Guid.NewGuid().ToString(), contrasena, null, null, correo, null);
+                        dbContext.AddJuez(Guid.NewGuid().ToString(), contrasena, null, null, correo, null, null, null);
                         dbContext.SaveChanges();
                         return true;
                     }
@@ -40,7 +40,7 @@ namespace PremiosInstitucionales.DBServices.Registro
                     // Si no hay ningun usuario registrado con ese correo
                     if (!ExisteUsuario(email))
                     {
-                        dbContext.AddCandidato(Guid.NewGuid().ToString(), password, nombre, apellido, null, email, codigoConfirmacion, null, null, null, null, null, null);
+                        dbContext.AddCandidato(Guid.NewGuid().ToString(), password, nombre, apellido, null, email, codigoConfirmacion, null, null, null, null, null, null, null, null);
                         dbContext.SaveChanges();
                         return true;
                     }
@@ -62,9 +62,9 @@ namespace PremiosInstitucionales.DBServices.Registro
             {
                 try
                 {
-                    int cantCandidatos = dbContext.GetCandidato(email, null).ToList().Count;
-                    int cantJueces     = dbContext.GetJuez(email, null).ToList().Count;
-                    int cantAdmins     = dbContext.GetAdministrador(email, null).ToList().Count;
+                    int cantCandidatos = dbContext.GetCandidato(email, null, null).ToList().Count;
+                    int cantJueces     = dbContext.GetJuez(email, null, null).ToList().Count;
+                    int cantAdmins     = dbContext.GetAdministrador(email, null, null).ToList().Count;
 
                     return (cantCandidatos + cantJueces + cantAdmins) > 0;
                 }

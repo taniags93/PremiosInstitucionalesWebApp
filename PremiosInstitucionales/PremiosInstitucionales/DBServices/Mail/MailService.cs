@@ -1,5 +1,6 @@
 ﻿using PremiosInstitucionales.DBServices.InformacionPersonalCandidato;
 using PremiosInstitucionales.DBServices.InformacionPersonalJuez;
+using PremiosInstitucionales.DBServices.InformacionPersonalAdministrador;
 using PremiosInstitucionales.DBServices.Convocatoria;
 using PremiosInstitucionales.Entities.Models;
 using PremiosInstitucionales.Values;
@@ -71,6 +72,40 @@ namespace PremiosInstitucionales.DBServices.Mail
             }
         }
 
+        public bool EnviarCorreoInvitacionCandidato(String toMail, String id)
+        {
+            String titulo = "Cambio de contraseña existoso de Premios Institucionales del Tec de Monterrey";
+            String cuerpo = "";
+            cuerpo = File.ReadAllText(Server.MapPath("~/Values/CorreoModificacionPassword.txt"));
+            cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoFecha, DateTime.Today.ToShortDateString());
+
+            var candidato = InformacionPersonalCandidatoService.GetCandidatoById(id);
+            if (candidato == null)
+            {
+                var juez = InformacionPersonalJuezService.GetJuezById(id);
+                if (juez == null)
+                {
+                    var admin = InformacionPersonalAdministradorService.GetAdministradorById(id);
+                    if (admin != null)
+                    {
+                        cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoNombre,
+                        "Administrador");
+                    }
+                }
+                else
+                {
+                    cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoNombre,
+                    InformacionPersonalJuezService.GetJuezByCorreo(toMail).Nombre);
+                }
+            }
+            else
+            {
+                cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoNombre,
+                InformacionPersonalCandidatoService.GetCandidatoByCorreo(toMail).Nombre);
+            }
+            return EnviarCorreo(toMail, titulo, cuerpo);
+        }
+
         public bool EnviarCorreoRecuperacion(String toMail, String id)
         {
             String titulo = "Recuperación de contraseña para el sistema Premios Institucionales del Tec de Monterrey";
@@ -79,20 +114,29 @@ namespace PremiosInstitucionales.DBServices.Mail
             cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoFecha, DateTime.Today.ToShortDateString());
             cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoId, id);
 
-            switch (id[0])
+            var candidato = InformacionPersonalCandidatoService.GetCandidatoByToken(id);
+            if (candidato == null)
             {
-                case 'c':
-                    cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoNombre,
-                    InformacionPersonalCandidatoService.GetCandidatoByCorreo(toMail).Nombre);
-                    break;
-                case 'j':
+                var juez = InformacionPersonalJuezService.GetJuezByToken(id);
+                if (juez == null)
+                {
+                    var admin = InformacionPersonalAdministradorService.GetAdministradorByToken(id);
+                    if (admin != null)
+                    {
+                        cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoNombre,
+                        "Administrador");
+                    }
+                }
+                else
+                {
                     cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoNombre,
                     InformacionPersonalJuezService.GetJuezByCorreo(toMail).Nombre);
-                    break;
-                case 'a':
-                    cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoNombre,
-                    "Administrador");
-                    break;
+                }
+            }
+            else
+            {
+                cuerpo = cuerpo.Replace(StringValues.ContenidoCorreoNombre,
+                InformacionPersonalCandidatoService.GetCandidatoByCorreo(toMail).Nombre);
             }
 
             return EnviarCorreo(toMail, titulo, cuerpo);

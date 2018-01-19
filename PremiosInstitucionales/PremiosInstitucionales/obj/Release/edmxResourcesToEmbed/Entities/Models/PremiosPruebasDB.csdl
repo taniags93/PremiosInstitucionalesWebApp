@@ -9,31 +9,12 @@
     <Property Name="cveCandidato" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="cveCategoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="NombreArchivo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="PI_BA_Candidato" Relationship="Self.FK_PI_BA_Aplicacion_PI_BA_Candidato" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Candidato" />
     <NavigationProperty Name="PI_BA_Categoria" Relationship="Self.FK_PI_BA_Aplicacion_PI_BA_Categoria" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Categoria" />
     <NavigationProperty Name="PI_BA_Categoria1" Relationship="Self.FK_PI_BA_Categoria_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Categoria" />
     <NavigationProperty Name="PI_BA_Respuesta" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Respuesta" />
     <NavigationProperty Name="PI_BA_Evaluacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Evaluacion" />
     <Property Name="ArchivoCarta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-  </EntityType>
-  <EntityType Name="PI_BA_Candidato">
-    <Key>
-      <PropertyRef Name="cveCandidato" />
-    </Key>
-    <Property Name="cveCandidato" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Confirmado" Type="Boolean" />
-    <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="CodigoConfirmacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Nacionalidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="RFC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="NombreImagen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="FechaPrivacidadDatos" Type="DateTime" Precision="0" />
-    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="Self.FK_PI_BA_Aplicacion_PI_BA_Candidato" FromRole="PI_BA_Candidato" ToRole="PI_BA_Aplicacion" />
+    <NavigationProperty Name="PI_BA_Candidato" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato" FromRole="PI_BA_Aplicacion" ToRole="PI_BA_Candidato" />
   </EntityType>
   <EntityType Name="PI_BA_Categoria">
     <Key>
@@ -96,6 +77,8 @@
     <Property Name="NombreImagen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="PI_BA_JuezPorCategoria" Relationship="Self.FK_PI_BA_JuezPorCategoria_PI_BA_Juez" FromRole="PI_BA_Juez" ToRole="PI_BA_JuezPorCategoria" />
     <NavigationProperty Name="PI_BA_Evaluacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Juez" FromRole="PI_BA_Juez" ToRole="PI_BA_Evaluacion" />
+    <Property Name="FechaExpiracionRecuperar" Type="DateTime" Precision="3" />
+    <Property Name="TokenRecuperar" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="PI_BA_JuezPorCategoria">
     <Key>
@@ -138,19 +121,9 @@
     <Property Name="cveAdministrador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="FechaExpiracionRecuperar" Type="DateTime" Precision="3" />
+    <Property Name="TokenRecuperar" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
   </EntityType>
-  <Association Name="FK_PI_BA_Aplicacion_PI_BA_Candidato">
-    <End Role="PI_BA_Candidato" Type="Self.PI_BA_Candidato" Multiplicity="0..1" />
-    <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PI_BA_Candidato">
-        <PropertyRef Name="cveCandidato" />
-      </Principal>
-      <Dependent Role="PI_BA_Aplicacion">
-        <PropertyRef Name="cveCandidato" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_PI_BA_Aplicacion_PI_BA_Categoria">
     <End Role="PI_BA_Categoria" Type="Self.PI_BA_Categoria" Multiplicity="0..1" />
     <End Role="PI_BA_Aplicacion" Type="Self.PI_BA_Aplicacion" Multiplicity="*" />
@@ -249,7 +222,6 @@
   </Association>
   <EntityContainer Name="wPremiosInstitucionalesdbEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="PI_BA_Aplicacion" EntityType="Self.PI_BA_Aplicacion" />
-    <EntitySet Name="PI_BA_Candidato" EntityType="Self.PI_BA_Candidato" />
     <EntitySet Name="PI_BA_Categoria" EntityType="Self.PI_BA_Categoria" />
     <EntitySet Name="PI_BA_Convocatoria" EntityType="Self.PI_BA_Convocatoria" />
     <EntitySet Name="PI_BA_Forma" EntityType="Self.PI_BA_Forma" />
@@ -258,10 +230,6 @@
     <EntitySet Name="PI_BA_PreguntasPorForma" EntityType="Self.PI_BA_PreguntasPorForma" />
     <EntitySet Name="PI_BA_Premio" EntityType="Self.PI_BA_Premio" />
     <EntitySet Name="PI_SE_Administrador" EntityType="Self.PI_SE_Administrador" />
-    <AssociationSet Name="FK_PI_BA_Aplicacion_PI_BA_Candidato" Association="Self.FK_PI_BA_Aplicacion_PI_BA_Candidato">
-      <End Role="PI_BA_Candidato" EntitySet="PI_BA_Candidato" />
-      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
-    </AssociationSet>
     <AssociationSet Name="FK_PI_BA_Aplicacion_PI_BA_Categoria" Association="Self.FK_PI_BA_Aplicacion_PI_BA_Categoria">
       <End Role="PI_BA_Categoria" EntitySet="PI_BA_Categoria" />
       <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
@@ -308,6 +276,8 @@
       <Parameter Name="Direccion" Mode="In" Type="String" />
       <Parameter Name="NombreImagen" Mode="In" Type="String" />
       <Parameter Name="FechaPrivacidadDatos" Mode="In" Type="DateTime" />
+      <Parameter Name="FechaExpiracionRecuperar" Mode="In" Type="DateTime" />
+      <Parameter Name="TokenRecuperar" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="AddCategoria">
       <Parameter Name="cveCategoria" Mode="In" Type="String" />
@@ -354,6 +324,8 @@
       <Parameter Name="Apellido" Mode="In" Type="String" />
       <Parameter Name="Correo" Mode="In" Type="String" />
       <Parameter Name="NombreImagen" Mode="In" Type="String" />
+      <Parameter Name="FechaExpiracionRecuperar" Mode="In" Type="DateTime" />
+      <Parameter Name="TokenRecuperar" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="AddPremio">
       <Parameter Name="cvePremio" Mode="In" Type="String" />
@@ -371,10 +343,12 @@
     <FunctionImport Name="GetAdministrador" EntitySet="PI_SE_Administrador" ReturnType="Collection(wPremiosInstitucionalesdbModel.PI_SE_Administrador)">
       <Parameter Name="Correo" Mode="In" Type="String" />
       <Parameter Name="cveAdministrador" Mode="In" Type="String" />
+      <Parameter Name="TokenRecuperar" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="GetCandidato" EntitySet="PI_BA_Candidato" ReturnType="Collection(wPremiosInstitucionalesdbModel.PI_BA_Candidato)">
       <Parameter Name="Correo" Mode="In" Type="String" />
       <Parameter Name="cveCandidato" Mode="In" Type="String" />
+      <Parameter Name="TokenRecuperar" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="GetCategoria" EntitySet="PI_BA_Categoria" ReturnType="Collection(wPremiosInstitucionalesdbModel.PI_BA_Categoria)">
       <Parameter Name="cveCategoria" Mode="In" Type="String" />
@@ -393,6 +367,7 @@
     <FunctionImport Name="GetJuez" EntitySet="PI_BA_Juez" ReturnType="Collection(wPremiosInstitucionalesdbModel.PI_BA_Juez)">
       <Parameter Name="Correo" Mode="In" Type="String" />
       <Parameter Name="cveJuez" Mode="In" Type="String" />
+      <Parameter Name="TokenRecuperar" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="GetMostRecentConvocatoria" EntitySet="PI_BA_Convocatoria" ReturnType="Collection(wPremiosInstitucionalesdbModel.PI_BA_Convocatoria)">
       <Parameter Name="cvePremio" Mode="In" Type="String" />
@@ -407,6 +382,8 @@
       <Parameter Name="cveAdministrador" Mode="In" Type="String" />
       <Parameter Name="Password" Mode="In" Type="String" />
       <Parameter Name="Correo" Mode="In" Type="String" />
+      <Parameter Name="FechaExpiracionRecuperar" Mode="In" Type="DateTime" />
+      <Parameter Name="TokenRecuperar" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="UpdateCandidato">
       <Parameter Name="cveCandidato" Mode="In" Type="String" />
@@ -422,6 +399,8 @@
       <Parameter Name="Direccion" Mode="In" Type="String" />
       <Parameter Name="NombreImagen" Mode="In" Type="String" />
       <Parameter Name="FechaPrivacidadDatos" Mode="In" Type="DateTime" />
+      <Parameter Name="FechaExpiracionRecuperar" Mode="In" Type="DateTime" />
+      <Parameter Name="TokenRecuperar" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="UpdateEvaluacion">
       <Parameter Name="cveEvaluacion" Mode="In" Type="String" />
@@ -438,6 +417,8 @@
       <Parameter Name="Apellido" Mode="In" Type="String" />
       <Parameter Name="Correo" Mode="In" Type="String" />
       <Parameter Name="NombreImagen" Mode="In" Type="String" />
+      <Parameter Name="FechaExpiracionRecuperar" Mode="In" Type="DateTime" />
+      <Parameter Name="TokenRecuperar" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="UpdatePremio">
       <Parameter Name="cvePremio" Mode="In" Type="String" />
@@ -530,6 +511,11 @@
       <Parameter Name="esFinal" Mode="In" Type="String" />
       <Parameter Name="cveSubcategoria" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="PI_BA_Candidato" EntityType="wPremiosInstitucionalesdbModel.PI_BA_Candidato" />
+    <AssociationSet Name="FK_PI_BA_Aplicacion_PI_BA_Candidato" Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato">
+      <End Role="PI_BA_Candidato" EntitySet="PI_BA_Candidato" />
+      <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="GetAdministrador_Result">
     <Property Type="String" Name="cveAdministrador" Nullable="false" MaxLength="50" />
@@ -908,4 +894,37 @@
     <Property Type="String" Name="cveSubcategoria" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="esFinal" Nullable="true" MaxLength="50" />
   </ComplexType>
+  <EntityType Name="PI_BA_Candidato">
+    <Key>
+      <PropertyRef Name="cveCandidato" />
+    </Key>
+    <Property Name="cveCandidato" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Confirmado" Type="Boolean" />
+    <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CodigoConfirmacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Nacionalidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="RFC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="NombreImagen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FechaPrivacidadDatos" Type="DateTime" Precision="0" />
+    <Property Name="FechaExpiracionRecuperar" Type="DateTime" Precision="3" />
+    <Property Name="TokenRecuperar" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PI_BA_Aplicacion" Relationship="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato" FromRole="PI_BA_Candidato" ToRole="PI_BA_Aplicacion" />
+  </EntityType>
+  <Association Name="FK_PI_BA_Aplicacion_PI_BA_Candidato">
+    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Candidato" Role="PI_BA_Candidato" Multiplicity="0..1" />
+    <End Type="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Role="PI_BA_Aplicacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PI_BA_Candidato">
+        <PropertyRef Name="cveCandidato" />
+      </Principal>
+      <Dependent Role="PI_BA_Aplicacion">
+        <PropertyRef Name="cveCandidato" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

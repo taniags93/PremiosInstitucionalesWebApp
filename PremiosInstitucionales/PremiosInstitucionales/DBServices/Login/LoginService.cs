@@ -13,7 +13,7 @@ namespace PremiosInstitucionales.DBServices.Login
             {
                 try
                 {
-                    return dbContext.GetCandidato(sCorreo, null).FirstOrDefault();
+                    return dbContext.GetCandidato(sCorreo, null, null).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -29,7 +29,7 @@ namespace PremiosInstitucionales.DBServices.Login
             {
                 try
                 {
-                    return dbContext.GetJuez(sCorreo, null).FirstOrDefault();
+                    return dbContext.GetJuez(sCorreo, null, null).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -45,7 +45,7 @@ namespace PremiosInstitucionales.DBServices.Login
             {
                 try
                 {
-                    return dbContext.GetAdministrador(sCorreo, null).FirstOrDefault();
+                    return dbContext.GetAdministrador(sCorreo, null, null).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -71,7 +71,7 @@ namespace PremiosInstitucionales.DBServices.Login
 
                     if (!confirmacion)
                     {
-                        return StringValues.RolNotFound;
+                        return StringValues.NotVerified;
 
                     }
                     sUser = candidato.Correo;

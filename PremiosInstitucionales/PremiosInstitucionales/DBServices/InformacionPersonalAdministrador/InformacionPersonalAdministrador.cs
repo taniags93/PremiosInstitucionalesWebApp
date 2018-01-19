@@ -13,7 +13,7 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalAdministrador
             {
                 try
                 {
-                    return dbContext.GetAdministrador(null, null).ToList();
+                    return dbContext.GetAdministrador(null, null, null).ToList();
                 }
                 catch (Exception Ex)
                 {
@@ -29,7 +29,23 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalAdministrador
             {
                 try
                 {
-                    return dbContext.GetAdministrador(correo, null).FirstOrDefault();
+                    return dbContext.GetAdministrador(correo, null, null).FirstOrDefault();
+                }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine("Catched Exception: " + Ex.Message + Environment.NewLine);
+                    return null;
+                }
+            }
+        }
+
+        public static PI_SE_Administrador GetAdministradorByToken(string token)
+        {
+            using (var dbContext = new wPremiosInstitucionalesdbEntities())
+            {
+                try
+                {
+                    return dbContext.GetAdministrador(null, null, token).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -45,7 +61,7 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalAdministrador
             {
                 try
                 {
-                    return dbContext.GetAdministrador(null, id).FirstOrDefault();
+                    return dbContext.GetAdministrador(null, id, null).FirstOrDefault();
                 }
                 catch (Exception Ex)
                 {
@@ -63,7 +79,9 @@ namespace PremiosInstitucionales.DBServices.InformacionPersonalAdministrador
                 {
                     dbContext.UpdateAdministrador(  objAdministrador.cveAdministrador,
                                                     objAdministrador.Password,
-                                                    objAdministrador.Correo  );
+                                                    objAdministrador.Correo,
+                                                    objAdministrador.FechaExpiracionRecuperar,
+                                                    objAdministrador.TokenRecuperar);
                     dbContext.SaveChanges();
                     return true;
                 }

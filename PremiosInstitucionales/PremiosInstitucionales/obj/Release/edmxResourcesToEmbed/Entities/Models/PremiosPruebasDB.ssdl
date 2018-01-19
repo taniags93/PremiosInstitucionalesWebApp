@@ -28,6 +28,8 @@
     <Property Name="Direccion" Type="varchar" MaxLength="50" />
     <Property Name="NombreImagen" Type="varchar" MaxLength="50" />
     <Property Name="FechaPrivacidadDatos" Type="date" />
+    <Property Name="FechaExpiracionRecuperar" Type="datetime" />
+    <Property Name="TokenRecuperar" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="PI_BA_Categoria">
     <Key>
@@ -89,6 +91,8 @@
     <Property Name="Apellido" Type="varchar" MaxLength="100" />
     <Property Name="Correo" Type="varchar" MaxLength="100" />
     <Property Name="NombreImagen" Type="varchar" MaxLength="50" />
+    <Property Name="FechaExpiracionRecuperar" Type="datetime" />
+    <Property Name="TokenRecuperar" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="PI_BA_JuezPorCategoria">
     <Key>
@@ -158,6 +162,8 @@
     <Property Name="cveAdministrador" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="100" />
     <Property Name="Correo" Type="varchar" MaxLength="100" />
+    <Property Name="FechaExpiracionRecuperar" Type="datetime" />
+    <Property Name="TokenRecuperar" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="PI_SE_Configuracion">
     <Key>
@@ -403,6 +409,8 @@
     <Parameter Name="Direccion" Type="varchar" Mode="In" />
     <Parameter Name="NombreImagen" Type="varchar" Mode="In" />
     <Parameter Name="FechaPrivacidadDatos" Type="date" Mode="In" />
+    <Parameter Name="FechaExpiracionRecuperar" Type="date" Mode="In" />
+    <Parameter Name="TokenRecuperar" Type="varchar" Mode="In" />
   </Function>
   <Function Name="AddCategoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveCategoria" Type="varchar" Mode="In" />
@@ -449,6 +457,8 @@
     <Parameter Name="Apellido" Type="varchar" Mode="In" />
     <Parameter Name="Correo" Type="varchar" Mode="In" />
     <Parameter Name="NombreImagen" Type="varchar" Mode="In" />
+    <Parameter Name="FechaExpiracionRecuperar" Type="datetime" Mode="In" />
+    <Parameter Name="TokenRecuperar" Type="varchar" Mode="In" />
   </Function>
   <Function Name="AddPremio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cvePremio" Type="varchar" Mode="In" />
@@ -480,10 +490,12 @@
   <Function Name="GetAdministrador" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Correo" Type="varchar" Mode="In" />
     <Parameter Name="cveAdministrador" Type="varchar" Mode="In" />
+    <Parameter Name="TokenRecuperar" Type="varchar" Mode="In" />
   </Function>
   <Function Name="GetCandidato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Correo" Type="varchar" Mode="In" />
     <Parameter Name="cveCandidato" Type="varchar" Mode="In" />
+    <Parameter Name="TokenRecuperar" Type="varchar" Mode="In" />
   </Function>
   <Function Name="GetCategoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveCategoria" Type="varchar" Mode="In" />
@@ -512,6 +524,7 @@
   <Function Name="GetJuez" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Correo" Type="varchar" Mode="In" />
     <Parameter Name="cveJuez" Type="varchar" Mode="In" />
+    <Parameter Name="TokenRecuperar" Type="varchar" Mode="In" />
   </Function>
   <Function Name="GetMostRecentConvocatoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cvePremio" Type="varchar" Mode="In" />
@@ -529,6 +542,8 @@
     <Parameter Name="cveAdministrador" Type="varchar" Mode="In" />
     <Parameter Name="Password" Type="varchar" Mode="In" />
     <Parameter Name="Correo" Type="varchar" Mode="In" />
+    <Parameter Name="FechaExpiracionRecuperar" Type="datetime" Mode="In" />
+    <Parameter Name="TokenRecuperar" Type="varchar" Mode="In" />
   </Function>
   <Function Name="UpdateCandidato" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveCandidato" Type="varchar" Mode="In" />
@@ -544,6 +559,8 @@
     <Parameter Name="Direccion" Type="varchar" Mode="In" />
     <Parameter Name="NombreImagen" Type="varchar" Mode="In" />
     <Parameter Name="FechaPrivacidadDatos" Type="date" Mode="In" />
+    <Parameter Name="FechaExpiracionRecuperar" Type="datetime" Mode="In" />
+    <Parameter Name="TokenRecuperar" Type="varchar" Mode="In" />
   </Function>
   <Function Name="UpdateConvocatoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cveConvocatoria" Type="varchar" Mode="In" />
@@ -572,6 +589,8 @@
     <Parameter Name="Apellido" Type="varchar" Mode="In" />
     <Parameter Name="Correo" Type="varchar" Mode="In" />
     <Parameter Name="NombreImagen" Type="varchar" Mode="In" />
+    <Parameter Name="FechaExpiracionRecuperar" Type="datetime" Mode="In" />
+    <Parameter Name="TokenRecuperar" Type="varchar" Mode="In" />
   </Function>
   <Function Name="UpdatePremio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="cvePremio" Type="varchar" Mode="In" />
