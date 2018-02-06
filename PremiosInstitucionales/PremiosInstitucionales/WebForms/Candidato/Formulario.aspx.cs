@@ -248,49 +248,9 @@ namespace PremiosInstitucionales.WebForms
                 AplicacionService.CrearAplicacion(aplicacionNueva, respuestas);
                 Response.Redirect("AplicacionesCandidato.aspx?r=true", false);
             }
-
-
-            /*
-            List<PI_BA_Respuesta> respuestas = new List<PI_BA_Respuesta>();
-            List<string> ltRespuestas = new List<string>();
-            string[] ctrls = Request.Form.ToString().Split('&');
-            var preguntas = AplicacionService.GetFormularioByCategoria(aplicacionNueva.cveCategoria);
-
-            System.Diagnostics.Debug.Print("debug");
-            System.Diagnostics.Debug.Print(ctrls.ToString());
-            for (int i = 0; i < preguntas.Count; i++)
-            {
-                PI_BA_Pregunta pregunta = preguntas[i];
-                int iIndex = GetIndexFromArray(ctrls, "textbox_" + pregunta.cvePregunta);
-
-                if (iIndex > -1)
-                {
-                    String sRespuesta = ctrls[iIndex].Split('=')[1];
-                    PI_BA_Respuesta respActual = new PI_BA_Respuesta();
-                    respActual.cveRespuesta = Guid.NewGuid().ToString();
-                    respActual.cvePregunta = pregunta.cvePregunta;
-                    respActual.cveAplicacion = aplicacionNueva.cveAplicacion;
-                    respActual.Valor = Server.UrlDecode(sRespuesta);
-                    respuestas.Add(respActual);
-
-                    ltRespuestas.Add(sRespuesta);
-                }
-            }
-
-            if (ltRespuestas.Count == preguntas.Count)
-            {
-                String sNombreArchivo = UploadFile();
-
-                if (sNombreArchivo != "Error")
-                {
-                    aplicacionNueva.NombreArchivo = sNombreArchivo;
-                    AplicacionService.CrearAplicacion(aplicacionNueva, respuestas);
-                    Response.Redirect("AplicacionesCandidato.aspx?r=true", false);
-                }
-            }*/
         }
 
-        private int GetIndexFromArray(String[] arr, String value)
+       private int GetIndexFromArray(String[] arr, String value)
         {
             for (int i = 0; i < arr.Length; i++)
             {

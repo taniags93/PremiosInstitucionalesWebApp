@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="9d4f73b168bf4c1b83ef9a0ac1b25168" Name="Diagram1">
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Aplicacion" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Candidato" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Categoria" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Convocatoria" Width="2.25" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Forma" Width="1.5" PointX="7.5" PointY="10.25" IsExpanded="true" />
@@ -15,7 +14,6 @@
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_PreguntasPorForma" Width="1.5" PointX="9.75" PointY="10.5" IsExpanded="true" />
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Premio" Width="1.875" PointX="0.5" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_SE_Administrador" Width="1.5" PointX="0.75" PointY="10.25" IsExpanded="true" />
-        <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato" ManuallyRouted="false" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Categoria" ManuallyRouted="false" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Categoria_PI_BA_Aplicacion" ManuallyRouted="false" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Categoria_PI_BA_Convocatoria" ManuallyRouted="false" />
@@ -38,6 +36,8 @@
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Aplicacion" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Juez" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Subcategoria" />
+        <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Candidato" Width="1.5" PointX="0.875" PointY="5.875" />
+        <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -5,7 +5,7 @@
     
     <!-- JS -->
     <script src='<%= ResolveUrl("~/Resources/js/jquery-ui.js")%>' defer="defer"></script>
-    <script src='<%= ResolveUrl("~/Resources/js/jTituloNuevaConvocatoriaTB.js")%>' defer="defer"></script>
+    <script src='<%= ResolveUrl("~/Resources/js/jquery-ui.multidatespicker.js")%>' type="text/javascript" defer="defer"></script>
     <script src='<%= ResolveUrl("~/Resources/js/jquery.dataTables.js")%>' type="text/javascript" defer="defer"></script>
     <script src='<%= ResolveUrl("~/Resources/js/crearConvocatoria.js")%>' type="text/javascript" defer="defer"></script>
 

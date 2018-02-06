@@ -34,13 +34,13 @@
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Nombre(s):</label>
                             <div class="col-lg-8">
-                                <asp:TextBox ID="NombresTextBox" runat="server" class="form-control" type="text" />
+                                <asp:TextBox ID="NombresTextBox" runat="server" class="form-control" type="text"  maxlength='20'/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Apellido(s):</label>
                             <div class="col-lg-8">
-                                <asp:TextBox ID="ApellidosTextBox" runat="server" class="form-control" type="text" />
+                                <asp:TextBox ID="ApellidosTextBox" runat="server" class="form-control" type="text" maxlength='20'/>
                             </div>
                         </div>
                         <div class="form-group">

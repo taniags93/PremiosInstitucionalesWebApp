@@ -159,7 +159,6 @@
 						                    <th>IP</th>
 						                    <th>Nombres</th>
 						                    <th>Apellidos</th>
-						                    <th>Correo</th>
 					                    </tr>
 				                    </thead>
 				                    <tbody id="listaJuecesTableBody" runat="server">
@@ -179,7 +178,6 @@
 						                    <th>IP</th>
 						                    <th>Nombres</th>
 						                    <th>Apellidos</th>
-						                    <th>Correo</th>
 					                    </tr>
 				                    </thead>
 				                    <tbody id="listaJuezTableAsignadosBody" runat="server">

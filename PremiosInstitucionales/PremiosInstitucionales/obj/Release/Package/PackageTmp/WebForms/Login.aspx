@@ -13,6 +13,7 @@
 					</div>
 					<div class="login-form">
 						<div class="sign-in-htm">
+                            <asp:Panel ID="Panel1" runat="server" DefaultButton = "Button1">
 							<div class="int-group">
 								<label for="user" class="int-label">Correo Electrónico<span class="req">*</span></label>
 								<asp:TextBox class="int-input" ID="user" ClientIDMode="Static" runat="server" autocomplete="new-password" spellcheck="false"></asp:TextBox>
@@ -21,6 +22,7 @@
 								<label for="passlogin" class="int-label">Contraseña<span class="req">*</span></label>
 								<asp:TextBox class="int-input" ID="passlogin" ClientIDMode="Static" runat="server" type="password" autocomplete="new-password" data-type="password" spellcheck="false"></asp:TextBox>
 							</div>
+                            </asp:Panel>
 							<div class="int-group">
 								<input id="checkBox" type="checkbox" class="check"/>
 								<label for="check"><span class="icon"></span> Recordarme</label>

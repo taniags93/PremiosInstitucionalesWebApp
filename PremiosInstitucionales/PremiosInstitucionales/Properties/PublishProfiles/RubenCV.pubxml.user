@@ -70,13 +70,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2017 10:38:11</publishTime>
     </File>
     <File Include="bin/PremiosInstitucionales.dll">
-      <publishTime>12/06/2017 14:49:17</publishTime>
+      <publishTime>01/19/2018 17:59:11</publishTime>
     </File>
     <File Include="bin/PremiosInstitucionales.dll.config">
       <publishTime>11/29/2017 23:13:32</publishTime>
     </File>
     <File Include="bin/PremiosInstitucionales.pdb">
-      <publishTime>12/06/2017 14:49:17</publishTime>
+      <publishTime>01/19/2018 17:59:11</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>09/30/2017 10:38:10</publishTime>
@@ -139,7 +139,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2017 17:14:41</publishTime>
     </File>
     <File Include="Entities/Models/PremiosPruebasDB.edmx.diagram">
-      <publishTime>11/29/2017 22:56:44</publishTime>
+      <publishTime>01/10/2018 21:04:52</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>10/30/2017 14:45:55</publishTime>
@@ -151,7 +151,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/25/2017 14:41:32</publishTime>
     </File>
     <File Include="MP-Login.Master">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>12/07/2017 10:21:16</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>11/29/2017 22:56:45</publishTime>
@@ -435,6 +435,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Values/CorreoInvitacionJuez.txt">
       <publishTime>10/30/2017 14:45:54</publishTime>
     </File>
+    <File Include="Values/CorreoModificacionPassword.txt">
+      <publishTime>01/15/2018 19:44:59</publishTime>
+    </File>
     <File Include="Values/CorreoRecuperaPassword.txt">
       <publishTime>10/30/2017 14:45:54</publishTime>
     </File>
@@ -454,10 +457,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/30/2017 14:45:54</publishTime>
     </File>
     <File Include="WebForms/Administrador/AdministraConvocatorias.aspx">
-      <publishTime>10/31/2017 15:39:56</publishTime>
+      <publishTime>01/03/2018 16:17:51</publishTime>
     </File>
     <File Include="WebForms/Administrador/AdministraFormulario.aspx">
-      <publishTime>11/15/2017 16:17:21</publishTime>
+      <publishTime>01/12/2018 18:23:34</publishTime>
     </File>
     <File Include="WebForms/Administrador/AdministraGanadorCategoria.aspx">
       <publishTime>10/30/2017 14:45:54</publishTime>
@@ -490,7 +493,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/30/2017 18:58:22</publishTime>
     </File>
     <File Include="WebForms/Candidato/InformacionPersonalCandidato.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>01/09/2018 22:26:33</publishTime>
     </File>
     <File Include="WebForms/Candidato/InicioCandidato.aspx">
       <publishTime>10/30/2017 14:45:54</publishTime>
@@ -514,7 +517,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/25/2017 14:59:28</publishTime>
     </File>
     <File Include="WebForms/Juez/InformacionPersonalJuez.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>01/09/2018 22:42:19</publishTime>
     </File>
     <File Include="WebForms/Juez/InicioJuez.aspx">
       <publishTime>10/30/2017 14:45:54</publishTime>
@@ -529,7 +532,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/30/2017 18:15:20</publishTime>
     </File>
     <File Include="WebForms/Login.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>01/03/2018 18:24:55</publishTime>
     </File>
     <File Include="WebForms/RecuperaCuenta.aspx">
       <publishTime>10/30/2017 14:45:54</publishTime>
