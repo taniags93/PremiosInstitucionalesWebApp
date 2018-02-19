@@ -315,7 +315,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PI_BA_Pregunta_PI_BA_Subcategoria">
-          <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="0..1" />
+          <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PI_BA_Pregunta" Type="Self.PI_BA_Pregunta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PI_BA_Subcategoria">
@@ -339,7 +341,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PI_BA_PreguntasPorForma_PI_BA_Pregunta">
-          <End Role="PI_BA_Pregunta" Type="Self.PI_BA_Pregunta" Multiplicity="1" />
+          <End Role="PI_BA_Pregunta" Type="Self.PI_BA_Pregunta" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PI_BA_PreguntasPorForma" Type="Self.PI_BA_PreguntasPorForma" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PI_BA_Pregunta">
@@ -1142,7 +1146,6 @@
             <Parameter Name="FechaEdicion" Mode="In" Type="DateTime" />
             <Parameter Name="UsuarioEdicion" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="PI_SE_Configuracion" EntityType="wPremiosInstitucionalesdbModel.PI_SE_Configuracion" />
           <FunctionImport Name="GetConfiguracion" EntitySet="PI_SE_Configuracion" ReturnType="Collection(wPremiosInstitucionalesdbModel.PI_SE_Configuracion)">
           <Parameter Name="cveConfiguracion" Mode="In" Type="String" />
           </FunctionImport>
@@ -1216,6 +1219,7 @@
             <End Role="PI_BA_Candidato" EntitySet="PI_BA_Candidato" />
             <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
           </AssociationSet>
+          <EntitySet Name="PI_SE_Configuracion" EntityType="wPremiosInstitucionalesdbModel.PI_SE_Configuracion" />
           </EntityContainer>
         <ComplexType Name="GetAdministrador_Result">
           <Property Type="String" Name="cveAdministrador" Nullable="false" MaxLength="50" />
@@ -1336,16 +1340,6 @@
           <Property Type="DateTime" Name="FechaEdicion" Nullable="true" />
           <Property Type="String" Name="UsuarioEdicion" Nullable="true" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="PI_SE_Configuracion">
-          <Key>
-            <PropertyRef Name="cveConfiguracion" />
-          </Key>
-          <Property Name="cveConfiguracion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Host" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Puerto" Type="Int16" Nullable="false" />
-        </EntityType>
         <ComplexType Name="GetConfiguracion_Result">
           <Property Type="String" Name="cveConfiguracion" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Correo" Nullable="true" MaxLength="100" />
@@ -1627,6 +1621,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PI_SE_Configuracion">
+          <Key>
+            <PropertyRef Name="cveConfiguracion" />
+          </Key>
+          <Property Name="cveConfiguracion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Host" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Puerto" Type="Int16" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1780,17 +1784,6 @@
           <FunctionImportMapping FunctionImportName="UpdateJuez" FunctionName="wPremiosInstitucionalesdbModel.Store.UpdateJuez" />
           <FunctionImportMapping FunctionImportName="UpdatePremio" FunctionName="wPremiosInstitucionalesdbModel.Store.UpdatePremio" />
           <FunctionImportMapping FunctionImportName="UpdateConvocatoria" FunctionName="wPremiosInstitucionalesdbModel.Store.UpdateConvocatoria" />
-          <EntitySetMapping Name="PI_SE_Configuracion">
-            <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_SE_Configuracion">
-              <MappingFragment StoreEntitySet="PI_SE_Configuracion">
-                <ScalarProperty Name="Puerto" ColumnName="Puerto" />
-                <ScalarProperty Name="Host" ColumnName="Host" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Correo" ColumnName="Correo" />
-                <ScalarProperty Name="cveConfiguracion" ColumnName="cveConfiguracion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="GetConfiguracion" FunctionName="wPremiosInstitucionalesdbModel.Store.GetConfiguracion">
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="AddSubcategoria" FunctionName="wPremiosInstitucionalesdbModel.Store.AddSubcategoria" />
@@ -1864,6 +1857,17 @@
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="cveCandidato" ColumnName="cveCandidato" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PI_SE_Configuracion">
+            <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_SE_Configuracion">
+              <MappingFragment StoreEntitySet="PI_SE_Configuracion">
+                <ScalarProperty Name="Puerto" ColumnName="Puerto" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="cveConfiguracion" ColumnName="cveConfiguracion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

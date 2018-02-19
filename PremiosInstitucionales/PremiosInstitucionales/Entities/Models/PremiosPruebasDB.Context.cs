@@ -36,12 +36,12 @@ namespace PremiosInstitucionales.Entities.Models
         public virtual DbSet<PI_BA_PreguntasPorForma> PI_BA_PreguntasPorForma { get; set; }
         public virtual DbSet<PI_BA_Premio> PI_BA_Premio { get; set; }
         public virtual DbSet<PI_SE_Administrador> PI_SE_Administrador { get; set; }
-        public virtual DbSet<PI_SE_Configuracion> PI_SE_Configuracion { get; set; }
         public virtual DbSet<PI_BA_Respuesta> PI_BA_Respuesta { get; set; }
         public virtual DbSet<PI_BA_Pregunta> PI_BA_Pregunta { get; set; }
         public virtual DbSet<PI_BA_Subcategoria> PI_BA_Subcategoria { get; set; }
         public virtual DbSet<PI_BA_Evaluacion> PI_BA_Evaluacion { get; set; }
         public virtual DbSet<PI_BA_Candidato> PI_BA_Candidato { get; set; }
+        public virtual DbSet<PI_SE_Configuracion> PI_SE_Configuracion { get; set; }
     
         public virtual int AddCandidato(string cveCandidato, string password, string nombre, string apellido, Nullable<bool> confirmado, string correo, string codigoConfirmacion, string telefono, string nacionalidad, string rFC, string direccion, string nombreImagen, Nullable<System.DateTime> fechaPrivacidadDatos, Nullable<System.DateTime> fechaExpiracionRecuperar, string tokenRecuperar)
         {

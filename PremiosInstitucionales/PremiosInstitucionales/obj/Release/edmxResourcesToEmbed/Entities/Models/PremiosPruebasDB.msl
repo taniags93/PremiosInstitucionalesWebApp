@@ -137,17 +137,6 @@
     <FunctionImportMapping FunctionImportName="UpdateJuez" FunctionName="wPremiosInstitucionalesdbModel.Store.UpdateJuez" />
     <FunctionImportMapping FunctionImportName="UpdatePremio" FunctionName="wPremiosInstitucionalesdbModel.Store.UpdatePremio" />
     <FunctionImportMapping FunctionImportName="UpdateConvocatoria" FunctionName="wPremiosInstitucionalesdbModel.Store.UpdateConvocatoria" />
-    <EntitySetMapping Name="PI_SE_Configuracion">
-      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_SE_Configuracion">
-        <MappingFragment StoreEntitySet="PI_SE_Configuracion">
-          <ScalarProperty Name="Puerto" ColumnName="Puerto" />
-          <ScalarProperty Name="Host" ColumnName="Host" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="Correo" ColumnName="Correo" />
-          <ScalarProperty Name="cveConfiguracion" ColumnName="cveConfiguracion" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="GetConfiguracion" FunctionName="wPremiosInstitucionalesdbModel.Store.GetConfiguracion" />
     <FunctionImportMapping FunctionImportName="AddSubcategoria" FunctionName="wPremiosInstitucionalesdbModel.Store.AddSubcategoria" />
     <EntitySetMapping Name="PI_BA_Respuesta">
@@ -218,6 +207,17 @@
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="cveCandidato" ColumnName="cveCandidato" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PI_SE_Configuracion">
+      <EntityTypeMapping TypeName="wPremiosInstitucionalesdbModel.PI_SE_Configuracion">
+        <MappingFragment StoreEntitySet="PI_SE_Configuracion">
+          <ScalarProperty Name="Puerto" ColumnName="Puerto" />
+          <ScalarProperty Name="Host" ColumnName="Host" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="cveConfiguracion" ColumnName="cveConfiguracion" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

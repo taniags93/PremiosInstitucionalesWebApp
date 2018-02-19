@@ -1,7 +1,19 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" 
     Inherits="PremiosInstitucionales.WebForms.Login" MasterPageFile="~/MP-Login.Master" EnableEventValidation="false"%>
 
+
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolderBody" Runat="Server">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113648521-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-113648521-1');
+    </script>
+
 	<div class="paginasIniciales">
 		<div id="vidtop-content">
 			<div class="login-wrap">

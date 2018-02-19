@@ -14,6 +14,15 @@
     <script src='<%= ResolveUrl("~/Resources/js/custom-file-input.js") %>' defer="defer"></script>
     <script src='<%= ResolveUrl("~/Resources/js/llenarFormulario.js")%>' type="text/javascript" defer="defer"></script>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113648521-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-113648521-1');
+    </script>
 
     <div class="container fadeView">
 
@@ -58,7 +67,7 @@
                 <button type="button" class="btn btn-default">Cancelar</button>
             </a>
             <button type="button" class="btn btn-primary" onclick="sendFormAux()">Enviar</button>
-            <asp:Button Style="display: none;" ID="EnviarBtn" runat="server" OnClick="EnviarAplicacion" Text="Enviar aplicación" />
+            <asp:Button Style="display: none;" ID="EnviarBtn" runat="server" OnClick="EnviarAplicacion" autopostback="false" Text="Enviar aplicación" />
         </div>
     </div>
 </asp:Content>

@@ -22,7 +22,6 @@
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Convocatoria_PI_BA_Premio" ManuallyRouted="false" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_PreguntasPorForma_PI_BA_Forma" ManuallyRouted="false" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_JuezPorCategoria_PI_BA_Juez" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_SE_Configuracion" Width="1.5" PointX="10.375" PointY="0.75" />
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Respuesta" Width="1.5" PointX="12.25" PointY="9.625" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Respuesta_PI_BA_Aplicacion" />
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Pregunta" Width="1.5" PointX="3.375" PointY="14.625" />
@@ -38,6 +37,7 @@
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Evaluacion_PI_BA_Subcategoria" />
         <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_BA_Candidato" Width="1.5" PointX="0.875" PointY="5.875" />
         <AssociationConnector Association="wPremiosInstitucionalesdbModel.FK_PI_BA_Aplicacion_PI_BA_Candidato" />
+        <EntityTypeShape EntityType="wPremiosInstitucionalesdbModel.PI_SE_Configuracion" Width="1.5" PointX="7.375" PointY="6.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

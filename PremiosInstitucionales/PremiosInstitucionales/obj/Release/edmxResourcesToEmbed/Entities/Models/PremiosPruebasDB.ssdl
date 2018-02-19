@@ -310,7 +310,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_PI_BA_Pregunta_PI_BA_Subcategoria">
-    <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="0..1" />
+    <End Role="PI_BA_Subcategoria" Type="Self.PI_BA_Subcategoria" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="PI_BA_Pregunta" Type="Self.PI_BA_Pregunta" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="PI_BA_Subcategoria">
@@ -334,7 +336,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_PI_BA_PreguntasPorForma_PI_BA_Pregunta">
-    <End Role="PI_BA_Pregunta" Type="Self.PI_BA_Pregunta" Multiplicity="1" />
+    <End Role="PI_BA_Pregunta" Type="Self.PI_BA_Pregunta" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="PI_BA_PreguntasPorForma" Type="Self.PI_BA_PreguntasPorForma" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="PI_BA_Pregunta">

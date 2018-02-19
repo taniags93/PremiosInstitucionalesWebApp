@@ -442,7 +442,6 @@
       <Parameter Name="FechaEdicion" Mode="In" Type="DateTime" />
       <Parameter Name="UsuarioEdicion" Mode="In" Type="String" />
     </FunctionImport>
-    <EntitySet Name="PI_SE_Configuracion" EntityType="wPremiosInstitucionalesdbModel.PI_SE_Configuracion" />
     <FunctionImport Name="GetConfiguracion" EntitySet="PI_SE_Configuracion" ReturnType="Collection(wPremiosInstitucionalesdbModel.PI_SE_Configuracion)">
       <Parameter Name="cveConfiguracion" Mode="In" Type="String" />
     </FunctionImport>
@@ -516,6 +515,7 @@
       <End Role="PI_BA_Candidato" EntitySet="PI_BA_Candidato" />
       <End Role="PI_BA_Aplicacion" EntitySet="PI_BA_Aplicacion" />
     </AssociationSet>
+    <EntitySet Name="PI_SE_Configuracion" EntityType="wPremiosInstitucionalesdbModel.PI_SE_Configuracion" />
   </EntityContainer>
   <ComplexType Name="GetAdministrador_Result">
     <Property Type="String" Name="cveAdministrador" Nullable="false" MaxLength="50" />
@@ -636,16 +636,6 @@
     <Property Type="DateTime" Name="FechaEdicion" Nullable="true" />
     <Property Type="String" Name="UsuarioEdicion" Nullable="true" MaxLength="50" />
   </ComplexType>
-  <EntityType Name="PI_SE_Configuracion">
-    <Key>
-      <PropertyRef Name="cveConfiguracion" />
-    </Key>
-    <Property Name="cveConfiguracion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Host" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Puerto" Type="Int16" Nullable="false" />
-  </EntityType>
   <ComplexType Name="GetConfiguracion_Result">
     <Property Type="String" Name="cveConfiguracion" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="Correo" Nullable="true" MaxLength="100" />
@@ -927,4 +917,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="PI_SE_Configuracion">
+    <Key>
+      <PropertyRef Name="cveConfiguracion" />
+    </Key>
+    <Property Name="cveConfiguracion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Correo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Host" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Puerto" Type="Int16" Nullable="false" />
+  </EntityType>
 </Schema>
