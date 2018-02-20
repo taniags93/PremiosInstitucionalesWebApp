@@ -6,7 +6,11 @@
 <p>Hemos recibido una solicitud para registrar una cuenta y continuar con tu proceso de inscripción a 
 Premio Institucionales Tec de Monterrey. </p>
 <p>Haz clic en el botón que aparece a continuación para confirmar tu cuenta.</p>
+<!--
+desarrollo
 <a href="http://10.2.40.125/WebForms/Login.aspx?c=%CONFIRMACION%">Confirma tu cuenta</a>
+-->
+<a href="http://premiosinstitucionalespprd.tec.mx/WebForms/Login.aspx?c=%CONFIRMACION%">Confirma tu cuenta</a>
 <br>
 <br>
 <hr>

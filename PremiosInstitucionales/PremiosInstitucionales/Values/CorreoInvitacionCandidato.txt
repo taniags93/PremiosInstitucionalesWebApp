@@ -4,7 +4,12 @@
 <p style="text-align:left">%FECHA%</p>
 <p>Hola %CORREO%</p>
 <p>Has recibido una invitación para unirte a la plataforma de los Premios Institucionales Tec de Monterrey si deseas registrarte, haz clic en el botón que aparecerá a continuación en caso contrario, hacer caso omiso a este correo.</p>
+<!-- 
+desarrollo
 <a href="http://10.2.40.125/PremiosInstitucionales/WebForms/Login.aspx">Registrarse</a>
+-->
+<a href="http://premiosinstitucionalespprd.tec.mx/PremiosInstitucionales/WebForms/Login.aspx">Registrarse</a>
+
 <br>
 <br>
 <hr>
