@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MP-Global.Master" AutoEventWireup="true" CodeBehind="InformacionPersonalJuez.aspx.cs" Inherits="PremiosInstitucionales.WebForms.InformacionPersonalJuez" EnableEventValidation="false" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MP-Global.Master" AutoEventWireup="true" CodeBehind="InformacionPersonalJuez.aspx.cs" Inherits="PremiosInstitucionales.WebForms.InformacionPersonalJuez" EnableEventValidation="false"%>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
         <div class="container fadeView">

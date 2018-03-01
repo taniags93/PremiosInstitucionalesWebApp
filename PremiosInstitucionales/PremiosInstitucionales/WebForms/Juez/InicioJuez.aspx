@@ -31,7 +31,7 @@
 		    <div class="row">
 			    <div class="col-lg-6 col-md-6 text-center">
 				    <div class="service-box">
-					    <a href="PremiosInstitucionalesJuez.aspx"><img class="service-icons" src='<%= ResolveUrl("/Resources/svg/juez.svg") %>'/></a>
+					    <a href="PremiosInstitucionalesJuez.aspx"><img class="service-icons" src='<%= ResolveUrl("/Resources/svg/juez.svg")%>'/></a>
 					    <h3>Premios Institucionales</h3>
 					    <hr class="shorthr" style="margin-bottom:10px;"/>
 					    <p class="text-muted">Seleccione el Premio en el que participa como Jurado e ingrese a los registros de los candidatos a evaluar.</p>

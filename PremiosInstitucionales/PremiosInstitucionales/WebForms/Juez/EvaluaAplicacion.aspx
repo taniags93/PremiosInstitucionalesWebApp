@@ -8,7 +8,7 @@
 
     
  <!-- CSS -->
-    <link href='<%= ResolveUrl("~/Resources/css/stylec.css")%>' rel="stylesheet" type="text/css"/>
+    <link href='<%= ResolveUrl("~/Resources/css/stylec.css") %>' rel="stylesheet" type="text/css"/>
 
 
     <div class="container fadeView">
