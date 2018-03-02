@@ -309,13 +309,13 @@ namespace PremiosInstitucionales.WebForms
 
                     // name column
                     TableCell tdName = new TableCell();
-                    tdName.Text = juez.Nombre;
+                    LiteralControl lHiddenValue = new LiteralControl("<span id=\"" + juez.cveJuez + "\">" + juez.Nombre + "</span>");
+                    tdName.Controls.Add(lHiddenValue);
 
                     // last name column
                     TableCell tdLastName = new TableCell();
                     tdLastName.Text = juez.Apellido;
 
-                    
                     tr.Controls.Add(tdIP);
                     tr.Controls.Add(tdName);
                     tr.Controls.Add(tdLastName);
