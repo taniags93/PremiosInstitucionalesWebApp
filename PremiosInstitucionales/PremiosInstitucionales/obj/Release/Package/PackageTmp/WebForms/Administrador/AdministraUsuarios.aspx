@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder" runat="server">
     
-    <script src='<%= ResolveUrl("~/Resources/js/jquery.dataTables.js")%>' type="text/javascript" defer="defer"></script>
+    <script src='<%= ResolveUrl("~/Resources/js/jquery.dataTables.js") %>' type="text/javascript" defer="defer"></script>
     <script src='<%= ResolveUrl("~/Resources/js/listaUsuariosCandidato.js")%>' type="text/javascript" defer="defer"></script>
     <link href='<%= ResolveUrl("~/Resources/css/dataTables.css")%>' rel="stylesheet" type="text/css" /> 
 

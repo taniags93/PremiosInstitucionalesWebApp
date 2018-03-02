@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" 
-    Inherits="PremiosInstitucionales.WebForms.Login" MasterPageFile="~/MP-Login.Master" EnableEventValidation="false"%>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="PremiosInstitucionales.WebForms.Login" MasterPageFile="~/MP-Login.Master" EnableEventValidation="false"%>
 
 
 

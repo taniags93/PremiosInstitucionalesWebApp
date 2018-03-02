@@ -4,10 +4,16 @@
 <p style="text-align:left">%FECHA%</p>
 <p>Estimado(a) %CORREO%</p>
 <p>Te damos la más cordial bienvenida a la plataforma de Premios Tec y agradecemos tu apoyo como parte del jurado.</p>
+<!--
+desarrollo
 <p>Utilizando esta misma direccion de correo (%CORREO%) y la contraseña "%PASSWORD%" podras acceder a la <a href="http://10.2.40.125/PremiosInstitucionales/WebForms/Login.aspx">plataforma</a>, donde podras ver los diferentes premios y categorías a los cuales fue asignado(a).
+-->
+<p>Utilizando esta misma direccion de correo (%CORREO%) y la contraseña "%PASSWORD%" podras acceder a la <a href="http://premiosinstitucionalespprd.tec.mx/WebForms/Login.aspx">plataforma</a>, donde podras ver los diferentes premios y categorías a los cuales fue asignado(a).
+
 <br/>
 Por último, le pedimos atentamente si es posible que modifique su contraseña lo antes posible.</p>
 <br>
+
 <br>
 <hr>
 <div style="text-align:center">

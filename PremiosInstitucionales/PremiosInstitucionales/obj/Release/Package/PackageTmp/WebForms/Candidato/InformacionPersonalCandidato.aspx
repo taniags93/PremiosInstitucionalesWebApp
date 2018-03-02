@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InformacionPersonalCandidato.aspx.cs"
-    Inherits="PremiosInstitucionales.WebForms.InformacionPersonalCandidato" MasterPageFile="~/MP-Global.Master" EnableEventValidation="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InformacionPersonalCandidato.aspx.cs" Inherits="PremiosInstitucionales.WebForms.InformacionPersonalCandidato" MasterPageFile="~/MP-Global.Master" EnableEventValidation="false" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder" runat="Server">
     <!-- Invite candidate -->

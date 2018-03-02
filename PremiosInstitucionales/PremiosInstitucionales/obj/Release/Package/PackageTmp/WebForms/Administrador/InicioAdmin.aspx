@@ -18,7 +18,7 @@
                     <div class="col-lg-6">
                         <div class="row service-list">
                             <div class="col-xs-4 text-center" style="height: 96px">
-                                <img class="service-icon" src='<%= ResolveUrl("/Resources/svg/badgebg.svg") %>'/>
+                                <img class="service-icon" src='<%= ResolveUrl("/Resources/svg/badgebg.svg")%>'/>
                             </div>
                             <div class="col-xs-8">
                                 <h5>Premios Institucionales </h5>

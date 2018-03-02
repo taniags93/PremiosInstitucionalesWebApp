@@ -140,7 +140,7 @@ namespace PremiosInstitucionales.WebForms
             cartaDocumento.Style.Add("font-size", "16pt");
             cartaDocumento.Style.Add("color", "#00acc1");
             cartaDocumento.Style.Add("text-decoration", "underline");
-            cartaDocumento.Command += new CommandEventHandler(DownloadFile);
+            cartaDocumento.Command += new CommandEventHandler(DownloadFile2);
             cartaDocumento.CommandArgument = cveAplicacion;
             PanelArchivo.Controls.Add(cartaDocumento);
 
@@ -412,6 +412,31 @@ namespace PremiosInstitucionales.WebForms
             {
                 MasterPage.ShowMessage("Error", "El servidor no encontró el archivo.");
             }
+        }
+
+        public void DownloadFile2(object sender, CommandEventArgs e)
+        {
+            var app = AplicacionService.GetAplicacionById(e.CommandArgument.ToString());
+            string FileName = app.ArchivoCarta;
+            string FilePath = Server.MapPath("~/UsersAppsFiles/") + FileName;
+            FileInfo fs = new FileInfo(FilePath);
+            int FileLength = Convert.ToInt32(fs.Length);
+
+            if (File.Exists(FilePath))
+            {
+                Response.Clear();
+                Response.BufferOutput = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AddHeader("Content-Length", FileLength.ToString());
+                Response.AddHeader("content-disposition", "attachment; filename=" + FileName);
+                Response.TransmitFile(FilePath);
+                Response.Flush();
+            }
+            else
+            {
+                MasterPage.ShowMessage("Error", "El servidor no encontró el archivo.");
+            }
+
         }
 
         protected void ModificarAplicacion(object sender, EventArgs e)

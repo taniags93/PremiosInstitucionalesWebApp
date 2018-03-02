@@ -70,13 +70,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/30/2017 09:38:11</publishTime>
     </File>
     <File Include="bin/PremiosInstitucionales.dll">
-      <publishTime>02/09/2018 14:49:01</publishTime>
+      <publishTime>03/01/2018 22:24:17</publishTime>
     </File>
     <File Include="bin/PremiosInstitucionales.dll.config">
-      <publishTime>02/18/2018 10:56:44</publishTime>
+      <publishTime>03/01/2018 21:36:52</publishTime>
     </File>
     <File Include="bin/PremiosInstitucionales.pdb">
-      <publishTime>02/09/2018 14:49:01</publishTime>
+      <publishTime>03/01/2018 22:24:17</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>09/30/2017 09:38:10</publishTime>
@@ -151,7 +151,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/25/2017 13:41:32</publishTime>
     </File>
     <File Include="MP-Login.Master">
-      <publishTime>12/07/2017 09:21:16</publishTime>
+      <publishTime>02/27/2018 14:50:37</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>11/29/2017 21:56:45</publishTime>
@@ -427,13 +427,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/30/2017 14:45:54</publishTime>
     </File>
     <File Include="Values/CorreoConfirmaCuenta.txt">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>03/01/2018 21:09:33</publishTime>
     </File>
     <File Include="Values/CorreoInvitacionCandidato.txt">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>03/01/2018 21:09:41</publishTime>
     </File>
     <File Include="Values/CorreoInvitacionJuez.txt">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>03/01/2018 21:09:45</publishTime>
     </File>
     <File Include="Values/CorreoModificacionPassword.txt">
       <publishTime>01/15/2018 18:44:59</publishTime>
@@ -448,7 +448,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/03/2017 09:32:13</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/19/2018 10:25:45</publishTime>
+      <publishTime>03/01/2018 22:24:17</publishTime>
     </File>
     <File Include="WebForms/Administrador/AdministraAplicacionesPendientes.aspx">
       <publishTime>10/30/2017 14:45:54</publishTime>
@@ -472,13 +472,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/30/2017 14:45:54</publishTime>
     </File>
     <File Include="WebForms/Administrador/AdministraPremios.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>02/27/2018 14:50:50</publishTime>
     </File>
     <File Include="WebForms/Administrador/AdministraUsuarios.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>02/27/2018 14:51:09</publishTime>
     </File>
     <File Include="WebForms/Administrador/InicioAdmin.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>02/27/2018 14:52:05</publishTime>
     </File>
     <File Include="WebForms/Administrador/ObservaAplicacion.aspx">
       <publishTime>10/30/2017 14:45:54</publishTime>
@@ -487,13 +487,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/30/2017 14:45:54</publishTime>
     </File>
     <File Include="WebForms/Candidato/CorrigeAplicacion.aspx">
-      <publishTime>11/30/2017 17:58:55</publishTime>
+      <publishTime>02/27/2018 16:22:10</publishTime>
     </File>
     <File Include="WebForms/Candidato/Formulario.aspx">
-      <publishTime>02/06/2018 15:50:58</publishTime>
+      <publishTime>02/27/2018 16:22:19</publishTime>
     </File>
     <File Include="WebForms/Candidato/InformacionPersonalCandidato.aspx">
-      <publishTime>01/09/2018 21:26:33</publishTime>
+      <publishTime>02/27/2018 14:50:05</publishTime>
     </File>
     <File Include="WebForms/Candidato/InicioCandidato.aspx">
       <publishTime>10/30/2017 14:45:54</publishTime>
@@ -514,28 +514,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/07/2017 01:28:50</publishTime>
     </File>
     <File Include="WebForms/Juez/EvaluaAplicacion.aspx">
-      <publishTime>11/25/2017 13:59:28</publishTime>
+      <publishTime>02/27/2018 14:51:26</publishTime>
     </File>
     <File Include="WebForms/Juez/InformacionPersonalJuez.aspx">
-      <publishTime>01/09/2018 21:42:19</publishTime>
+      <publishTime>02/27/2018 14:52:28</publishTime>
     </File>
     <File Include="WebForms/Juez/InicioJuez.aspx">
-      <publishTime>02/06/2018 15:52:08</publishTime>
+      <publishTime>02/27/2018 14:51:34</publishTime>
     </File>
     <File Include="WebForms/Juez/ListaParticipantes.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>02/27/2018 16:22:37</publishTime>
     </File>
     <File Include="WebForms/Juez/PremiosInstitucionalesJuez.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>02/27/2018 16:22:28</publishTime>
     </File>
     <File Include="WebForms/Juez/VerConcentrado.aspx">
-      <publishTime>11/30/2017 17:15:20</publishTime>
+      <publishTime>02/27/2018 14:49:13</publishTime>
     </File>
     <File Include="WebForms/Login.aspx">
-      <publishTime>02/06/2018 15:51:45</publishTime>
+      <publishTime>02/27/2018 14:49:02</publishTime>
     </File>
     <File Include="WebForms/RecuperaCuenta.aspx">
-      <publishTime>10/30/2017 14:45:54</publishTime>
+      <publishTime>02/27/2018 14:48:49</publishTime>
     </File>
   </ItemGroup>
 </Project>
