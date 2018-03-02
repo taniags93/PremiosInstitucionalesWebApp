@@ -12,6 +12,7 @@ desarrollo
 -->
 <a href="http://premiosinstitucionalespprd.tec.mx/WebForms/Login.aspx?c=%CONFIRMACION%">Confirma tu cuenta</a>
 <br>
+
 <br>
 <hr>
 <div style="text-align:center">

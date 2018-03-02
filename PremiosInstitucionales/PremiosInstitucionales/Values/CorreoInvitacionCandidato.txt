@@ -9,7 +9,6 @@ desarrollo
 <a href="http://10.2.40.125/PremiosInstitucionales/WebForms/Login.aspx">Registrarse</a>
 -->
 <a href="http://premiosinstitucionalespprd.tec.mx/WebForms/Login.aspx">Registrarse</a>
-
 <br>
 <br>
 <hr>
