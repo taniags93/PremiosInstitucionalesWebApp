@@ -303,6 +303,7 @@ namespace PremiosInstitucionales.WebForms
                     return "Error";
                 }
                 // Upload image to server
+                Console.WriteLine(Server.MapPath(Path.Combine("~/UsersAppsFiles/", sNombreArchivo)));
                 file.SaveAs(Server.MapPath(Path.Combine("~/UsersAppsFiles/", sNombreArchivo)));
                 return sNombreArchivo;
             }

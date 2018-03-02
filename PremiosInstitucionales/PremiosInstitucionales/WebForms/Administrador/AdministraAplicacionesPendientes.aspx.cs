@@ -18,7 +18,7 @@ namespace PremiosInstitucionales.WebForms
         protected void Page_Load(object sender, EventArgs e)
         {
             // Verificar si ya expiro la sesion
-            if (Session.Contents.Count == 0)
+           /* if (Session.Contents.Count == 0)
             {
                 Response.Redirect("~/WebForms/Error/Error401.aspx", false);
             }
@@ -39,7 +39,7 @@ namespace PremiosInstitucionales.WebForms
                 {
                     Response.Redirect("~/WebForms/Login.aspx", false);
                 }
-            }
+            }*/
 
             LoadPendingApplications();
         }
@@ -117,7 +117,7 @@ namespace PremiosInstitucionales.WebForms
                     cartaDocumento.Style.Add("font-size", "14pt");
                     cartaDocumento.Style.Add("color", "#00acc1");
                     cartaDocumento.Style.Add("text-decoration", "underline");
-                    cartaDocumento.Command += new CommandEventHandler(DownloadFile);
+                    cartaDocumento.Command += new CommandEventHandler(DownloadFile2);
                     cartaDocumento.CommandArgument = app.cveAplicacion;
                     panelCollapseBody.Controls.Add(cartaDocumento);
 
@@ -291,6 +291,31 @@ namespace PremiosInstitucionales.WebForms
         {
             var app = AplicacionService.GetAplicacionById(e.CommandArgument.ToString());
             string FileName = app.NombreArchivo;
+            string FilePath = Server.MapPath("~/UsersAppsFiles/") + FileName;
+            FileInfo fs = new FileInfo(FilePath);
+            int FileLength = Convert.ToInt32(fs.Length);
+
+            if (File.Exists(FilePath))
+            {
+                Response.Clear();
+                Response.BufferOutput = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AddHeader("Content-Length", FileLength.ToString());
+                Response.AddHeader("content-disposition", "attachment; filename=" + FileName);
+                Response.TransmitFile(FilePath);
+                Response.Flush();
+            }
+            else
+            {
+                MasterPage.ShowMessage("Error", "El servidor no encontró el archivo.");
+            }
+
+        }
+
+        public void DownloadFile2(object sender, CommandEventArgs e)
+        {
+            var app = AplicacionService.GetAplicacionById(e.CommandArgument.ToString());
+            string FileName = app.ArchivoCarta;
             string FilePath = Server.MapPath("~/UsersAppsFiles/") + FileName;
             FileInfo fs = new FileInfo(FilePath);
             int FileLength = Convert.ToInt32(fs.Length);
