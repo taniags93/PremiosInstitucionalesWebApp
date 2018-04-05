@@ -61,6 +61,7 @@ namespace PremiosInstitucionales.WebForms
                     var premio = AplicacionService.GetPremioByClaveCategoria(app.cveCategoria);
                     var candidato = InformacionPersonalCandidatoService.GetCandidatoById(app.cveCandidato);
 
+               
                     Panel panelMain = new Panel();
                     panelMain.CssClass = "panel panel-default";
 
@@ -101,9 +102,12 @@ namespace PremiosInstitucionales.WebForms
 
                     panelCollapseBody.Controls.Add(new LiteralControl("</div> <div class='col-sm-6'> <h5> <strong> Archivos proporcionados: </strong> </h5>"));
 
+                    string path = Server.MapPath("");
+                    string FilePath = Server.MapPath("~/UsersAppsFiles/");
+
                     LinkButton lbDocumento = new LinkButton();
-                    lbDocumento.Text = app.NombreArchivo;
-                    lbDocumento.Style.Add("font-size", "14pt");
+                    lbDocumento.Text = FilePath + app.NombreArchivo;
+                    lbDocumento.Style.Add("font-size", "8pt");
                     lbDocumento.Style.Add("color", "#00acc1");
                     lbDocumento.Style.Add("text-decoration", "underline");
                     lbDocumento.Command += new CommandEventHandler(DownloadFile);
@@ -113,8 +117,8 @@ namespace PremiosInstitucionales.WebForms
                     panelCollapseBody.Controls.Add(new LiteralControl("<br>"));
                     
                     LinkButton cartaDocumento = new LinkButton();
-                    cartaDocumento.Text = app.ArchivoCarta;
-                    cartaDocumento.Style.Add("font-size", "14pt");
+                    cartaDocumento.Text = FilePath + app.ArchivoCarta;
+                    cartaDocumento.Style.Add("font-size", "8pt");
                     cartaDocumento.Style.Add("color", "#00acc1");
                     cartaDocumento.Style.Add("text-decoration", "underline");
                     cartaDocumento.Command += new CommandEventHandler(DownloadFile2);
@@ -291,7 +295,11 @@ namespace PremiosInstitucionales.WebForms
         {
             var app = AplicacionService.GetAplicacionById(e.CommandArgument.ToString());
             string FileName = app.NombreArchivo;
+            string path = Server.MapPath("");
             string FilePath = Server.MapPath("~/UsersAppsFiles/") + FileName;
+            Response.Write("Some text");
+            Response.Write(FilePath);
+
             FileInfo fs = new FileInfo(FilePath);
             int FileLength = Convert.ToInt32(fs.Length);
 
@@ -307,7 +315,7 @@ namespace PremiosInstitucionales.WebForms
             }
             else
             {
-                MasterPage.ShowMessage("Error", "El servidor no encontró el archivo.");
+                MasterPage.ShowMessage("Error", "El servidor no encontró el archivo. "+FilePath);
             }
 
         }
